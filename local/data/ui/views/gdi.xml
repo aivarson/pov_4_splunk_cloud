@@ -1,101 +1,30 @@
-<form script="tokenlinks.js" theme="light">
+<form theme="light" script="tokenlinks.js">
   <label>GDI</label>
-  <!-- Show foo Show bar radio checkbox example -->
-  <!-- Show foo Show bar radio panel example HTML -->
+
   <!-- Show/Hide Description Text -->
   <!-- Set Tokens from HTML Links Example -->
-  <!-- HTML 5 sample drilldown using details -->
-  <fieldset submitButton="false" autoRun="false">
-    <input type="checkbox" token="tk_checkbox" searchWhenChanged="false">
-      <label>Select Panels to Show/Hide</label>
-      <choice value="foo">Show foo</choice>
-      <choice value="bar">Show bar</choice>
-      <change>
-        <condition value="foo">
-          <set token="show_foo">true</set>
-          <unset token="show_bar"></unset>
-        </condition>
-        <condition value="bar">
-          <set token="show_bar">true</set>
-          <unset token="show_foo"></unset>
-        </condition>
-        <condition>
-          <unset token="show_bar"></unset>
-          <unset token="show_foo"></unset>
-        </condition>
-      </change>
-      <default>foo,bar</default>
-      <initialValue>foo,bar</initialValue>
-    </input>
-  </fieldset>
-  <row>
-    <panel depends="$show_foo$">
-      <html>
-        <h1>This is the foo panel</h1>
-      </html>
-    </panel>
-    <panel depends="$show_bar$">
-      <html>
-        <h1>This is the bar panel</h1>
-      </html>
-    </panel>
-  </row>
+
   <row>
     <panel>
-      <title>Link Switcher Example</title>
+      <title>Show/Hide Panels</title>
       <html>
-                <!-- Set the $show_chart$ token when the link is clicked, also unset the $show_table$ token -->
-                <a href="#" class="btn-pill" data-set-token="show_chart" data-value="show" data-unset-token="show_table">
-                    Show Chart
+                <!-- Set the $show_docs$ token when the link is clicked, also unset the $show_kpis$ token -->
+                <a href="#" class="btn-pill" data-set-token="show_docs" data-value="show" data-unset-token="show_kpis">
+                    Show Docs and Reference Links
                 </a>
-                <!-- Set the $show_table$ token when the link is clicked, also unset the $show_chart$ token -->
-                <a href="#" class="btn-pill" data-set-token="show_table" data-value="show" data-unset-token="show_chart">
-                    Show Table
+                <!-- Set the $show_kpis$ token when the link is clicked, also unset the $show_docs$ token -->
+                <a href="#" class="btn-pill" data-set-token="show_kpis" data-value="show" data-unset-token="show_docs">
+                    Show KPIs
                 </a>
-                <!-- Unset both the $show_chart$ and $show_table$ token when the link is clicked -->
-                <a href="#" class="btn-pill" data-token-json="{&quot;show_table&quot;: null, &quot;show_chart&quot;: null}">Hide All</a>
+                <!-- Unset both the $show_docs$ and $show_kpis$ token when the link is clicked -->
+                <a href="#" class="btn-pill" data-token-json="{&quot;show_kpis&quot;: null, &quot;show_docs&quot;: null}">Hide All</a>
       </html>
-      <html rejects="$show_chart$, $show_table$">
+      <html rejects="$show_docs$, $show_kpis$">
             <p>Click on one of the links above to select which visualization to show.</p>
         </html>
     </panel>
-    <panel depends="$show_chart$">
-      <title>Show Chart</title>
-      <html>
-        <p>
-          <b>Description:</b> Just a place holder for general example of doing further documentation in a panel to present to the user. So the user better understands what they are looking at.
-        </p>
-        <p>
-          <b>Actions to take:</b> More information IE: actions they need to take.
-        </p>
-      </html>
-    </panel>
-    <panel depends="$show_table$">
-      <title>Show Table</title>
-      <html>
-        <p>
-          <b>Description:</b> Just a place holder for general example of doing further documentation in a panel to present to the user. So the user better understands what they are looking at.
-        </p>
-        <p>
-          <b>Actions to take:</b> More information IE: actions they need to take.
-        </p>
-      </html>
-    </panel>
   </row>
-  <row>
-    <panel>
-      <html>
-    <details>
-    <summary>here's the deetz</summary>
-    <p>the deetz you're talking about</p>
-    <details>
-    <summary>sub-deetz</summary>
-    <p>the nested sub deetz in html</p>
-    </details>
-    </details>
-</html>
-    </panel>
-  </row>
+
   <row depends="$hide$">
     <panel>
       <!--creates an HTML panel in order to create an inline style sheet-->
@@ -143,7 +72,7 @@
 </div>
         </html>
     </panel>
-    <panel>
+    <panel depends="$show_docs$">
       <html>
         <p>
           <b> Resources:</b>
@@ -179,9 +108,9 @@
     </panel>
   </row>
   <row>
-    <panel>
+    <panel depends="$show_kpis$">
       <html>
-        <table id="documentation_table">
+        <table id="kpi_table">
           <tr>
             <th>KPI</th>
             <th>Description</th>
@@ -242,7 +171,7 @@
       </single>
 -->
       <html>
-<h1 style="color: #ffffff; text-align: center; vertical-align: middle; font-size: 60px;">GDI SUMMARY</h1>
+<h1 style="color: #000000; text-align: center; vertical-align: middle; font-size: 60px;">GDI SUMMARY</h1>
 </html>
     </panel>
   </row>
