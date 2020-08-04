@@ -1,10 +1,10 @@
 [app/ui]
 version = 8.0.5
-modtime = 1596552925.123784000
+modtime = 1596557823.858382000
 
 [app/launcher]
 version = 8.0.5
-modtime = 1596552925.127760000
+modtime = 1596557823.863649000
 
 [savedsearches/Lookup%20Generation%3A%20Stack%20Sourcetypes]
 access = read : [ * ], write : [ admin, power ]
@@ -17,3 +17,7 @@ modtime = 1596553645.661901000
 owner = admin
 version = 8.0.5
 modtime = 1596554913.029523000
+
+[app/package/check_for_updates]
+version = 8.0.5
+modtime = 1596557823.865398000
