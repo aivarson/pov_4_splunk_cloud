@@ -3,10 +3,8 @@
 
   <!-- Show/Hide Description Text -->
   <!-- Set Tokens from HTML Links Example -->
-
   <row>
     <panel>
-      <title>Show/Hide Panels</title>
       <html>
                 <!-- Set the $show_docs$ token when the link is clicked, also unset the $show_kpis$ token -->
                 <a href="#" class="btn-pill" data-set-token="show_docs" data-value="show" data-unset-token="show_kpis">
@@ -25,46 +23,51 @@
     </panel>
   </row>
 
+<!--creates a hidden HTML row and panel in order to create an inline style sheet-->
   <row depends="$hide$">
     <panel>
-      <!--creates an HTML panel in order to create an inline style sheet-->
       <html>
         <style>
           <!-- borrowed from Duca dashboard-->
-          #documentation_table {
-          <!--font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;-->
+          #kpi_table {
+          font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
           border-collapse: collapse;
           width: 100%;
+          table-layout: auto;
           }
           
-          #documentation_table td, #documentation_table th {
+          #kpi_table td, #kpi_table th {
             border: 1px solid #ddd;
             padding: 8px;
           }
           
-          #documentation_table tr:nth-child(even){background-color: #f2f2f2;}
+          #kpi_table tr:nth-child(even){background-color: #f2f2f2;}
           
-          #documentation_table tr:hover {background-color: #ddd;}
+          #kpi_table tr:hover {background-color: #ddd;}
           
-          #documentation_table th {
+          #kpi_table th {
             padding-top: 12px;
             padding-bottom: 12px;
             text-align: left;
             background-color: #4CAF50;
-            color: white;
+            color: white;}
+            
+            
         </style>
       </html>
     </panel>
   </row>
+  
+<!-- Welcome Message to GDI Dashboard -->
   <row>
-    <panel depends="$overview_message1$">
+    <panel>
       <html>
-        <h2 id="title_h1_bold_1">
+        <h2>
           <b>Welcome to the Getting Data In (GDI) Dashboard...</b>
         </h2>
 <div class="panel conf-macro output-block" data-hasbody="true" data-macro-name="panel">
 <div class="panelContent">
-<p>This GDI dashboard is meant to provide you guidance and feedback on the GDI process for your Proof of Value experience. If you are doing an Autobahn Proof of Value then you can largely ignore this dashboard. The Autobahn engineer assigned will be doing the data onboarding for you.</p>
+<p>Welcome <b>$env:user_realname$</b> ! This GDI dashboard is meant to provide you guidance and feedback on the GDI process for your Proof of Value experience. If you are doing an Autobahn Proof of Value then you can largely ignore this dashboard. The Autobahn engineer assigned will be doing the data onboarding for you.</p>
 <p>
               <em>Alan Ivarson, Cloud Architect</em>
             </p>
@@ -115,6 +118,7 @@
             <th>KPI</th>
             <th>Description</th>
         </tr>
+        <tr><b>Here is a listing of the KPIs that are measured on this dashboard and why they are important.</b></tr>
         <tr>
             <td>
               <b># of Sourcetypes onboarded</b>
@@ -129,28 +133,34 @@
 		    </tr>
 		    <tr>
             <td>
-              <b>Index</b>
+              <b>GB/day of data used as compared to % of license</b>
             </td>
-			      <td> A repository for data in Splunk. Used for data access, retention or organization.</td>
+			      <td> Splunk ingest licensing measures GB of data per day. This is a measure of how much license you are using relative to the stack license size. 25% or greater is needed to get this KPI to turn green.</td>
 		    </tr>
 		    <tr>
             <td>
-              <b>Index Size (GB)</b>
+              <b># of Events in Splunk Cloud</b>
             </td>
-			      <td> The amount of raw data stored for the index in GB.</td>
+			      <td> The total number of events currently in Splunk Cloud. This is a measure of the velocity that your data is coming into Splunk. 1 Million events or more are needed to get this KPI to turn green.</td>
 		    </tr>
 		    <tr>
             <td>
-              <b>Total Event Count</b>
+              <b># of forwarders connected</b>
             </td>
-			      <td> The total number of events currently stored for the index.</td>
+			      <td> The total number forwarders that have sent data to Splun Cloud. A forwarder is the primary method to get data in to Splunk Cloud. 1 or more forwarders sending data are needed to get this KPI to turn green.</td>
+		    </tr>
+		    <tr>
+            <td>
+              <b>Data Quality</b>
+            </td>
+			      <td> This KPI measures the quality of the data coming in. Garbage in, Garbage out. We are looking for things like no too_small sourcetypes, CIM data, no data in lastchanceindex, etc.</td>
 		    </tr>
         </table>
       </html>
     </panel>
   </row>
   <row>
-    <panel id="html_1">
+    <panel>
       <!---
       <single>
         <search>
@@ -171,7 +181,9 @@
       </single>
 -->
       <html>
-<h1 style="color: #000000; text-align: center; vertical-align: middle; font-size: 60px;">GDI SUMMARY</h1>
+<h1 style=  "opacity: 1 !important;
+             background: linear-gradient(80deg, #E90080 14%, #de0275 14% 22%, #e72B56 22% 25%, #de0275 50%, #f14d42 90%, #f05939 90% 93%,  #F4891a 93.1%);
+             color: white !important;">GDI SUMMARY</h1>
 </html>
     </panel>
   </row>
