@@ -1,8 +1,9 @@
-<form theme="light" script="tokenlinks.js">
+<dashboard theme="light" script="tokenlinks.js">
   <label>GDI</label>
-
   <!-- Show/Hide Description Text -->
   <!-- Set Tokens from HTML Links Example -->
+  <!--creates a hidden HTML row and panel in order to create an inline style sheet-->
+  <!-- Welcome Message to GDI Dashboard -->
   <row>
     <panel>
       <html>
@@ -22,15 +23,12 @@
         </html>
     </panel>
   </row>
-
-<!--creates a hidden HTML row and panel in order to create an inline style sheet-->
   <row depends="$hide$">
     <panel>
       <html>
         <style>
-          <!-- borrowed from Duca dashboard-->
+          <!-- Table Layout and colors-->
           #kpi_table {
-          font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
           border-collapse: collapse;
           width: 100%;
           table-layout: auto;
@@ -52,13 +50,10 @@
             background-color: #4CAF50;
             color: white;}
             
-            
         </style>
       </html>
     </panel>
   </row>
-  
-<!-- Welcome Message to GDI Dashboard -->
   <row>
     <panel>
       <html>
@@ -118,7 +113,9 @@
             <th>KPI</th>
             <th>Description</th>
         </tr>
-        <tr><b>Here is a listing of the KPIs that are measured on this dashboard and why they are important.</b></tr>
+        <tr>
+            <b>Here is a listing of the KPIs that are measured on this dashboard and why they are important.</b>
+          </tr>
         <tr>
             <td>
               <b># of Sourcetypes onboarded</b>
@@ -161,29 +158,8 @@
   </row>
   <row>
     <panel>
-      <!---
-      <single>
-        <search>
-          <query>| makeresults 
-| eval MakeValue="GDI Summary"
-| eval color=case(MakeValue="GDI Summary",1,MakeValue="other",2)
-| rangemap field=color white=1-1,blue=2-2
-| table MakeValue</query>
-          <earliest>-30m@m</earliest>
-          <latest>now</latest>
-          <sampleRatio>1</sampleRatio>
-        </search>
-        <option name="colorMode">none</option>
-        <option name="rangeColors">["0xffffff","0xffffff"]</option>
-        <option name="rangeValues">[0]</option>
-        <option name="refresh.display">progressbar</option>
-        <option name="useColors">0</option>
-      </single>
--->
       <html>
-<h1 style=  "opacity: 1 !important;
-             background: linear-gradient(80deg, #E90080 14%, #de0275 14% 22%, #e72B56 22% 25%, #de0275 50%, #f14d42 90%, #f05939 90% 93%,  #F4891a 93.1%);
-             color: white !important;">GDI SUMMARY</h1>
+    <h1 style="opacity: 1 !important;              background: linear-gradient(80deg, #E90080 14%, #de0275 14% 22%, #e72B56 22% 25%, #de0275 50%, #f14d42 90%, #f05939 90% 93%,  #F4891a 93.1%);              color: white !important;              text-align: center;              line-height: 120px;              font-size: 80px;              padding: 1px;              height: 120px;              ">GDI SUMMARY</h1>
 </html>
     </panel>
   </row>
@@ -305,6 +281,35 @@
         <option name="numberPrecision">0</option>
         <option name="rangeColors">["0x006d9c","0x006d9c"]</option>
         <option name="rangeValues">[0]</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Hosts with Data in Splunk (30d)</title>
+      <single>
+        <search>
+          <query>| metadata type=hosts
+| where NOT match(host,"(.splunkcloud*.com|idm-i.*|sh-i-.*|idx-i-.*|c0m1-i-.*)")
+| stats dc(host) as hosts</query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x006d9c","0x53a051","0x53a051"]</option>
+        <option name="rangeValues">[0,1]</option>
         <option name="showSparkline">1</option>
         <option name="showTrendIndicator">1</option>
         <option name="trellis.enabled">0</option>
@@ -685,4 +690,4 @@
       </table>
     </panel>
   </row>
-</form>
+</dashboard>
