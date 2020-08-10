@@ -32,6 +32,8 @@
                 </a>
                 <!-- Unset both the $show_docs$ and $show_kpis$ token when the link is clicked -->
                 <a href="#" class="btn-pill" data-token-json="{&quot;show_kpis&quot;: null, &quot;show_docs&quot;: null}">Hide All</a>
+                
+                <a href="#" class="btn-pill" data-token-json="{&quot;show_st_charts&quot;: null, &quot;show_size_charts&quot;: null, &quot;show_hosts_charts&quot;: null}">Reset Dashboard</a>
       </html>
       <html rejects="$show_docs$, $show_kpis$">
             <p>Click on one of the links above to select which visualization to show.</p>
