@@ -32,8 +32,8 @@
                 </a>
                 <!-- Unset both the $show_docs$ and $show_kpis$ token when the link is clicked -->
                 <a href="#" class="btn-pill" data-token-json="{&quot;show_kpis&quot;: null, &quot;show_docs&quot;: null}">Hide All</a>
-                
-                <a href="#" class="btn-pill" data-token-json="{&quot;show_st_charts&quot;: null, &quot;show_size_charts&quot;: null, &quot;show_hosts_charts&quot;: null}">Reset Dashboard</a>
+                <!-- Unset all tokens -->
+                <a href="#" class="btn-pill" data-token-json="{&quot;show_st_charts&quot;: null, &quot;show_size_charts&quot;: null, &quot;show_hosts_charts&quot;: null, &quot;show_events_charts&quot;: null, &quot;show_index_charts&quot;: null, &quot;show_fwd_charts&quot;: null, &quot;show_kpis&quot;: null, &quot;show_docs&quot;: null}">Reset Dashboard</a>
       </html>
       <html rejects="$show_docs$, $show_kpis$">
             <p>Click on one of the links above to select which visualization to show.</p>
@@ -128,7 +128,13 @@
         </tr>
         <tr>
             <td>
-              <b># of forwarders connected</b>
+              <b># of Indexes created</b>
+            </td>
+			      <td> The number of indexes created in Splunk Cloud. This tracks if the POV is following best practices to not send data to the default indexes. 1 or more are needed to get this KPI to turn green.</td>
+		    </tr>
+        <tr>
+            <td>
+              <b># of Forwarders connected</b>
             </td>
 			      <td> The total number forwarders that have sent data to Splun Cloud. A forwarder is the primary method to get data in to Splunk Cloud. 1 or more forwarders sending data are needed to get this KPI to turn green.</td>
 		    </tr>
@@ -152,7 +158,7 @@
 		    </tr>
 		    <tr>
             <td>
-              <b># of Hosts that are sending data</b>
+              <b># of Hosts sending data</b>
             </td>
 			      <td> A default field that contains the hostname or IP address of the device that generated the event. This measures the variety of data coming into Splunk Cloud. 4 or more hosts sending data are needed to get this KPI to turn green.</td>
 		    </tr>
@@ -175,6 +181,39 @@
   </row>
   <row>
     <panel>
+      <title># of Indexes Created</title>
+      <single>
+        <search>
+          <query>| eventcount index=* summarize=false 
+| search NOT 
+    [| inputlookup default_indexes 
+    | fields index 
+    | format] 
+| where NOT match(index, "^_") 
+| stats dc(index) as indexes</query>
+          <earliest>0</earliest>
+          <latest></latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="rangeColors">["0x006d9c","0x53a051"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="useColors">1</option>
+        <drilldown>
+          <!-- For the sourcetype field clicked: -->
+          <!-- Set token to display a chart -->
+          <set token="show_index_charts"></set>
+          <unset token="show_fwd_charts"></unset>
+          <unset token="show_size_charts"></unset>
+          <unset token="show_hosts_charts"></unset>
+          <unset token="show_st_charts"></unset>
+          <unset token="show_events_charts"></unset>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
       <title>Forwarders Connected</title>
       <single>
         <search>
@@ -186,9 +225,18 @@
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
         </search>
+        <drilldown>
+          <!-- For the sourcetype field clicked: -->
+          <!-- Set token to display a chart -->
+          <set token="show_fwd_charts"></set>
+          <unset token="show_index_charts"></unset>
+          <unset token="show_size_charts"></unset>
+          <unset token="show_hosts_charts"></unset>
+          <unset token="show_st_charts"></unset>
+          <unset token="show_events_charts"></unset>
+        </drilldown>
         <option name="colorBy">trend</option>
         <option name="colorMode">block</option>
-        <option name="drilldown">none</option>
         <option name="numberPrecision">0</option>
         <option name="rangeColors">["0x53a051","0xf1813f","0xdc4e41"]</option>
         <option name="rangeValues">[0,100]</option>
@@ -216,9 +264,18 @@
           <earliest>0</earliest>
           <sampleRatio>1</sampleRatio>
         </search>
+        <drilldown>
+          <!-- For the sourcetype field clicked: -->
+          <!-- Set token to display a chart -->
+          <set token="show_events_charts"></set>
+          <unset token="show_fwd_charts"></unset>
+          <unset token="show_size_charts"></unset>
+          <unset token="show_hosts_charts"></unset>
+          <unset token="show_st_charts"></unset>
+          <unset token="show_index_charts"></unset>
+        </drilldown>
         <option name="colorBy">value</option>
         <option name="colorMode">block</option>
-        <option name="drilldown">none</option>
         <option name="numberPrecision">0</option>
         <option name="rangeColors">["0xdc4e41","0x53a051"]</option>
         <option name="rangeValues">[0]</option>
@@ -252,9 +309,18 @@
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
         </search>
+        <drilldown>
+          <!-- For the sourcetype field clicked: -->
+          <!-- Set token to display a chart -->
+          <set token="show_size_charts"></set>
+          <unset token="show_hosts_charts"></unset>
+          <unset token="show_st_charts"></unset>
+          <unset token="show_fwd_charts"></unset>
+          <unset token="show_index_charts"></unset>
+          <unset token="show_events_charts"></unset>
+        </drilldown>
         <option name="colorBy">value</option>
         <option name="colorMode">block</option>
-        <option name="drilldown">all</option>
         <option name="numberPrecision">0.00</option>
         <option name="rangeColors">["0x006d9c","0xdc4e41","0xf1813f","0x53a051"]</option>
         <option name="rangeValues">[0,2,10]</option>
@@ -270,13 +336,6 @@
         <option name="unitPosition">after</option>
         <option name="useColors">1</option>
         <option name="useThousandSeparators">1</option>
-        <drilldown>
-          <!-- For the sourcetype field clicked: -->
-          <!-- Set token to display a chart -->
-          <set token="show_size_charts"></set>
-          <unset token="show_hosts_charts"></unset>
-          <unset token="show_st_charts"></unset>
-        </drilldown>
       </single>
     </panel>
     <panel>
@@ -296,6 +355,9 @@
           <set token="show_st_charts"></set>
           <unset token="show_hosts_charts"></unset>
           <unset token="show_size_charts"></unset>
+          <unset token="show_fwd_charts"></unset>
+          <unset token="show_index_charts"></unset>
+          <unset token="show_events_charts"></unset>
         </drilldown>
         <option name="colorBy">value</option>
         <option name="colorMode">block</option>
@@ -325,9 +387,18 @@
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
         </search>
+        <drilldown>
+          <!-- For the sourcetype field clicked: -->
+          <!-- Set token to display a chart -->
+          <set token="show_hosts_charts"></set>
+          <unset token="show_size_charts"></unset>
+          <unset token="show_st_charts"></unset>
+          <unset token="show_fwd_charts"></unset>
+          <unset token="show_index_charts"></unset>
+          <unset token="show_events_charts"></unset>
+        </drilldown>
         <option name="colorBy">value</option>
         <option name="colorMode">block</option>
-        <option name="drilldown">all</option>
         <option name="numberPrecision">0</option>
         <option name="rangeColors">["0x006d9c","0xf1813f","0xf8be34","0x53a051"]</option>
         <option name="rangeValues">[0,2,4]</option>
@@ -341,13 +412,6 @@
         <option name="unitPosition">after</option>
         <option name="useColors">1</option>
         <option name="useThousandSeparators">1</option>
-        <drilldown>
-          <!-- For the sourcetype field clicked: -->
-          <!-- Set token to display a chart -->
-          <set token="show_hosts_charts"></set>
-          <unset token="show_size_charts"></unset>
-          <unset token="show_st_charts"></unset>
-        </drilldown>
       </single>
     </panel>
   </row>
@@ -385,7 +449,7 @@
       </single>
     </panel>
     <panel>
-      <title>IDM inputs</title>
+      <title>IDM inputs (30d)</title>
       <single>
         <search>
           <query>index=_* host="idm-i-025c6a76756ee1d4c.cloud-architects.splunkcloud.com" sourcetype=*:log 
@@ -591,85 +655,7 @@
         <option name="trellis.size">medium</option>
       </chart>
     </panel>
-  </row>
-  <row>
-    <panel>
-      <title>Earliest Event Indexed</title>
-      <single>
-        <search>
-          <query>| metadata type=sourcetypes index=*
-| eval "Earliest Event"=strftime(firstTime,"%m/%d/%Y %I:%M:%S %p")
-| sort +firstTime
-| table "Earliest Event"
-| head 1</query>
-          <earliest>0</earliest>
-          <latest></latest>
-          <sampleRatio>1</sampleRatio>
-        </search>
-        <option name="colorBy">value</option>
-        <option name="colorMode">none</option>
-        <option name="drilldown">none</option>
-        <option name="numberPrecision">0</option>
-        <option name="rangeColors">["0x53a051","0xdc4e41"]</option>
-        <option name="rangeValues">[0]</option>
-        <option name="refresh.display">progressbar</option>
-        <option name="showSparkline">1</option>
-        <option name="showTrendIndicator">1</option>
-        <option name="trellis.enabled">0</option>
-        <option name="trellis.scales.shared">1</option>
-        <option name="trellis.size">medium</option>
-        <option name="trendColorInterpretation">standard</option>
-        <option name="trendDisplayMode">absolute</option>
-        <option name="unitPosition">after</option>
-        <option name="useColors">0</option>
-        <option name="useThousandSeparators">1</option>
-      </single>
-    </panel>
-    <panel>
-      <title>Latest Event Indexed</title>
-      <single>
-        <search>
-          <query>| metadata type=sourcetypes index=*
-| eval "Latest Event"=strftime(lastTime,"%m/%d/%Y %I:%M:%S %p")
-| sort -lastTime
-| table "Latest Event"
-| head 1</query>
-          <earliest>0</earliest>
-          <sampleRatio>1</sampleRatio>
-        </search>
-        <option name="colorMode">block</option>
-        <option name="drilldown">none</option>
-        <option name="rangeColors">["0x53a051","0xdc4e41"]</option>
-        <option name="rangeValues">[0]</option>
-        <option name="useColors">0</option>
-      </single>
-    </panel>
-  </row>
-  <row>
-    <panel>
-      <table>
-        <title>Index Information (All time)</title>
-        <search>
-          <query>| dbinspect index=* cached=t 
-| where NOT match(index, "^_") 
-| dedup bucketId sortby - modTime 
-| stats max(rawSize) AS raw_size max(eventCount) AS event_count BY bucketId, index 
-| stats sum(raw_size) AS raw_size sum(event_count) AS event_count dc(bucketId) AS buckets BY index 
-| eval raw_size_gb = round(raw_size / 1024/ 1024/ 1024 , 2) 
-| eval event_count = tostring(event_count, "commas")
-| fields index raw_size_gb event_count
-| rename raw_size_gb AS "Index Size (GB)" event_count AS "Total Event Count"
-| sort - "Index Size (GB)"</query>
-          <earliest>0</earliest>
-          <latest></latest>
-        </search>
-        <option name="count">20</option>
-        <option name="drilldown">none</option>
-        <option name="refresh.display">progressbar</option>
-        <option name="rowNumbers">true</option>
-      </table>
-    </panel>
-    <panel>
+    <panel depends="$show_size_charts$">
       <title>Top 10 Index Sizes (30d)</title>
       <chart>
         <search>
@@ -723,7 +709,88 @@
         <option name="trellis.size">medium</option>
       </chart>
     </panel>
-    <panel>
+  </row>
+  <row>
+    <panel depends="$show_events_charts$">
+      <title>Earliest Event Indexed</title>
+      <single>
+        <search>
+          <query>| metadata type=sourcetypes index=*
+| eval "Earliest Event"=strftime(firstTime,"%m/%d/%Y %I:%M:%S %p")
+| sort +firstTime
+| table "Earliest Event"
+| head 1</query>
+          <earliest>0</earliest>
+          <latest></latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x53a051","0xdc4e41"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">0</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+    <panel depends="$show_events_charts$">
+      <title>Latest Event Indexed</title>
+      <single>
+        <search>
+          <query>| metadata type=sourcetypes index=*
+| eval "Latest Event"=strftime(lastTime,"%m/%d/%Y %I:%M:%S %p")
+| sort -lastTime
+| table "Latest Event"
+| head 1</query>
+          <earliest>0</earliest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="rangeColors">["0x53a051","0xdc4e41"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="useColors">0</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$show_index_charts$">
+      <title>Indexes with Events (All time)</title>
+      <table>
+        <search>
+          <query>| dbinspect index=* cached=t 
+| search NOT 
+    [| inputlookup default_indexes 
+    | fields index 
+    | format] 
+| where NOT match(index, "^_") 
+| dedup bucketId sortby - modTime 
+| stats max(rawSize) AS raw_size max(eventCount) AS event_count BY bucketId, index 
+| stats sum(raw_size) AS raw_size sum(event_count) AS event_count dc(bucketId) AS buckets BY index 
+| eval raw_size_gb = round(raw_size / 1024/ 1024/ 1024 , 2) 
+| eval event_count = tostring(event_count, "commas")
+| fields index raw_size_gb event_count
+| rename raw_size_gb AS "Index Size (GB)" event_count AS "Total Event Count"
+| sort - "Index Size (GB)"</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+        <option name="rowNumbers">true</option>
+      </table>
+    </panel>
+    <panel depends="$show_fwd_charts$">
       <title>Forwarders connecting over 30d</title>
       <chart>
         <search>

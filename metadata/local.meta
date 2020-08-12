@@ -1,3 +1,29 @@
 [views/gdi]
 version = 8.0.5
-modtime = 1597258842.391678000
+modtime = 1597271651.225242000
+
+[app/ui]
+version = 8.0.5
+modtime = 1597265141.073883000
+
+[app/launcher]
+version = 8.0.5
+modtime = 1597265141.079015000
+
+[app/package/check_for_updates]
+version = 8.0.5
+modtime = 1597265141.080592000
+
+[lookups/default_indexes.csv]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 8.0.5
+modtime = 1597268580.082649000
+
+[transforms/default_indexes]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 8.0.5
+modtime = 1597265394.227524000

@@ -1,0 +1,40 @@
+﻿app,index
+itsi,anomaly_detection
+enterprise security,audit_summary
+enterprise security,bro
+enterprise security,cim_modactions
+splunk app for infrastructure,em_entity_summary
+splunk app for infrastructure,em_meta
+splunk app for infrastructure,em_metrics
+enterprise security,endpoint_summary
+enterprise security,gia_summary
+search,history
+splunk app for infrastructure,infra_alerts
+enterprise security,ioc
+itsi,itsi_data_integrations_aws_metrics
+itsi,itsi_data_integrations_azure_metrics
+itsi,itsi_grouped_alerts
+itsi,itsi_import_objects
+itsi,itsi_notable_archive
+itsi,itsi_notable_audit
+itsi,itsi_summary
+itsi,itsi_tracked_alerts
+search,lastchanceindex
+search,main
+enterprise security,notable
+enterprise security,notable_summary
+enterprise security,risk
+enterprise security,sequenced_events
+itsi,snmptrapd
+search,splunklogger
+search,summary
+enterprise security,threat_activity
+enterprise security,ubaroute
+enterprise security,ueba
+vmware,vmware-esxilog
+vmware,vmware-inv
+vmware,vmware-perf-metrics
+vmware,vmware-taskevent
+vmware,vmware-vclog
+enterprise security,whois
+enterprise security,xtreme_contexts
