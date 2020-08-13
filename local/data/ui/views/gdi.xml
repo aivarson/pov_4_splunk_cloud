@@ -523,7 +523,7 @@
       <title>Top 10 Sourcetypes by Size (30d)</title>
       <table>
         <search>
-          <query>index=_internal sourcetype=splunkd st=* source="/opt/splunk/var/log/splunk/license_usage.log"
+          <query>index=_internal sourcetype=splunkd st=* source="*/var/log/splunk/license_usage.log"
 | stats sum(b) as bytes by st
 | eval Size=`format_bytes(bytes)`
 | sort -bytes
@@ -538,6 +538,7 @@
         <option name="dataOverlayMode">none</option>
         <option name="drilldown">none</option>
         <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
         <option name="rowNumbers">true</option>
         <option name="totalsRow">false</option>
         <option name="wrap">true</option>

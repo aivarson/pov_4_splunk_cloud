@@ -1,6 +1,0 @@
-[macros/format_bytes%281%29]
-access = read : [ * ], write : [ admin ]
-export = none
-owner = admin
-version = 8.0.5
-modtime = 1597350928.160922000

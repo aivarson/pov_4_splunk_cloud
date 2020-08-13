@@ -1,7 +1,6 @@
 require(['jquery', 'underscore', 'splunkjs/mvc', 'util/console'], function($, _, mvc, console) {
 
     function setToken(name, value) {
-        console.log('Setting Token %o=%o', name, value);
 
         var defaultTokenModel = mvc.Components.get('default');
         if (defaultTokenModel) {
