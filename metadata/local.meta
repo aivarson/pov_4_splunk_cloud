@@ -1,0 +1,6 @@
+[views/welcome_dashboard]
+access = read : [ * ], write : [ admin, sc_admin ]
+export = none
+owner = admin
+version = 8.0.5
+modtime = 1597957230.578622000

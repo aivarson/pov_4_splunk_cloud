@@ -1,18 +1,18 @@
 <dashboard theme="light" script="tokenlinks.js">
-  <label>Getting Data In</label>
+  <label>Welcome Dashboard</label>
   <!-- Show/Hide Description Text -->
   <!-- Set Tokens from HTML Links Example -->
   <!--creates a hidden HTML row and panel in order to create an inline style sheet-->
-  <!-- Welcome Message to GDI Dashboard -->
+  <!-- Welcome Message to the Dashboard -->
   <row>
     <panel>
       <html>
         <h2>
-          <b>Welcome to the Getting Data In (GDI) Dashboard...</b>
+          <b>Welcome to the Welcome and Setup Dashboard...</b>
         </h2>
 <div class="panel conf-macro output-block" data-hasbody="true" data-macro-name="panel">
 <div class="panelContent">
-<p>Welcome <b>$env:user_realname$</b> ! This GDI dashboard is meant to provide you guidance and feedback on the GDI process for your Proof of Value experience. If you are doing an Autobahn Proof of Value then you can largely ignore this dashboard. The Autobahn engineer assigned will be doing the data onboarding for you.</p>
+<p>Welcome <b>$env:user_realname$</b> ! This Welcome dashboard is meant to guide you in setting up your Proof of Value experience for success! You should walk through this dashboard with your Sales Engineer or an Autobahn Engineer.</p>
 <p>
               <em>Alan Ivarson, Cloud Architect</em>
             </p>
@@ -175,7 +175,7 @@
   <row>
     <panel>
       <html>
-    <h1 id="splk_banner">GDI SUMMARY</h1>
+    <h1 id="splk_banner">WELCOME and SETUP</h1>
 </html>
     </panel>
   </row>
