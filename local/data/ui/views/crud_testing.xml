@@ -1,0 +1,66 @@
+<dashboard>
+  <label>CRUD Testing</label>
+  <row>
+    <panel>
+      <title>CRUD for Setup Dashboard</title>
+      <table>
+        <search>
+          <query>| inputlookup setup_lookup 
+| eval Update="Update" 
+| eval Delete="Delete" 
+| table *, Update, Delete</query>
+          <earliest>0</earliest>
+          <latest></latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+    <panel id="inputFormPanel">
+      <title>Input and Update Form</title>
+      <html>
+        <form>
+          <div>
+          	<label for="CustomerName">Customer Name</label>
+          	<input style="width: 95%" type="text" name="CustomerName"/>
+          </div>
+          <div>
+          	<label for="LicenseSizeGB">License Size (GB)</label>
+          	<textarea style="width: 95%" name="LicenseSizeGB" rows="5"/>
+          </div>
+          <div>
+          	<label for="CustomerPOCName">Customer Point of Contact Name</label>
+          	<input style="width: 95%" type="text" name="CustomerPOCName"/>
+          </div>
+          <div>
+          	<label for="CustomerPOCEmail">Customer Point of Contact Email</label>
+            <input style="width: 95%" type="text" name="CustomerPOCEmail"/>
+          </div>
+          <div>
+          	<label for="SalesEngineerName">Sales Engineer Name</label>
+          	<input style="width: 95%" type="text" name="SalesEngineerName"/>
+          </div>
+          <div>
+          	<label for="SalesEngineerEmail">Sales Engineer Email</label>
+            <input style="width: 95%" type="text" name="SalesEngineerEmail"/>
+          </div>
+          <div>
+          	<label for="Notes">Notes</label>
+          	<textarea style="width: 95%" name="Notes" rows="5"/>
+          </div>
+          <input type="hidden" name="_key"/>
+          <div>
+            <button id="submitButton">Submit</button>
+          </div>
+        </form>
+      </html>
+    </panel>
+  </row>
+</dashboard>

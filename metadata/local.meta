@@ -1,3 +1,20 @@
 [views/setup]
 version = 8.0.5
 modtime = 1598300998.308068000
+
+[transforms/setup_lookup]
+access = read : [ * ], write : [ sc_admin ]
+export = none
+owner = admin
+version = 8.0.5
+modtime = 1599068236.314511000
+
+[collections/setup_collection1]
+owner = admin
+version = 8.0.5
+modtime = 1599068747.124113000
+
+[views/crud_testing]
+owner = admin
+version = 8.0.5
+modtime = 1599080243.409250000
