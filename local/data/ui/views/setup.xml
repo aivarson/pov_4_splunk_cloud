@@ -74,6 +74,15 @@
               padding: 1px;              
               height: 120px;
               }
+              
+             <!-- Input form width--> 
+            #inputCollectionPanel {
+              width: 70% !important;
+              }
+              
+            #inputFormPanel {
+              width: 30% !important;
+              }
             
         </style>
       </html>

@@ -1,9 +1,26 @@
 <dashboard>
   <label>CRUD Testing</label>
-  <row>
+  <row depends="$hide$">
     <panel>
-      <title>CRUD for Setup Dashboard</title>
-      <table>
+      <html>
+        <style>
+             <!-- Input form width--> 
+            #inputCollectionPanel {
+              width:70% !important;
+              }
+              
+            #inputFormPanel {
+              width:30% !important;
+              }
+            
+        </style>
+      </html>
+    </panel>
+  </row>
+  <row>
+    <panel id="inputCollectionPanel">
+      <table >
+        <title>CRUD for Setup Dashboard</title>
         <search>
           <query>| inputlookup setup_lookup 
 | eval Update="Update" 
@@ -13,13 +30,11 @@
           <latest></latest>
           <sampleRatio>1</sampleRatio>
         </search>
-        <option name="count">20</option>
+        <option name="count">10</option>
         <option name="dataOverlayMode">none</option>
-        <option name="drilldown">none</option>
-        <option name="percentagesRow">false</option>
+        <option name="drilldown">cell</option>
         <option name="refresh.display">progressbar</option>
-        <option name="rowNumbers">false</option>
-        <option name="totalsRow">false</option>
+        <option name="rowNumbers">true</option>
         <option name="wrap">true</option>
       </table>
     </panel>
