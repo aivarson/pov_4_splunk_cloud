@@ -26,7 +26,7 @@
       <table id="inputCollectionTable">
         <title>CRUD for Setup Dashboard</title>
         <search>
-          <query>| inputlookup setup_lookup 
+          <query>| inputlookup setup_lookup
 | eval Update="Update" 
 | eval Delete="Delete" 
 | table *, Update, Delete</query>
@@ -37,6 +37,7 @@
         <option name="count">10</option>
         <option name="dataOverlayMode">none</option>
         <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
         <option name="rowNumbers">true</option>
         <option name="wrap">true</option>
       </table>
@@ -51,7 +52,7 @@
           </div>
           <div>
           	<label for="LicenseSizeGB">License Size (GB)</label>
-          	<textarea style="width: 95%" name="LicenseSizeGB" rows="5"/>
+          	<input style="width: 95%" name="LicenseSizeGB"/>
           </div>
           <div>
           	<label for="CustomerPOCName">Customer Point of Contact Name</label>
@@ -68,6 +69,38 @@
           <div>
           	<label for="SalesEngineerEmail">Sales Engineer Email</label>
             <input style="width: 95%" type="text" name="SalesEngineerEmail"/>
+          </div>
+          <div>
+          	<label for="UseCase1">Use Case #1</label>
+          	<input style="width: 95%" type="text" name="UseCase1"/>
+          </div>
+          <div>
+          	<label for="UseCase2">Use Case #2</label>
+          	<input style="width: 95%" type="text" name="UseCase2"/>
+          </div>
+          <div>
+          	<label for="UseCase3">Use Case #3</label>
+          	<input style="width: 95%" type="text" name="UseCase3"/>
+          </div>
+          <div>
+          	<label for="DataSource1">Data Source #1</label>
+          	<input style="width: 95%" type="text" name="DataSource1"/>
+          </div>
+          <div>
+          	<label for="DataSource2">Data Source #2</label>
+          	<input style="width: 95%" type="text" name="DataSource2"/>
+          </div>
+          <div>
+          	<label for="DataSource3">Data Source #3</label>
+          	<input style="width: 95%" type="text" name="DataSource3"/>
+          </div>
+          <div>
+          	<label for="DataSource4">Data Source #4</label>
+          	<input style="width: 95%" type="text" name="DataSource4"/>
+          </div>
+          <div>
+          	<label for="DataSource5">Data Source #5</label>
+          	<input style="width: 95%" type="text" name="DataSource5"/>
           </div>
           <div>
           	<label for="Notes">Notes</label>

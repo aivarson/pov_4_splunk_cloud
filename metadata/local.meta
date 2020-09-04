@@ -7,7 +7,7 @@ access = read : [ * ], write : [ sc_admin ]
 export = none
 owner = admin
 version = 8.0.5
-modtime = 1599068236.314511000
+modtime = 1599250393.558032000
 
 [collections/setup_collection1]
 owner = admin
@@ -17,4 +17,4 @@ modtime = 1599068747.124113000
 [views/crud_testing]
 owner = admin
 version = 8.0.5
-modtime = 1599241165.033155000
+modtime = 1599250932.671318000
