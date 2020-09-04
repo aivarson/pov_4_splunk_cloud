@@ -1,10 +1,14 @@
-<dashboard>
+<dashboard script="crud.js">
   <label>CRUD Testing</label>
-  <row depends="$hide$">
+  <row depends="$hide$" id="CSSPanel">
     <panel>
       <html>
         <style>
              <!-- Input form width--> 
+            #CSSPanel{
+             width:0% !important;
+           }
+             
             #inputCollectionPanel {
               width:70% !important;
               }
@@ -19,7 +23,7 @@
   </row>
   <row>
     <panel id="inputCollectionPanel">
-      <table >
+      <table id="inputCollectionTable">
         <title>CRUD for Setup Dashboard</title>
         <search>
           <query>| inputlookup setup_lookup 
@@ -33,7 +37,6 @@
         <option name="count">10</option>
         <option name="dataOverlayMode">none</option>
         <option name="drilldown">cell</option>
-        <option name="refresh.display">progressbar</option>
         <option name="rowNumbers">true</option>
         <option name="wrap">true</option>
       </table>
