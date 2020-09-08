@@ -1,5 +1,30 @@
 <dashboard script="crud.js">
   <label>CRUD Testing</label>
+  <search id="updateSearch" depends="$update_key_tok$, 
+$update_CustomerName_tok$, $update_CustomerPOCEmail_tok$, $update_CustomerPOCName_tok$, $update_LicenseSizeGB_tok$, 
+$update_SalesEngineerEmail_tok$, $update_SalesEngineerName_tok$, $update_DataSource1_tok$, $update_DataSource2_tok$,
+$update_DataSource3_tok$, $update_DataSource4_tok$, $update_DataSource5_tok$, $update_UseCase1_tok$,$update_UseCase2_tok$,
+$update_UseCase3_tok$">
+    <query>
+      | inputlookup setup_lookup | eval key=_key | WHERE key="$update_key_tok$" 
+      | eval CustomerName="$update_CustomerName_tok$" 
+      | eval CustomerPOCEmail="$update_CustomerPOCEmail_tok$" 
+      | eval CustomerPOCName="$update_CustomerPOCName_tok$"
+      | eval LicenseSizeGB="$update_LicenseSizeGB_tok$" 
+      | eval SalesEngineerEmail="$update_SalesEngineerEmail_tok$"
+      | eval SalesEngineerName="$update_SalesEngineerName_tok$" 
+      | eval DataSource1="$update_DataSource1_tok$" 
+      | eval DataSource2="$update_DataSource2_tok$" 
+      | eval DataSource3="$update_DataSource3_tok$"
+      | eval DataSource4="$update_DataSource4_tok$" 
+      | eval DataSource5="$update_DataSource5_tok$"  
+      | eval UseCase1="$update_UseCase1_tok$"
+      | eval UseCase2="$update_UseCase2_tok$"
+      | eval UseCase3="$update_UseCase3_tok$"
+      | eval Notes="$update_Notes_tok$"
+      | outputlookup setup_lookup append=t
+    </query>  
+  </search>
   <row depends="$hide$" id="CSSPanel">
     <panel>
       <html>
@@ -25,7 +50,7 @@
     <panel id="inputCollectionPanel">
       <table id="inputCollectionTable">
         <title>CRUD for Setup Dashboard</title>
-        <search>
+        <search id="inputCollectionSearch">
           <query>| inputlookup setup_lookup
 | eval Update="Update" 
 | eval Delete="Delete" 

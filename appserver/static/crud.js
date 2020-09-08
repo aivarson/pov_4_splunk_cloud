@@ -5,6 +5,15 @@ require([
     'splunkjs/mvc/simplexml/ready!'
 ], function(_, $, mvc) {
 
+var tokens = mvc.Components.get('submitted');
+
+/* --- Search Reference --- */
+var updateSearch = mvc.Components.get('updateSearch');
+var inputCollectionSearch = mvc.Components.get('inputCollectionSearch');
+
+/* --- Table Reference --- */
+var taskCollectionTable = mvc.Components.get('inputCollectionTable');
+
 /* --- Define the form inputs --- */
 var CustomerName_Input = $('[name="CustomerName"]');
 var CustomerPOCEmail_Input = $('[name="CustomerPOCEmail"]');
@@ -78,6 +87,41 @@ $('form *').filter(':input').each(function(){
 }
 
  });
+ 
+$(document).on('click', '#submitButton', function(e) { 
+
+e.preventDefault();
+
+tokens.set('update_key_tok', _key_Input.val());
+tokens.set('update_CustomerName_tok', CustomerName_Input.val());
+tokens.set('update_CustomerPOCEmail_tok', CustomerPOCEmail_Input.val());
+tokens.set('update_CustomerPOCName_tok', CustomerPOCName_Input.val());
+tokens.set('update_LicenseSizeGB_tok', LicenseSizeGB_Input.val());
+tokens.set('update_SalesEngineerEmail_tok', SalesEngineerEmail_Input.val());
+tokens.set('update_SalesEngineerName_tok', SalesEngineerName_Input.val());
+tokens.set('update_DataSource1_tok', DataSource1_Input.val());
+tokens.set('update_DataSource2_tok', DataSource2_Input.val());
+tokens.set('update_DataSource3_tok', DataSource3_Input.val());
+tokens.set('update_DataSource4_tok', DataSource4_Input.val());
+tokens.set('update_DataSource5_tok', DataSource5_Input.val());
+tokens.set('update_UseCase1_tok', UseCase1_Input.val());
+tokens.set('update_UseCase2_tok', UseCase2_Input.val());
+tokens.set('update_UseCase3_tok', UseCase3_Input.val());
+tokens.set('update_Notes_tok', Notes_Input.val());
+
+});
+
+/* --- Search Jobs --- */
+updateSearch.on('search:done', function() {
+
+
+    inputCollectionSearch.startSearch();
+    $('form *').filter(':input').each(function(){
+        $(this).val('');
+    });
+
+
+});
 
 });
 
