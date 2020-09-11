@@ -25,33 +25,6 @@ $update_UseCase3_tok$">
       | outputlookup setup_lookup append=t
     </query>  
   </search>
-  <search id="createSearch" depends="$create_CustomerName_tok$, $create_CustomerPOCEmail_tok$, $create_CustomerPOCName_tok$, $create_LicenseSizeGB_tok$, $create_SalesEngineerEmail_tok$, $create_SalesEngineerName_tok$, $create_DataSource1_tok$, $create_UseCase1_tok$">
-    <query>
-      | inputlookup setup_lookup | append [stats count 
-      | eval CustomerName="$create_CustomerName_tok$" 
-      | eval CustomerPOCEmail="$create_CustomerPOCEmail_tok$" 
-      | eval CustomerPOCName="$create_CustomerPOCName_tok$"
-      | eval LicenseSizeGB="$create_LicenseSizeGB_tok$" 
-      | eval SalesEngineerEmail="$create_SalesEngineerEmail_tok$"
-      | eval SalesEngineerName="$create_SalesEngineerName_tok$" 
-      | eval DataSource1="$create_DataSource1_tok$" 
-      | eval DataSource2="$create_DataSource2_tok$" 
-      | eval DataSource3="$create_DataSource3_tok$"
-      | eval DataSource4="$create_DataSource4_tok$" 
-      | eval DataSource5="$create_DataSource5_tok$"  
-      | eval UseCase1="$create_UseCase1_tok$"
-      | eval UseCase2="$create_UseCase2_tok$"
-      | eval UseCase3="$create_UseCase3_tok$"
-      | eval Notes="$create_Notes_tok$" ] 
-      | table CustomerName, LicenseSizeGB, DataSource1, DataSource2, DataSource3, DataSource4, DataSource5, UseCase1, UseCase2, UseCase3, SalesEngineerName, SalesEngineerEmail, CustomerPOCName, CustomerPOCEmail, Notes
-      | outputlookup setup_lookup
-    </query>  
-  </search>
-  <search id="deleteSearch" depends="$delete_key_tok$">
-    <query>
-      | inputlookup setup_lookup | eval key=_key | WHERE NOT key="$delete_key_tok$" | outputlookup setup_lookup
-    </query>
-  </search>
   <row depends="$hide$" id="CSSPanel">
     <panel>
       <html>
