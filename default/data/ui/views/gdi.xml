@@ -298,7 +298,7 @@
       </single>
     </panel>
     <panel>
-      <title>Data Onboarded (30d)</title>
+      <title>Data Onboarded (per day)</title>
       <single>
         <search>
           <query>| dbinspect index=* cached=t 
@@ -308,7 +308,8 @@
 | stats sum(raw_size) AS raw_size sum(event_count) AS event_count dc(bucketId) AS buckets BY index 
 | eval raw_size_gb = round(raw_size / 1024/ 1024/ 1024 , 2) 
 | fields index raw_size_gb event_count buckets 
-| stats sum(raw_size_gb) as total_gb</query>
+| stats sum(raw_size_gb) as total_gb
+| eval total_gb = total_gb/30</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -545,13 +546,13 @@
   </row>
   <row>
     <panel depends="$show_hosts_charts$">
-      <title>Hosts in Splunk (90d)</title>
+      <title>Hosts in Splunk (30d)</title>
       <table>
         <search>
           <query>| metadata type=hosts
 | where NOT match(host,"(.splunkcloud*.com|idm-i.*|sh-i-.*|idx-i-.*|c0m1-i-.*)")
 | table host</query>
-          <earliest>-90d</earliest>
+          <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
         </search>
