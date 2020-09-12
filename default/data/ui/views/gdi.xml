@@ -217,7 +217,7 @@
       <title>Forwarders Connected</title>
       <single>
         <search>
-          <query>index=_internal sourcetype=splunkd group=tcpin_connections (connectionType=cooked OR connectionType=cookedSSL) NOT eventType=* 
+          <query>index=_internal sourcetype=splunkd group=tcpin_connections (connectionType=cooked OR connectionType=cookedSSL) NOT eventType=* NOT host=*.splunkcloud*.com
 | eval forwarder = guid 
 | timechart span=1h dc(forwarder) as count_forwarder 
 | fields count_forwarder</query>
@@ -850,7 +850,7 @@
       <title>Forwarders connecting over 30d</title>
       <chart>
         <search>
-          <query>index=_internal sourcetype=splunkd group=tcpin_connections (connectionType=cooked OR connectionType=cookedSSL) NOT eventType=* 
+          <query>index=_internal sourcetype=splunkd group=tcpin_connections (connectionType=cooked OR connectionType=cookedSSL) NOT eventType=* NOT host=*.splunkcloud*.com
 | eval forwarder = guid 
 | timechart dc(forwarder) as "Forwarder Count" span=1d</query>
           <earliest>-30d@d</earliest>
