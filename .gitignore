@@ -1,4 +1,6 @@
 
+# Autogenerates when app is installed and used
 metadata/local.meta
-.DS_Store
+
+# OS X
 .DS_Store
