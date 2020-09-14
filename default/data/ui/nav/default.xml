@@ -2,6 +2,7 @@
   <view name="setup" default='true'/>
   <view name="crud_testing" />
   <view name="gdi"/>
+  <view name="engagement"/>
   <view name="search" />
   <view name="reports" />
   <view name="alerts" />
