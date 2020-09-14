@@ -1,0 +1,306 @@
+<form theme="light" script="tokenlinks.js,crud.js">
+  <label>Setup</label>
+  <!-- Show/Hide Description Text -->
+  <!-- Set Tokens from HTML Links Example -->
+  <!--creates a hidden HTML row and panel in order to create an inline style sheet-->
+  <!-- Welcome Message to the Dashboard -->
+  <search id="updateSearch" depends="$update_key_tok$,  $update_CustomerName_tok$, $update_CustomerPOCEmail_tok$, $update_CustomerPOCName_tok$, $update_LicenseSizeGB_tok$,  $update_SalesEngineerEmail_tok$, $update_SalesEngineerName_tok$, $update_DataSource1_tok$, $update_DataSource2_tok$, $update_DataSource3_tok$, $update_DataSource4_tok$, $update_DataSource5_tok$, $update_UseCase1_tok$,$update_UseCase2_tok$, $update_UseCase3_tok$">
+    <query>
+      | inputlookup setup_lookup | eval key=_key | WHERE key="$update_key_tok$" 
+      | eval CustomerName="$update_CustomerName_tok$" 
+      | eval CustomerPOCEmail="$update_CustomerPOCEmail_tok$" 
+      | eval CustomerPOCName="$update_CustomerPOCName_tok$"
+      | eval LicenseSizeGB="$update_LicenseSizeGB_tok$" 
+      | eval SalesEngineerEmail="$update_SalesEngineerEmail_tok$"
+      | eval SalesEngineerName="$update_SalesEngineerName_tok$" 
+      | eval DataSource1="$update_DataSource1_tok$" 
+      | eval DataSource2="$update_DataSource2_tok$" 
+      | eval DataSource3="$update_DataSource3_tok$"
+      | eval DataSource4="$update_DataSource4_tok$" 
+      | eval DataSource5="$update_DataSource5_tok$"  
+      | eval UseCase1="$update_UseCase1_tok$"
+      | eval UseCase2="$update_UseCase2_tok$"
+      | eval UseCase3="$update_UseCase3_tok$"
+      | eval Notes="$update_Notes_tok$"
+      | outputlookup setup_lookup append=t
+    </query>
+  </search>
+  <search id="createSearch" depends="$create_CustomerName_tok$, $create_CustomerPOCEmail_tok$, $create_CustomerPOCName_tok$, $create_LicenseSizeGB_tok$, $create_SalesEngineerEmail_tok$, $create_SalesEngineerName_tok$, $create_DataSource1_tok$, $create_UseCase1_tok$">
+    <query>
+      | inputlookup setup_lookup | append [stats count 
+      | eval CustomerName="$create_CustomerName_tok$" 
+      | eval CustomerPOCEmail="$create_CustomerPOCEmail_tok$" 
+      | eval CustomerPOCName="$create_CustomerPOCName_tok$"
+      | eval LicenseSizeGB="$create_LicenseSizeGB_tok$" 
+      | eval SalesEngineerEmail="$create_SalesEngineerEmail_tok$"
+      | eval SalesEngineerName="$create_SalesEngineerName_tok$" 
+      | eval DataSource1="$create_DataSource1_tok$" 
+      | eval DataSource2="$create_DataSource2_tok$" 
+      | eval DataSource3="$create_DataSource3_tok$"
+      | eval DataSource4="$create_DataSource4_tok$" 
+      | eval DataSource5="$create_DataSource5_tok$"  
+      | eval UseCase1="$create_UseCase1_tok$"
+      | eval UseCase2="$create_UseCase2_tok$"
+      | eval UseCase3="$create_UseCase3_tok$"
+      | eval Notes="$create_Notes_tok$" ] 
+      | table CustomerName, LicenseSizeGB, DataSource1, DataSource2, DataSource3, DataSource4, DataSource5, UseCase1, UseCase2, UseCase3, SalesEngineerName, SalesEngineerEmail, CustomerPOCName, CustomerPOCEmail, Notes
+      | outputlookup setup_lookup
+    </query>
+  </search>
+  <search id="deleteSearch" depends="$delete_key_tok$">
+    <query>
+      | inputlookup setup_lookup | eval key=_key | WHERE NOT key="$delete_key_tok$" | outputlookup setup_lookup
+    </query>
+  </search>
+  <fieldset submitButton="false"></fieldset>
+  <row>
+    <panel>
+      <html>
+        <h2>
+          <b>Welcome to the Setup Dashboard...</b>
+        </h2>
+<div class="panel conf-macro output-block" data-hasbody="true" data-macro-name="panel">
+<div class="panelContent">
+<p>Welcome <b>$env:user_realname$</b> ! This Welcome dashboard is meant to guide you in setting up your Proof of Value experience for success! You should walk through this dashboard with your Sales Engineer or an Autobahn Engineer.</p>
+<p>
+              <em>Alan Ivarson, Cloud Architect</em>
+            </p>
+</div>
+</div>
+        </html>
+    </panel>
+    <panel>
+      <html>
+                <!-- Set the $show_docs$ token when the link is clicked -->
+                <a href="#" class="btn-pill" data-set-token="show_docs" data-value="show">
+                    Show Resource Links
+                </a>
+                <!-- Unset the $show_docs$ token when the link is clicked -->
+                <a href="#" class="btn-pill" data-token-json="{&quot;show_docs&quot;: null}">Hide All</a>
+                <!-- Unset all tokens -->
+                <a href="#" class="btn-pill" data-token-json="{&quot;show_st_charts&quot;: null, &quot;show_size_charts&quot;: null, &quot;show_hosts_charts&quot;: null, &quot;show_events_charts&quot;: null, &quot;show_index_charts&quot;: null, &quot;show_fwd_charts&quot;: null, &quot;show_docs&quot;: null}">Reset Dashboard</a>
+      </html>
+      <html rejects="$show_docs$">
+            <p>Click on one of the links above to select which visualization to show.</p>
+        </html>
+    </panel>
+  </row>
+  <row depends="$hide$">
+    <panel>
+      <html>
+        <style>
+          <!-- Table Layout and colors-->
+          #kpi_table {
+          border-collapse: collapse;
+          width: 100%;
+          table-layout: auto;
+          }
+          
+          #kpi_table td, #kpi_table th {
+            border: 1px solid #ddd;
+            padding: 8px;
+          }
+          
+          #kpi_table tr:nth-child(even){background-color: #f2f2f2;}
+          
+          #kpi_table tr:hover {background-color: #ddd;}
+          
+          #kpi_table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;}
+            
+            #splk_banner {
+              opacity: 1 !important;
+              background: linear-gradient(80deg, #E90080 14%, #de0275 14% 22%, #e72B56 22% 25%, #de0275 50%, #f14d42 90%, #f05939 90% 93%,  #F4891a 93.1%);
+              color: white !important;              
+              text-align: center;              
+              line-height: 120px;              
+              font-size: 80px;              
+              padding: 1px;              
+              height: 120px;
+              }
+              
+             <!-- Input form width--> 
+            #CSSPanel{
+             width:0% !important;
+              }
+             
+            #inputCollectionPanel {
+              width: 70% !important;
+              }
+              
+            #inputFormPanel {
+              width: 30% !important;
+              }
+              
+            .panel-title{
+            color:#65A637 !important;
+            font-weight: bold !important;
+            
+        </style>
+      </html>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$show_docs$">
+      <html>
+        <p>
+          <b> Resources:</b>
+        </p>
+        <ul>
+        <li>
+            <a href="https://events.splunk.com/webinar-autobahn">Take the Fast Lane to Cloud with Splunk Autobahn Webinar</a>
+          </li>
+          <li>
+            <a href="https://docs.splunk.com/Documentation/SplunkCloud/latest/Data/Whysourcetypesmatter">Splunk Docs - Why Sourcetypes matter</a>
+          </li>
+                    <li>
+            <a href="https://lantern.splunk.com/hc/en-us/categories/360003668094-Use-Case-Library">Splunk Use Case Library</a>
+          </li>
+          <p/>
+          </ul>
+     </html>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <html>
+    <h1 id="splk_banner">SETUP</h1>
+</html>
+    </panel>
+  </row>
+  <!-- Customer Inputs -->
+  <row>
+    <panel>
+      <title>&gt; 1. Customer Name: $CustomerName$</title>
+      <input type="text" token="CustomerName" searchWhenChanged="true">
+        <label>Enter Customer Name</label>
+        <initialValue>$CustomerName$</initialValue>
+      </input>
+    </panel>
+    <panel>
+      <title>&gt; 2. Manually Add Current License</title>
+      <input type="dropdown" token="LicenseSizeGB" searchWhenChanged="true">
+        <label>Splunk Core in GB *</label>
+        <fieldForLabel>LicenseSizeGB</fieldForLabel>
+        <fieldForValue>license_core</fieldForValue>
+        <search>
+          <query>| inputlookup core_license.csv | fields license_core</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <choice value="0">0</choice>
+        <default>0</default>
+        <initialValue>0</initialValue>
+      </input>
+    </panel>
+        <panel>
+      <title>&gt; 3. Customer Point of Contact Info:</title>
+      <input type="text" token="CustomerPOCName" searchWhenChanged="true">
+        <label>Enter Customer Point of Contact Name</label>
+        <initialValue>$CustomerPOCName$</initialValue>
+      </input>
+      <input type="text" token="CustomerPOCEmail" searchWhenChanged="true">
+        <label>Enter Customer Point of Contact Email</label>
+        <initialValue>$CustomerPOCEmail$</initialValue>
+      </input>
+    </panel>
+  </row>
+<!-- For testing, will remove later. Show results in KVstore to validate inputs are working properly -->
+  <row>
+    <panel id="inputCollectionPanel">
+      <table id="inputCollectionTable">
+        <title>CRUD for Setup Dashboard</title>
+        <search id="inputCollectionSearch">
+          <query>| inputlookup setup_lookup
+| eval Update="Update" 
+| eval Delete="Delete" 
+| table *, Update, Delete</query>
+          <earliest>0</earliest>
+          <latest></latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">true</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+    <panel id="inputFormPanel">
+      <title>Input and Update Form</title>
+      <html>
+        <form>
+          <div>
+          	<label for="CustomerName">Customer Name</label>
+          	<input style="width: 95%" type="text" name="CustomerName"/>
+          </div>
+          <div>
+          	<label for="LicenseSizeGB">License Size (GB)</label>
+          	<input style="width: 95%" name="LicenseSizeGB"/>
+          </div>
+          <div>
+          	<label for="CustomerPOCName">Customer Point of Contact Name</label>
+          	<input style="width: 95%" type="text" name="CustomerPOCName"/>
+          </div>
+          <div>
+          	<label for="CustomerPOCEmail">Customer Point of Contact Email</label>
+            <input style="width: 95%" type="text" name="CustomerPOCEmail"/>
+          </div>
+          <div>
+          	<label for="SalesEngineerName">Sales Engineer Name</label>
+          	<input style="width: 95%" type="text" name="SalesEngineerName"/>
+          </div>
+          <div>
+          	<label for="SalesEngineerEmail">Sales Engineer Email</label>
+            <input style="width: 95%" type="text" name="SalesEngineerEmail"/>
+          </div>
+          <div>
+          	<label for="UseCase1">Use Case #1</label>
+          	<input style="width: 95%" type="text" name="UseCase1"/>
+          </div>
+          <div>
+          	<label for="UseCase2">Use Case #2</label>
+          	<input style="width: 95%" type="text" name="UseCase2"/>
+          </div>
+          <div>
+          	<label for="UseCase3">Use Case #3</label>
+          	<input style="width: 95%" type="text" name="UseCase3"/>
+          </div>
+          <div>
+          	<label for="DataSource1">Data Source #1</label>
+          	<input style="width: 95%" type="text" name="DataSource1"/>
+          </div>
+          <div>
+          	<label for="DataSource2">Data Source #2</label>
+          	<input style="width: 95%" type="text" name="DataSource2"/>
+          </div>
+          <div>
+          	<label for="DataSource3">Data Source #3</label>
+          	<input style="width: 95%" type="text" name="DataSource3"/>
+          </div>
+          <div>
+          	<label for="DataSource4">Data Source #4</label>
+          	<input style="width: 95%" type="text" name="DataSource4"/>
+          </div>
+          <div>
+          	<label for="DataSource5">Data Source #5</label>
+          	<input style="width: 95%" type="text" name="DataSource5"/>
+          </div>
+          <div>
+          	<label for="Notes">Notes</label>
+          	<textarea style="width: 95%" name="Notes" rows="5"/>
+          </div>
+          <input type="hidden" name="_key"/>
+          <div>
+            <button id="submitButton">Submit</button>
+          </div>
+        </form>
+      </html>
+    </panel>
+  </row>
+</form>
