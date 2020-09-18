@@ -49,6 +49,30 @@
       | inputlookup setup_lookup | eval key=_key | WHERE NOT key="$delete_key_tok$" | outputlookup setup_lookup
     </query>
   </search>
+  <search id="createSearchPanels" depends="$CustomerName$, $CustomerPOCEmail$, $CustomerPOCName$, $LicenseSizeGB$, $SalesEngineerEmail$, $SalesEngineerName$, $DataSource$, $UseCase$">
+    <query>
+      | inputlookup setup_lookup | append [stats count 
+      | eval CustomerName="Who this?" 
+      | eval CustomerPOCEmail="$CustomerPOCEmail$" 
+      | eval CustomerPOCName="$CustomerPOCName$"
+      | eval LicenseSizeGB="$LicenseSizeGB$" 
+      | eval SalesEngineerEmail="$SalesEngineerEmail$"
+      | eval SalesEngineerName="$SalesEngineerName$" 
+      | eval DataSource1="$DataSource1$" 
+      | eval DataSource2="$DataSource2$" 
+      | eval DataSource3="$DataSource3$"
+      | eval DataSource4="$DataSource4$" 
+      | eval DataSource5="$DataSource5$"  
+      | eval UseCase1="$UseCase1$"
+      | eval UseCase2="$UseCase2$"
+      | eval UseCase3="$UseCase3$"
+      | eval Notes="$AutobahnLane$"
+      | eval CreatedTime=now() 
+      | convert ctime(CreatedTime) ] 
+      | table CreatedTime, CustomerName, LicenseSizeGB, DataSource1, DataSource2, DataSource3, DataSource4, DataSource5, UseCase1, UseCase2, UseCase3, SalesEngineerName, SalesEngineerEmail, CustomerPOCName, CustomerPOCEmail, AutobahnLane
+      | outputlookup setup_lookup
+    </query>
+  </search>
   <!-- Welcome Message to the Dashboard -->
   <!-- For testing, will remove later. Show results in KVstore to validate inputs are working properly -->
   <!--creates a hidden HTML row and panel in order to create an inline style sheet-->
@@ -200,16 +224,14 @@
     <panel>
       <title>3. Customer Point of Contact Info:</title>
       <input type="text" token="CustomerPOCName" searchWhenChanged="true">
-        <label>Enter Customer Point of Contact Name</label>
+        <label>Customer Point of Contact Name</label>
         <initialValue>$CustomerPOCName$</initialValue>
       </input>
       <input type="text" token="CustomerPOCEmail" searchWhenChanged="true">
-        <label>Enter Customer Point of Contact Email</label>
+        <label>Customer Point of Contact Email</label>
         <initialValue>$CustomerPOCEmail$</initialValue>
       </input>
     </panel>
-  </row>
-  <row>
     <panel>
       <title>4. Sales Engineer Contact Info:</title>
       <input type="text" token="SalesEngineerName" searchWhenChanged="true">
@@ -221,6 +243,8 @@
         <initialValue>$SalesEngineerEmail$</initialValue>
       </input>
     </panel>
+  </row>
+  <row>
     <panel>
       <title>5. POC Type (Autobahn or Custom):</title>
       <input type="text" token="AutobahnLane" searchWhenChanged="true">
