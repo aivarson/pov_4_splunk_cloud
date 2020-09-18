@@ -1,5 +1,6 @@
 <nav search_view="search">
   <view name="setup" default='true'/>
+  <view name="setup_testing" />
   <view name="crud_testing" />
   <view name="gdi"/>
   <view name="engagement"/>

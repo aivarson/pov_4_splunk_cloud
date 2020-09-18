@@ -1,0 +1,169 @@
+<dashboard script="crud.js">
+  <label>CRUD Testing</label>
+  <search id="updateSearch" depends="$update_key_tok$, 
+$update_CustomerName_tok$, $update_CustomerPOCEmail_tok$, $update_CustomerPOCName_tok$, $update_LicenseSizeGB_tok$, 
+$update_SalesEngineerEmail_tok$, $update_SalesEngineerName_tok$, $update_DataSource1_tok$, $update_DataSource2_tok$,
+$update_DataSource3_tok$, $update_DataSource4_tok$, $update_DataSource5_tok$, $update_UseCase1_tok$,$update_UseCase2_tok$,
+$update_UseCase3_tok$">
+    <query>
+      | inputlookup setup_lookup | eval key=_key | WHERE key="$update_key_tok$" 
+      | eval CustomerName="$update_CustomerName_tok$" 
+      | eval CustomerPOCEmail="$update_CustomerPOCEmail_tok$" 
+      | eval CustomerPOCName="$update_CustomerPOCName_tok$"
+      | eval LicenseSizeGB="$update_LicenseSizeGB_tok$" 
+      | eval SalesEngineerEmail="$update_SalesEngineerEmail_tok$"
+      | eval SalesEngineerName="$update_SalesEngineerName_tok$" 
+      | eval DataSource1="$update_DataSource1_tok$" 
+      | eval DataSource2="$update_DataSource2_tok$" 
+      | eval DataSource3="$update_DataSource3_tok$"
+      | eval DataSource4="$update_DataSource4_tok$" 
+      | eval DataSource5="$update_DataSource5_tok$"  
+      | eval UseCase1="$update_UseCase1_tok$"
+      | eval UseCase2="$update_UseCase2_tok$"
+      | eval UseCase3="$update_UseCase3_tok$"
+      | eval AutobahnLane="$update_AutobahnLane_tok$"
+      | outputlookup setup_lookup append=t
+    </query>  
+  </search>
+  <search id="createSearch" depends="$create_CustomerName_tok$, $create_CustomerPOCEmail_tok$, $create_CustomerPOCName_tok$, $create_LicenseSizeGB_tok$, $create_SalesEngineerEmail_tok$, $create_SalesEngineerName_tok$, $create_DataSource1_tok$, $create_UseCase1_tok$">
+    <query>
+      | inputlookup setup_lookup | append [stats count 
+      | eval CustomerName="$create_CustomerName_tok$" 
+      | eval CustomerPOCEmail="$create_CustomerPOCEmail_tok$" 
+      | eval CustomerPOCName="$create_CustomerPOCName_tok$"
+      | eval LicenseSizeGB="$create_LicenseSizeGB_tok$" 
+      | eval SalesEngineerEmail="$create_SalesEngineerEmail_tok$"
+      | eval SalesEngineerName="$create_SalesEngineerName_tok$" 
+      | eval DataSource1="$create_DataSource1_tok$" 
+      | eval DataSource2="$create_DataSource2_tok$" 
+      | eval DataSource3="$create_DataSource3_tok$"
+      | eval DataSource4="$create_DataSource4_tok$" 
+      | eval DataSource5="$create_DataSource5_tok$"  
+      | eval UseCase1="$create_UseCase1_tok$"
+      | eval UseCase2="$create_UseCase2_tok$"
+      | eval UseCase3="$create_UseCase3_tok$"
+      | eval AutobahnLane="$create_AutobahnLane_tok$" ] 
+      | table CustomerName, LicenseSizeGB, DataSource1, DataSource2, DataSource3, DataSource4, DataSource5, UseCase1, UseCase2, UseCase3, SalesEngineerName, SalesEngineerEmail, CustomerPOCName, CustomerPOCEmail, AutobahnLane
+      | outputlookup setup_lookup
+    </query>  
+  </search>
+  <search id="deleteSearch" depends="$delete_key_tok$">
+    <query>
+      | inputlookup setup_lookup | eval key=_key | WHERE NOT key="$delete_key_tok$" | outputlookup setup_lookup
+    </query>
+  </search>
+  <row depends="$hide$" id="CSSPanel">
+    <panel>
+      <html>
+        <style>
+             <!-- Input form width--> 
+            #CSSPanel{
+             width:0% !important;
+           }
+             
+            #inputCollectionPanel {
+              width:70% !important;
+              }
+              
+            #inputFormPanel {
+              width:30% !important;
+              }
+            
+        </style>
+      </html>
+    </panel>
+  </row>
+  <row>
+    <panel id="inputCollectionPanel">
+      <table id="inputCollectionTable">
+        <title>CRUD for Setup Dashboard</title>
+        <search id="inputCollectionSearch">
+          <query>| inputlookup setup_lookup
+| eval Update="Update" 
+| eval Delete="Delete" 
+| table *, Update, Delete</query>
+          <earliest>0</earliest>
+          <latest></latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">true</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+    <panel id="inputFormPanel">
+      <title>Input and Update Form</title>
+      <html>
+        <form>
+          <div>
+          	<label for="CustomerName">Customer Name</label>
+          	<input style="width: 95%" type="text" name="CustomerName"/>
+          </div>
+          <div>
+          	<label for="LicenseSizeGB">License Size (GB)</label>
+          	<input style="width: 95%" name="LicenseSizeGB"/>
+          </div>
+          <div>
+          	<label for="CustomerPOCName">Customer Point of Contact Name</label>
+          	<input style="width: 95%" type="text" name="CustomerPOCName"/>
+          </div>
+          <div>
+          	<label for="CustomerPOCEmail">Customer Point of Contact Email</label>
+            <input style="width: 95%" type="text" name="CustomerPOCEmail"/>
+          </div>
+          <div>
+          	<label for="SalesEngineerName">Sales Engineer Name</label>
+          	<input style="width: 95%" type="text" name="SalesEngineerName"/>
+          </div>
+          <div>
+          	<label for="SalesEngineerEmail">Sales Engineer Email</label>
+            <input style="width: 95%" type="text" name="SalesEngineerEmail"/>
+          </div>
+          <div>
+          	<label for="UseCase1">Use Case #1</label>
+          	<input style="width: 95%" type="text" name="UseCase1"/>
+          </div>
+          <div>
+          	<label for="UseCase2">Use Case #2</label>
+          	<input style="width: 95%" type="text" name="UseCase2"/>
+          </div>
+          <div>
+          	<label for="UseCase3">Use Case #3</label>
+          	<input style="width: 95%" type="text" name="UseCase3"/>
+          </div>
+          <div>
+          	<label for="DataSource1">Data Source #1</label>
+          	<input style="width: 95%" type="text" name="DataSource1"/>
+          </div>
+          <div>
+          	<label for="DataSource2">Data Source #2</label>
+          	<input style="width: 95%" type="text" name="DataSource2"/>
+          </div>
+          <div>
+          	<label for="DataSource3">Data Source #3</label>
+          	<input style="width: 95%" type="text" name="DataSource3"/>
+          </div>
+          <div>
+          	<label for="DataSource4">Data Source #4</label>
+          	<input style="width: 95%" type="text" name="DataSource4"/>
+          </div>
+          <div>
+          	<label for="DataSource5">Data Source #5</label>
+          	<input style="width: 95%" type="text" name="DataSource5"/>
+          </div>
+          <div>
+          	<label for="AutobahnLane">AutobahnLane</label>
+          	<textarea style="width: 95%" name="AutobahnLane" rows="5"/>
+          </div>
+          <input type="hidden" name="_key"/>
+          <div>
+            <button id="submitButton">Submit</button>
+          </div>
+        </form>
+      </html>
+    </panel>
+  </row>
+</dashboard>

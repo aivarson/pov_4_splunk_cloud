@@ -1,5 +1,5 @@
 <form theme="light" script="tokenlinks.js,crud.js">
-  <label>Setup</label>
+  <label>Setup Testing</label>
   <!-- Base and Hidden Searches -->
   <search id="updateSearch" depends="$update_key_tok$,  $update_CustomerName_tok$, $update_CustomerPOCEmail_tok$, $update_CustomerPOCName_tok$, $update_LicenseSizeGB_tok$,  $update_SalesEngineerEmail_tok$, $update_SalesEngineerName_tok$, $update_DataSource1_tok$, $update_DataSource2_tok$, $update_DataSource3_tok$, $update_DataSource4_tok$, $update_DataSource5_tok$, $update_UseCase1_tok$,$update_UseCase2_tok$, $update_UseCase3_tok$">
     <query>
@@ -18,7 +18,7 @@
       | eval UseCase1="$update_UseCase1_tok$"
       | eval UseCase2="$update_UseCase2_tok$"
       | eval UseCase3="$update_UseCase3_tok$"
-      | eval AutobahnLane="$update_AutobahnLane_tok$"
+      | eval Notes="$update_Notes_tok$"
       | outputlookup setup_lookup append=t
     </query>
   </search>
@@ -39,8 +39,8 @@
       | eval UseCase1="$create_UseCase1_tok$"
       | eval UseCase2="$create_UseCase2_tok$"
       | eval UseCase3="$create_UseCase3_tok$"
-      | eval AutobahnLane="$create_AutobahnLane_tok$" ] 
-      | table CustomerName, LicenseSizeGB, DataSource1, DataSource2, DataSource3, DataSource4, DataSource5, UseCase1, UseCase2, UseCase3, SalesEngineerName, SalesEngineerEmail, CustomerPOCName, CustomerPOCEmail, AutobahnLane
+      | eval Notes="$create_Notes_tok$" ] 
+      | table CustomerName, LicenseSizeGB, DataSource1, DataSource2, DataSource3, DataSource4, DataSource5, UseCase1, UseCase2, UseCase3, SalesEngineerName, SalesEngineerEmail, CustomerPOCName, CustomerPOCEmail, Notes
       | outputlookup setup_lookup
     </query>
   </search>
@@ -48,26 +48,6 @@
     <query>
       | inputlookup setup_lookup | eval key=_key | WHERE NOT key="$delete_key_tok$" | outputlookup setup_lookup
     </query>
-  </search>
-  <search>
-    <query>| makeresults
-          | eval CustomerName="$CustomerName$"
-          | eval CustomerPOCEmail="$CustomerPOCEmail$" 
-          | eval CustomerPOCName="$CustomerPOCName$"
-          | eval LicenseSizeGB="$LicenseSizeGB$" 
-          | eval SalesEngineerEmail="$SalesEngineerEmail$"
-          | eval SalesEngineerName="$SalesEngineerName$" 
-          | eval DataSource1="$DataSource1$" 
-          | eval DataSource2="$DataSource2$" 
-          | eval DataSource3="$DataSource3$"
-          | eval DataSource4="$DataSource4$" 
-          | eval DataSource5="$DataSource5$"  
-          | eval UseCase1="$UseCase1$"
-          | eval UseCase2="$UseCase2$"
-          | eval UseCase3="$UseCase3$"
-          | eval AutobahnLane="$AutobahnLane$"
-          | table CustomerName, LicenseSizeGB, DataSource1, DataSource2, DataSource3, DataSource4, DataSource5, UseCase1, UseCase2, UseCase3, SalesEngineerName, SalesEngineerEmail, CustomerPOCName, CustomerPOCEmail, AutobahnLane
-          | outputlookup setup_lookup</query>
   </search>
   <!-- Welcome Message to the Dashboard -->
   <!-- For testing, will remove later. Show results in KVstore to validate inputs are working properly -->
@@ -245,7 +225,7 @@
       <title>5. POC Type (Autobahn or Custom):</title>
       <input type="text" token="AutobahnLane" searchWhenChanged="true">
         <label>Select POC Type</label>
-        <initialValue>$AutobahnLane$</initialValue>
+        <initialValue>$AutobhanLane$</initialValue>
       </input>
     </panel>
     <panel>
@@ -283,11 +263,18 @@
 | eval LicenseSizeGB="$LicenseSizeGB$"
 | eval SalesEngineerEmail="$SalesEngineerEmail$"
 | eval SalesEngineerName="$SalesEngineerName$"
-| eval AutobahnLane="$AutobahnLane$"
-| table CustomerName, LicenseSizeGB, CustomerPOCName, CustomerPOCEmail, SalesEngineerName, SalesEngineerEmail, AutobahnLane, UseCase1, UseCase2, UseCase3, DataSource1, DataSource2, DataSource3, DataSource4, DataSource5
-</query>
-          <earliest>0</earliest>
-          <latest></latest>
+| eval DataSource1="$DataSource1$"
+| eval DataSource2="$DataSource2$"
+| eval DataSource3="$DataSource3$"
+| eval DataSource4="$DataSource4$"
+| eval DataSource5="$DataSource5$"
+| eval UseCase1="$UseCase1$"
+| eval UseCase2="$UseCase2$"
+| eval UseCase3="$UseCase3$"
+| eval Notes="$Notes$"
+| table CustomerName, LicenseSizeGB, CustomerPOCName, CustomerPOCEmail, SalesEngineerName, SalesEngineerEmail, UseCase1, UseCase2, UseCase3, DataSource1, DataSource2, DataSource3, DataSource4, DataSource5, Notes</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
         </search>
         <option name="drilldown">none</option>
         <option name="refresh.display">progressbar</option>
@@ -376,8 +363,8 @@
           	<input style="width: 95%" type="text" name="DataSource5"/>
           </div>
           <div>
-          	<label for="AutobahnLane">AutobahnLane</label>
-          	<textarea style="width: 95%" name="AutobahnLane" rows="5"/>
+          	<label for="Notes">Notes</label>
+          	<textarea style="width: 95%" name="Notes" rows="5"/>
           </div>
           <input type="hidden" name="_key"/>
           <div>
