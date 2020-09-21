@@ -1,75 +1,26 @@
 <form theme="light" script="tokenlinks.js,crud.js">
   <label>Setup Testing</label>
   <!-- Base and Hidden Searches -->
-  <search id="updateSearch" depends="$update_key_tok$,  $update_CustomerName_tok$, $update_CustomerPOCEmail_tok$, $update_CustomerPOCName_tok$, $update_LicenseSizeGB_tok$,  $update_SalesEngineerEmail_tok$, $update_SalesEngineerName_tok$, $update_DataSource1_tok$, $update_DataSource2_tok$, $update_DataSource3_tok$, $update_DataSource4_tok$, $update_DataSource5_tok$, $update_UseCase1_tok$,$update_UseCase2_tok$, $update_UseCase3_tok$">
-    <query>
-      | inputlookup setup_lookup | eval key=_key | WHERE key="$update_key_tok$" 
-      | eval CustomerName="$update_CustomerName_tok$" 
-      | eval CustomerPOCEmail="$update_CustomerPOCEmail_tok$" 
-      | eval CustomerPOCName="$update_CustomerPOCName_tok$"
-      | eval LicenseSizeGB="$update_LicenseSizeGB_tok$" 
-      | eval SalesEngineerEmail="$update_SalesEngineerEmail_tok$"
-      | eval SalesEngineerName="$update_SalesEngineerName_tok$" 
-      | eval DataSource1="$update_DataSource1_tok$" 
-      | eval DataSource2="$update_DataSource2_tok$" 
-      | eval DataSource3="$update_DataSource3_tok$"
-      | eval DataSource4="$update_DataSource4_tok$" 
-      | eval DataSource5="$update_DataSource5_tok$"  
-      | eval UseCase1="$update_UseCase1_tok$"
-      | eval UseCase2="$update_UseCase2_tok$"
-      | eval UseCase3="$update_UseCase3_tok$"
-      | eval Notes="$update_Notes_tok$"
-      | outputlookup setup_lookup append=t
-    </query>
-  </search>
-  <search id="createSearch" depends="$create_CustomerName_tok$, $create_CustomerPOCEmail_tok$, $create_CustomerPOCName_tok$, $create_LicenseSizeGB_tok$, $create_SalesEngineerEmail_tok$, $create_SalesEngineerName_tok$, $create_DataSource1_tok$, $create_UseCase1_tok$">
-    <query>
-      | inputlookup setup_lookup | append [stats count 
-      | eval CustomerName="$create_CustomerName_tok$" 
-      | eval CustomerPOCEmail="$create_CustomerPOCEmail_tok$" 
-      | eval CustomerPOCName="$create_CustomerPOCName_tok$"
-      | eval LicenseSizeGB="$create_LicenseSizeGB_tok$" 
-      | eval SalesEngineerEmail="$create_SalesEngineerEmail_tok$"
-      | eval SalesEngineerName="$create_SalesEngineerName_tok$" 
-      | eval DataSource1="$create_DataSource1_tok$" 
-      | eval DataSource2="$create_DataSource2_tok$" 
-      | eval DataSource3="$create_DataSource3_tok$"
-      | eval DataSource4="$create_DataSource4_tok$" 
-      | eval DataSource5="$create_DataSource5_tok$"  
-      | eval UseCase1="$create_UseCase1_tok$"
-      | eval UseCase2="$create_UseCase2_tok$"
-      | eval UseCase3="$create_UseCase3_tok$"
-      | eval Notes="$create_Notes_tok$" ] 
-      | table CustomerName, LicenseSizeGB, DataSource1, DataSource2, DataSource3, DataSource4, DataSource5, UseCase1, UseCase2, UseCase3, SalesEngineerName, SalesEngineerEmail, CustomerPOCName, CustomerPOCEmail, Notes
-      | outputlookup setup_lookup
-    </query>
-  </search>
   <search id="deleteSearch" depends="$delete_key_tok$">
     <query>
       | inputlookup setup_lookup | eval key=_key | WHERE NOT key="$delete_key_tok$" | outputlookup setup_lookup
     </query>
   </search>
-  <search id="createSearchPanels" depends="$CustomerName$, $CustomerPOCEmail$, $CustomerPOCName$, $LicenseSizeGB$, $SalesEngineerEmail$, $SalesEngineerName$, $DataSource$, $UseCase$">
+  <search id="createSearchPanels" depends="$CustomerName$, $CustomerPOCEmail$, $CustomerPOCName$, $LicenseSizeGB$, $SalesEngineerEmail$, $SalesEngineerName$, $DataSources$, $UseCases$">
     <query>
       | inputlookup setup_lookup | append [stats count 
-      | eval CustomerName="Who this?" 
+      | eval CustomerName="$CustomerName$" 
       | eval CustomerPOCEmail="$CustomerPOCEmail$" 
       | eval CustomerPOCName="$CustomerPOCName$"
       | eval LicenseSizeGB="$LicenseSizeGB$" 
       | eval SalesEngineerEmail="$SalesEngineerEmail$"
-      | eval SalesEngineerName="$SalesEngineerName$" 
-      | eval DataSource1="$DataSource1$" 
-      | eval DataSource2="$DataSource2$" 
-      | eval DataSource3="$DataSource3$"
-      | eval DataSource4="$DataSource4$" 
-      | eval DataSource5="$DataSource5$"  
-      | eval UseCase1="$UseCase1$"
-      | eval UseCase2="$UseCase2$"
-      | eval UseCase3="$UseCase3$"
+      | eval SalesEngineerName="$SalesEngineerName$"
+      | eval DataSources="$DataSources$"
+      | eval UseCases="$UseCases$"
       | eval Notes="$AutobahnLane$"
       | eval CreatedTime=now() 
       | convert ctime(CreatedTime) ] 
-      | table CreatedTime, CustomerName, LicenseSizeGB, DataSource1, DataSource2, DataSource3, DataSource4, DataSource5, UseCase1, UseCase2, UseCase3, SalesEngineerName, SalesEngineerEmail, CustomerPOCName, CustomerPOCEmail, AutobahnLane
+      | table CreatedTime, CustomerName, LicenseSizeGB, UseCases, DataSources, SalesEngineerName, SalesEngineerEmail, CustomerPOCName, CustomerPOCEmail, AutobahnLane
       | outputlookup setup_lookup
     </query>
   </search>
@@ -154,11 +105,11 @@
               }
              
             #inputCollectionPanel {
-              width: 70% !important;
+              width: 100% !important;
               }
               
             #inputFormPanel {
-              width: 30% !important;
+              width: 0% !important;
               }
               
             .panel-title{
@@ -254,9 +205,9 @@
     </panel>
     <panel>
       <title>6. Use Case Info:</title>
-      <input type="multiselect" token="UseCase" searchWhenChanged="true">
+      <input type="multiselect" token="UseCases" searchWhenChanged="true">
         <label>Select Use Case(s):</label>
-        <initialValue>$UseCase$</initialValue>
+        <initialValue>$UseCases$</initialValue>
         <choice value="AWS Monitoring">AWS Monitoring</choice>
         <choice value="Brute Force">Brute Force</choice>
         <choice value="Example Use Case 3">Example Use Case 3</choice>
@@ -265,12 +216,12 @@
     </panel>
     <panel>
       <title>7. Data Source Info:</title>
-      <input type="multiselect" token="DataSource" searchWhenChanged="true">
+      <input type="multiselect" token="DataSources" searchWhenChanged="true">
         <label>Select Data Source(s):</label>
-        <initialValue>$DataSource$</initialValue>
-        <choice value="aws:vpcflowlogs">AWS Monitoring</choice>
-        <choice value="wineventlog:security">Brute Force</choice>
-        <choice value="panlog">Example Use Case 3</choice>
+        <initialValue>$DataSources$</initialValue>
+        <choice value="aws:vpcflowlogs">aws:vpcflowlogs</choice>
+        <choice value="wineventlog:security">wineventlog:security</choice>
+        <choice value="pan:log">pan:log</choice>
         <delimiter>,</delimiter>
       </input>
     </panel>
@@ -287,16 +238,12 @@
 | eval LicenseSizeGB="$LicenseSizeGB$"
 | eval SalesEngineerEmail="$SalesEngineerEmail$"
 | eval SalesEngineerName="$SalesEngineerName$"
-| eval DataSource1="$DataSource1$"
-| eval DataSource2="$DataSource2$"
-| eval DataSource3="$DataSource3$"
-| eval DataSource4="$DataSource4$"
-| eval DataSource5="$DataSource5$"
-| eval UseCase1="$UseCase1$"
-| eval UseCase2="$UseCase2$"
-| eval UseCase3="$UseCase3$"
-| eval Notes="$Notes$"
-| table CustomerName, LicenseSizeGB, CustomerPOCName, CustomerPOCEmail, SalesEngineerName, SalesEngineerEmail, UseCase1, UseCase2, UseCase3, DataSource1, DataSource2, DataSource3, DataSource4, DataSource5, Notes</query>
+| eval AutobahnLane="$AutobahnLane$"
+| eval DataSources="$DataSources$"
+| eval UseCases="$UseCases$"
+| eval CreatedTime=now() 
+| convert ctime(CreatedTime) 
+| table CreatedTime, CustomerName, LicenseSizeGB, UseCases, DataSources, SalesEngineerName, SalesEngineerEmail, CustomerPOCName, CustomerPOCEmail, AutobahnLane</query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
         </search>
@@ -311,7 +258,6 @@
         <title>CRUD for Setup Dashboard</title>
         <search id="inputCollectionSearch">
           <query>| inputlookup setup_lookup
-| eval Update="Update" 
 | eval Delete="Delete" 
 | table *, Update, Delete</query>
           <earliest>0</earliest>
@@ -325,77 +271,6 @@
         <option name="rowNumbers">true</option>
         <option name="wrap">true</option>
       </table>
-    </panel>
-    <panel id="inputFormPanel">
-      <title>Input and Update Form</title>
-      <html>
-        <form>
-          <div>
-          	<label for="CustomerName">Customer Name</label>
-          	<input style="width: 95%" type="text" name="CustomerName"/>
-          </div>
-          <div>
-          	<label for="LicenseSizeGB">License Size (GB)</label>
-          	<input style="width: 95%" name="LicenseSizeGB"/>
-          </div>
-          <div>
-          	<label for="CustomerPOCName">Customer Point of Contact Name</label>
-          	<input style="width: 95%" type="text" name="CustomerPOCName"/>
-          </div>
-          <div>
-          	<label for="CustomerPOCEmail">Customer Point of Contact Email</label>
-            <input style="width: 95%" type="text" name="CustomerPOCEmail"/>
-          </div>
-          <div>
-          	<label for="SalesEngineerName">Sales Engineer Name</label>
-          	<input style="width: 95%" type="text" name="SalesEngineerName"/>
-          </div>
-          <div>
-          	<label for="SalesEngineerEmail">Sales Engineer Email</label>
-            <input style="width: 95%" type="text" name="SalesEngineerEmail"/>
-          </div>
-          <div>
-          	<label for="UseCase1">Use Case #1</label>
-          	<input style="width: 95%" type="text" name="UseCase1"/>
-          </div>
-          <div>
-          	<label for="UseCase2">Use Case #2</label>
-          	<input style="width: 95%" type="text" name="UseCase2"/>
-          </div>
-          <div>
-          	<label for="UseCase3">Use Case #3</label>
-          	<input style="width: 95%" type="text" name="UseCase3"/>
-          </div>
-          <div>
-          	<label for="DataSource1">Data Source #1</label>
-          	<input style="width: 95%" type="text" name="DataSource1"/>
-          </div>
-          <div>
-          	<label for="DataSource2">Data Source #2</label>
-          	<input style="width: 95%" type="text" name="DataSource2"/>
-          </div>
-          <div>
-          	<label for="DataSource3">Data Source #3</label>
-          	<input style="width: 95%" type="text" name="DataSource3"/>
-          </div>
-          <div>
-          	<label for="DataSource4">Data Source #4</label>
-          	<input style="width: 95%" type="text" name="DataSource4"/>
-          </div>
-          <div>
-          	<label for="DataSource5">Data Source #5</label>
-          	<input style="width: 95%" type="text" name="DataSource5"/>
-          </div>
-          <div>
-          	<label for="Notes">Notes</label>
-          	<textarea style="width: 95%" name="Notes" rows="5"/>
-          </div>
-          <input type="hidden" name="_key"/>
-          <div>
-            <button id="submitButton">Submit</button>
-          </div>
-        </form>
-      </html>
     </panel>
   </row>
 </form>
