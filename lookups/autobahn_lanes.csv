@@ -1,0 +1,115 @@
+﻿AutobahnPOCType,UseCases
+Enterprise Security,Access anomalies
+Enterprise Security,Access tracker
+Enterprise Security,Advanced threat detection
+Enterprise Security,Brute force activity
+Enterprise Security,Cloud file sharing activity
+Enterprise Security,Communication known bad actor
+Enterprise Security,Custom dashboard creation
+Enterprise Security,Default user account activity
+Enterprise Security,File and/or folder integrity monitoring
+Enterprise Security,Host not reporting
+Enterprise Security,Malware outbreak
+Enterprise Security,Privileged / Non-Privileged User Monitoring
+Enterprise Security,Traffic over time by action
+Security Essentials,% of hosts by start mode
+Security Essentials,% of hosts by status
+Security Essentials,All hosts with non-auto start mode
+Security Essentials,Highest entropy file names
+Security Essentials,Highest entropy file paths
+Security Essentials,Top system executables launched…
+Security Essentials,Malware running on greatest # of hosts
+Security Essentials,Hosts with the most malware
+Security Essentials,Hosts with apparent scanning activity
+Security Essentials,Top sources
+Security Essentials,Top destinations
+Security Essentials,Network blocks over time
+Security Essentials,Top dest port
+Security Essentials,Number of file uploads
+Security Essentials,Top domains browsed to
+Security Essentials,Rare domains browsed to
+Security Essentials,# of domains browsed to
+Security Essentials,Top cloud sharing apps
+Security Essentials,Rare cloud sharing apps
+Security Essentials,Hosts with greatest # of destinations
+Security Essentials,DNS traffic over time
+Security Essentials,Top high-risk apps
+Security Essentials,Number of high-risk connections
+Security Essentials,Number of high-risk apps
+Security Essentials,Top blocked categories
+Security Essentials,# of blocked connections
+Security Essentials,Ex-employee accts w/most logins
+Security Essentials,Auth sources with most usernames
+Security Essentials,Users uploading the most
+Security Essentials,Top users failing authentication
+Security Essentials,Top sources failing authentication
+Security Essentials,Failed authentications over time
+Security Essentials,Users with persistent failed auth
+Security Essentials,Top users taking privileged actions
+Security Essentials,Privileged actions over time
+Security Essentials,Top users copying files
+Security Essentials,File copies over time
+Remote Work Insignts,Remote Access VPN Security Posture
+Remote Work Insignts,Security Monitoring and Response for Authentication Logs
+Remote Work Insignts,Remote Access:  Security Posture Monitoring for MS 365 Environments
+Remote Work Insignts,Security Monitoring and Response for MS Teams
+Remote Work Insignts,Security Monitoring and Response for Webex
+Remote Work Insignts,Security Monitoring and Response for Zoom
+Remote Work Insignts,Security Posture Monitoring with Slack
+Remote Work Insignts,Unusual /Unapproved App Install (Slack)
+Remote Work Insignts,Potentially Sensitive File Shared or Channel Created (Slack)
+Remote Work Insignts,Preferences Monitoring (Slack)
+Remote Work Insignts,EKM Changes (Slack)
+IT Operations,Server Monitoring
+IT Operations,Webserver Monitoring
+IT Operations,App Server Monitoring
+IT Operations,Database Monitoring
+IT Operations,Container Monitoring
+IT Operations,App Performance Monitoring
+IT Operations,Asset Inventory
+IT Operations,Application Troubleshooting
+IT Operations,IT Service Management
+IT Operations,Platform Functionality
+Website Operations,Server Monitoring
+Website Operations,Webserver Monitoring
+Website Operations,App Server Monitoring
+Website Operations,Database Monitoring
+Website Operations,Container Monitoring
+Website Operations,App Performance Monitoring
+Website Operations,Asset Inventory
+Website Operations,Application Troubleshooting
+Website Operations,IT Service Management
+Website Operations,Platform Functionality
+IT Operations Management,Event Analytics
+Business Service Intelligence,Infrastructure Monitoring
+Business Service Intelligence,Service Monitoring with Web Tier
+Business Service Intelligence,Service Monitoring with Application Tier
+Business Service Intelligence,Service Monitoring with Database Tier
+Business Service Intelligence,Service Monitoring with Cloud (AWS)
+Business Service Intelligence,SAP Monitoring with PowerConnect©
+Medical Devices SaaS Analytics,Medical Device Tracking
+Medical Devices SaaS Analytics,"Network Visibility
+"
+Medical Devices SaaS Analytics,Network Traffic Monitoring
+Medical Devices SaaS Analytics,"Monitor Ransomware Attacks
+"
+Medical Devices SaaS Analytics,"Monitor Firewall Breaches
+"
+Medical Devices SaaS Analytics,"Catalog Medical Devices
+"
+Medical Devices SaaS Analytics,"Access Tracker
+"
+Medical Devices SaaS Analytics,"Vulnerability Assessment
+"
+Medical Devices SaaS Analytics,"Malware Outbreak
+"
+Medical Devices SaaS Analytics,"Access Anomalies
+"
+Medical Devices SaaS Analytics,Monitoring Medical Device Utilization
+Medical Devices SaaS Analytics,Custom Dashboard Creation
+AWS Monitoring,Usage
+AWS Monitoring,Security
+AWS Monitoring,Billing
+AWS Monitoring,Topology
+AWS Monitoring,Timeline
+Custom POC,Custom Use Case

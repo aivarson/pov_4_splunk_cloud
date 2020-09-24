@@ -1,0 +1,44 @@
+﻿DataSources
+Active Directory
+Amazon (AWS)
+Apache
+Blue Coat
+Box
+Bro IDS (Zeek)
+Carbon Black Bit9
+Check Point
+Check Point OPSEC
+Cisco ACS
+Cisco ASA
+Cisco IOS
+Cisco NVM
+Crowdstrike
+Cylance
+Docker
+Duo
+Forcepoint (Websense)
+Fortigate (Fortinet)
+IIS
+Java Management
+Juniper
+Kubernetes
+McAfee
+Microsoft o365
+Microsoft o365 Reporting
+Microsoft SCOM
+Nagios
+New Relic
+Nginx
+Nix TA
+Okta
+Oracle
+Palo Alto (PAN)
+Sailpoint
+Salesforce
+ServiceNow
+SolarWinds
+SQL Server
+Symantec SEP
+Windows TA
+Zoom
+Zscaler

@@ -24,6 +24,27 @@
       | outputlookup setup_lookup
     </query>
   </search>
+  <search id="updateSearch" depends="$update_key_tok$,  $update_CustomerName_tok$, $update_CustomerPOCEmail_tok$, $update_CustomerPOCName_tok$, $update_LicenseSizeGB_tok$,  $update_SalesEngineerEmail_tok$, $update_SalesEngineerName_tok$, $update_DataSource1_tok$, $update_DataSource2_tok$, $update_DataSource3_tok$, $update_DataSource4_tok$, $update_DataSource5_tok$, $update_UseCase1_tok$,$update_UseCase2_tok$, $update_UseCase3_tok$">
+    <query>
+      | inputlookup setup_lookup | eval key=_key | WHERE key="$update_key_tok$" 
+      | eval CustomerName="$update_CustomerName_tok$" 
+      | eval CustomerPOCEmail="$update_CustomerPOCEmail_tok$" 
+      | eval CustomerPOCName="$update_CustomerPOCName_tok$"
+      | eval LicenseSizeGB="$update_LicenseSizeGB_tok$" 
+      | eval SalesEngineerEmail="$update_SalesEngineerEmail_tok$"
+      | eval SalesEngineerName="$update_SalesEngineerName_tok$" 
+      | eval DataSource1="$update_DataSource1_tok$" 
+      | eval DataSource2="$update_DataSource2_tok$" 
+      | eval DataSource3="$update_DataSource3_tok$"
+      | eval DataSource4="$update_DataSource4_tok$" 
+      | eval DataSource5="$update_DataSource5_tok$"  
+      | eval UseCase1="$update_UseCase1_tok$"
+      | eval UseCase2="$update_UseCase2_tok$"
+      | eval UseCase3="$update_UseCase3_tok$"
+      | eval AutobahnLane="$update_AutobahnLane_tok$"
+      | outputlookup setup_lookup append=t
+    </query>
+  </search>
   <!-- Welcome Message to the Dashboard -->
   <!-- For testing, will remove later. Show results in KVstore to validate inputs are working properly -->
   <!--creates a hidden HTML row and panel in order to create an inline style sheet-->
@@ -115,6 +136,7 @@
             .panel-title{
             color:#65A637 !important;
             font-weight: bold !important;
+            }
             
         </style>
       </html>
@@ -150,14 +172,7 @@
   </row>
   <row>
     <panel>
-      <title>1. Customer Name: $CustomerName$</title>
-      <input type="text" token="CustomerName" searchWhenChanged="true">
-        <label>Enter Customer Name</label>
-        <initialValue>$CustomerName$</initialValue>
-      </input>
-    </panel>
-    <panel>
-      <title>2. Manually Add Current License</title>
+      <title>1. Select POC License Size</title>
       <input type="dropdown" token="LicenseSizeGB" searchWhenChanged="true">
         <label>Splunk Core in GB *</label>
         <fieldForLabel>LicenseSizeGB</fieldForLabel>
@@ -173,7 +188,7 @@
       </input>
     </panel>
     <panel>
-      <title>3. Customer Point of Contact Info:</title>
+      <title>2. Customer Point of Contact Info:</title>
       <input type="text" token="CustomerPOCName" searchWhenChanged="true">
         <label>Customer Point of Contact Name</label>
         <initialValue>$CustomerPOCName$</initialValue>
@@ -184,7 +199,7 @@
       </input>
     </panel>
     <panel>
-      <title>4. Sales Engineer Contact Info:</title>
+      <title>3. Sales Engineer Contact Info:</title>
       <input type="text" token="SalesEngineerName" searchWhenChanged="true">
         <label>Enter Sales Engineer Name</label>
         <initialValue>$SalesEngineerName$</initialValue>
@@ -197,32 +212,69 @@
   </row>
   <row>
     <panel>
-      <title>5. POC Type (Autobahn or Custom):</title>
-      <input type="text" token="AutobahnLane" searchWhenChanged="true">
+      <title>4. POC Type (Autobahn or Custom):</title>
+      <input type="dropdown" token="AutobahnLane" searchWhenChanged="true">
         <label>Select POC Type</label>
         <initialValue>$AutobhanLane$</initialValue>
+        <fieldForLabel>AutobahnPOCType</fieldForLabel>
+        <fieldForValue>AutobahnPOCType</fieldForValue>
+        <search>
+          <query>| inputlookup autobahn_lanes
+| fields AutobahnPOCType
+| dedup AutobahnPOCType
+| sort +AutobahnPOCType</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
       </input>
     </panel>
     <panel>
-      <title>6. Use Case Info:</title>
+      <title>5. Use Case Info:</title>
       <input type="multiselect" token="UseCases" searchWhenChanged="true">
-        <label>Select Use Case(s):</label>
-        <initialValue>$UseCases$</initialValue>
-        <choice value="AWS Monitoring">AWS Monitoring</choice>
-        <choice value="Brute Force">Brute Force</choice>
-        <choice value="Example Use Case 3">Example Use Case 3</choice>
+        <label>Select Up to 3 Use Case(s):</label>
         <delimiter>,</delimiter>
+        <fieldForLabel>UseCases</fieldForLabel>
+        <fieldForValue>UseCases</fieldForValue>
+        <search>
+          <query>| inputlookup autobahn_lanes
+| search AutobahnPOCType="$AutobahnLane$"
+| fields UseCases
+| sort +UseCases</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <choice value="Pick a POC Type First">Pick a POC Type First</choice>
+        <initialValue>Pick a POC Type First</initialValue>
+      </input>
+    </panel>
+    <panel depends="$customPOC$">
+      <title>6. Data Source Info:</title>
+      <input type="text" token="DataSources" searchWhenChanged="true">
+        <label>Select Up to 5 Data Source(s) (Use commas to sepaarate data sources):</label>
+        <initialValue>$DataSources$</initialValue>
+      </input>
+    </panel>
+    <panel depends="$autobahnPOC$">
+      <title>6. Data Source Info:</title>
+      <input type="multiselect" token="DataSources" searchWhenChanged="true">
+        <label>Select Up to 5 Data Source(s):</label>
+        <initialValue>$DataSources$</initialValue>
+        <delimiter>,</delimiter>
+        <fieldForLabel>DataSources</fieldForLabel>
+        <fieldForValue>DataSources</fieldForValue>
+        <search>
+          <query>| inputlookup data_sources.csv
+| fields DataSources</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
       </input>
     </panel>
     <panel>
-      <title>7. Data Source Info:</title>
-      <input type="multiselect" token="DataSources" searchWhenChanged="true">
-        <label>Select Data Source(s):</label>
-        <initialValue>$DataSources$</initialValue>
-        <choice value="aws:vpcflowlogs">aws:vpcflowlogs</choice>
-        <choice value="wineventlog:security">wineventlog:security</choice>
-        <choice value="pan:log">pan:log</choice>
-        <delimiter>,</delimiter>
+      <title>7. Customer Name: $CustomerName$</title>
+      <input type="text" token="CustomerName" searchWhenChanged="true">
+        <label>Enter Customer Name</label>
+        <initialValue>$CustomerName$</initialValue>
       </input>
     </panel>
   </row>
@@ -243,7 +295,7 @@
 | eval UseCases="$UseCases$"
 | eval CreatedTime=now() 
 | convert ctime(CreatedTime) 
-| table CreatedTime, CustomerName, LicenseSizeGB, UseCases, DataSources, SalesEngineerName, SalesEngineerEmail, CustomerPOCName, CustomerPOCEmail, AutobahnLane</query>
+| table CreatedTime, CustomerName, LicenseSizeGB, AutobahnLane, UseCases, DataSources, SalesEngineerName, SalesEngineerEmail, CustomerPOCName, CustomerPOCEmail</query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
         </search>
@@ -255,11 +307,11 @@
   <row>
     <panel id="inputCollectionPanel">
       <table id="inputCollectionTable">
-        <title>CRUD for Setup Dashboard</title>
+        <title>KV Store for setup_lookup</title>
         <search id="inputCollectionSearch">
           <query>| inputlookup setup_lookup
 | eval Delete="Delete" 
-| table *, Update, Delete</query>
+| table *, Delete</query>
           <earliest>0</earliest>
           <latest></latest>
           <sampleRatio>1</sampleRatio>
@@ -267,7 +319,6 @@
         <option name="count">10</option>
         <option name="dataOverlayMode">none</option>
         <option name="drilldown">cell</option>
-        <option name="refresh.display">progressbar</option>
         <option name="rowNumbers">true</option>
         <option name="wrap">true</option>
       </table>
