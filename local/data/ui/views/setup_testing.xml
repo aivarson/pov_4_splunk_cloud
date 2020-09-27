@@ -1,6 +1,15 @@
 <form theme="light" script="tokenlinks.js,crud.js">
   <label>Setup Testing</label>
   <!-- Base and Hidden Searches -->
+  <!-- <search id="panel6" depends="$AutobahnLane$">
+    <query>
+      | makeresults
+      | eval $customPOC$ = if($AutobahnLane$ == "Custom POC", , "Problem")
+      | eval Status=if(like(_raw, "%connected%"), 1, 0)
+      $autobahnPOC$ $customPOC$
+    </query>
+  </search> 
+  -->
   <search id="deleteSearch" depends="$delete_key_tok$">
     <query>
       | inputlookup setup_lookup | eval key=_key | WHERE NOT key="$delete_key_tok$" | outputlookup setup_lookup
@@ -17,7 +26,7 @@
       | eval SalesEngineerName="$SalesEngineerName$"
       | eval DataSources="$DataSources$"
       | eval UseCases="$UseCases$"
-      | eval Notes="$AutobahnLane$"
+      | eval AutobahnLane="$AutobahnLane$"
       | eval CreatedTime=now() 
       | convert ctime(CreatedTime) ] 
       | table CreatedTime, CustomerName, LicenseSizeGB, UseCases, DataSources, SalesEngineerName, SalesEngineerEmail, CustomerPOCName, CustomerPOCEmail, AutobahnLane
@@ -215,24 +224,73 @@
       <title>4. POC Type (Autobahn or Custom):</title>
       <input type="dropdown" token="AutobahnLane" searchWhenChanged="true">
         <label>Select POC Type</label>
-        <initialValue>$AutobhanLane$</initialValue>
+        <initialValue>$AutobahnLane$</initialValue>
         <fieldForLabel>AutobahnPOCType</fieldForLabel>
         <fieldForValue>AutobahnPOCType</fieldForValue>
         <search>
           <query>| inputlookup autobahn_lanes
-| fields AutobahnPOCType
+| fields AutobahnPOCType,AutobahnPOCNum
 | dedup AutobahnPOCType
 | sort +AutobahnPOCType</query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
         </search>
+        <change>
+          <condition value="Custom POC">
+            <set token="customPOC">"$AutobahnLane$"</set>
+            <unset token="autobahnPOC"></unset>
+          </condition>
+          <condition value="Enterprise Security">
+            <set token="autobahnPOC">"$AutobahnLane$"</set>
+            <unset token="customPOC"></unset>
+          </condition>
+          <condition value="Security Essentials">
+            <set token="autobahnPOC">"$AutobahnLane$"</set>
+            <unset token="customPOC"></unset>
+          </condition>
+          <condition value="Remote Work Insignts">
+            <set token="autobahnPOC">"$AutobahnLane$"</set>
+            <unset token="customPOC"></unset>
+          </condition>
+          <condition value="IT Operations">
+            <set token="autobahnPOC">"$AutobahnLane$"</set>
+            <unset token="customPOC"></unset>
+          </condition>
+          <condition value="Website Operations">
+            <set token="autobahnPOC">"$AutobahnLane$"</set>
+            <unset token="customPOC"></unset>
+          </condition>
+          <condition value="IT Operations Management">
+            <set token="autobahnPOC">"$AutobahnLane$"</set>
+            <unset token="customPOC"></unset>
+          </condition>
+          <condition value="Business Service Intelligence">
+            <set token="autobahnPOC">"$AutobahnLane$"</set>
+            <unset token="customPOC"></unset>
+          </condition>
+          <condition value="Medical Devices SaaS Analytics">
+            <set token="autobahnPOC">"$AutobahnLane$"</set>
+            <unset token="customPOC"></unset>
+          </condition>
+          <condition value="AWS Monitoring">
+            <set token="autobahnPOC">"$AutobahnLane$"</set>
+            <unset token="customPOC"></unset>
+          </condition>
+        </change>
       </input>
     </panel>
-    <panel>
+    <panel depends="$customPOC$">
+      <title>5. Use Case Info:</title>
+      <input type="text" token="UseCases" searchWhenChanged="true">
+        <label>Enter Up to 3 Use Case(s) (Use commas to separate data sources):</label>
+      </input>
+    </panel>
+    <panel depends="$autobahnPOC$">
       <title>5. Use Case Info:</title>
       <input type="multiselect" token="UseCases" searchWhenChanged="true">
         <label>Select Up to 3 Use Case(s):</label>
         <delimiter>,</delimiter>
+        <allowCustomValues>true</allowCustomValues>
         <fieldForLabel>UseCases</fieldForLabel>
         <fieldForValue>UseCases</fieldForValue>
         <search>
@@ -243,14 +301,12 @@
           <earliest>-24h@h</earliest>
           <latest>now</latest>
         </search>
-        <choice value="Pick a POC Type First">Pick a POC Type First</choice>
-        <initialValue>Pick a POC Type First</initialValue>
       </input>
     </panel>
     <panel depends="$customPOC$">
       <title>6. Data Source Info:</title>
       <input type="text" token="DataSources" searchWhenChanged="true">
-        <label>Select Up to 5 Data Source(s) (Use commas to sepaarate data sources):</label>
+        <label>Enter Up to 5 Data Source(s) (Use commas to separate data sources):</label>
         <initialValue>$DataSources$</initialValue>
       </input>
     </panel>
@@ -260,6 +316,7 @@
         <label>Select Up to 5 Data Source(s):</label>
         <initialValue>$DataSources$</initialValue>
         <delimiter>,</delimiter>
+        <allowCustomValues>true</allowCustomValues>
         <fieldForLabel>DataSources</fieldForLabel>
         <fieldForValue>DataSources</fieldForValue>
         <search>
@@ -276,6 +333,24 @@
         <label>Enter Customer Name</label>
         <initialValue>$CustomerName$</initialValue>
       </input>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Show $AutobahnLane$ token $customPOC$ $autobahnPOC$ $UseCases$</title>
+      <table>
+        <title>Show AutobahnLane token value</title>
+        <search>
+          <query>| makeresults
+| eval AutobahnLane = $AutobahnLane$
+| eval customPOC = $customPOC$
+| table AutobahnLane, customPOC, autobahnPOC</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
     </panel>
   </row>
   <row>
