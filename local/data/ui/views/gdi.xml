@@ -33,7 +33,7 @@
                 <!-- Unset both the $show_docs$ and $show_kpis$ token when the link is clicked -->
                 <a href="#" class="btn btn-pill" data-token-json="{&quot;show_kpis&quot;: null, &quot;show_docs&quot;: null}">Hide All</a>
                 <!-- Unset all tokens -->
-                <a href="#" class="btn btn-pill" data-token-json="{&quot;show_st_charts&quot;: null, &quot;show_size_charts&quot;: null, &quot;show_hosts_charts&quot;: null, &quot;show_events_charts&quot;: null, &quot;show_index_charts&quot;: null, &quot;show_fwd_charts&quot;: null, &quot;show_kpis&quot;: null, &quot;show_docs&quot;: null}">Reset Dashboard</a>
+                <a href="#" class="btn btn-pill" data-token-json="{&quot;show_st_charts&quot;: null, &quot;show_size_charts&quot;: null, &quot;show_hosts_charts&quot;: null, &quot;show_events_charts&quot;: null, &quot;show_index_charts&quot;: null, &quot;show_fwd_charts&quot;: null, &quot;show_kpis&quot;: null, &quot;showDataQualityPanels&quot;: null, &quot;show_docs&quot;: null}">Reset Dashboard</a>
       </html>
       <html rejects="$show_docs$, $show_kpis$">
             <p>Click on one of the links above to select which visualization to show.</p>
@@ -95,8 +95,11 @@
           <li>
             <a href="https://docs.splunk.com/Documentation/SplunkCloud/latest/Data/Howdoyouwanttoadddata">Splunk Cloud Getting Data In Docs</a>
           </li>
-                    <li>
+          <li>
             <a href="https://docs.splunk.com/Documentation/SplunkCloud/latest/User/ManageIndexes#Best_practices_for_creating_indexes">Best Practices for Creating Indexes in Splunk Cloud</a>
+          </li>
+          <li>
+          <a href="#" data-set-token="showDataQualityPanels" data-value="show">Show Data Quality Panels</a>
           </li>
           <p/>
           </ul>
@@ -161,12 +164,6 @@
               <b># of Hosts sending data</b>
             </td>
 			      <td> A default field that contains the hostname or IP address of the device that generated the event. This measures the variety of data coming into Splunk Cloud. 4 or more hosts sending data are needed to get this KPI to turn green.</td>
-		    </tr>
-		    <tr>
-            <td>
-              <b>Data Quality</b>
-            </td>
-			      <td> This KPI measures the quality of the data coming in. Garbage in, Garbage out. We are looking for things like no too_small sourcetypes, CIM data, no data in lastchanceindex, etc.</td>
 		    </tr>
         </table>
       </html>
@@ -889,6 +886,70 @@
         <option name="trellis.scales.shared">1</option>
         <option name="trellis.size">medium</option>
       </chart>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$showDataQualityPanels$">
+      <title>Data in lastchanceindex (24h)</title>
+      <table>
+        <search>
+          <query>index=lastchanceindex 
+| stats count as events by host
+| sort - events limit=10</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="rowNumbers">true</option>
+      </table>
+    </panel>
+    <panel depends="$showDataQualityPanels$">
+      <title>too_small sourcetypes (7d)</title>
+      <table>
+        <search>
+          <query>index=* sourcetype=*too_small
+| stats count(sourcetype) as events, values(sourcetype) as sourcetype by host
+| sort - events</query>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="rowNumbers">true</option>
+      </table>
+    </panel>
+    <panel depends="$showDataQualityPanels$">
+      <title>Data being throttled (30d)</title>
+      <table>
+        <search>
+          <query>index=_internal sourcetype=splunkd maxKBps limits.conf "data forwarding may be throttled"
+| stats count as throttle_messages by host
+| sort - throttle_messages</query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="rowNumbers">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$showDataQualityPanels$">
+      <title>Indexing lag (7d)</title>
+      <table>
+        <search>
+          <query>index=* 
+| eval lagSecs = _indextime - _time 
+| stats min(lagSecs) avg(lagSecs) max(lagSecs) by index, host, sourcetype, date_zone
+| sort - avg(lagSecs)</query>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="dataOverlayMode">heatmap</option>
+        <option name="drilldown">none</option>
+        <option name="rowNumbers">true</option>
+      </table>
     </panel>
   </row>
 </dashboard>
