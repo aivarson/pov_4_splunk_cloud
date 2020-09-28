@@ -1,15 +1,6 @@
 <form theme="light" script="tokenlinks.js,crud.js">
   <label>Setup Testing</label>
   <!-- Base and Hidden Searches -->
-  <!-- <search id="panel6" depends="$AutobahnLane$">
-    <query>
-      | makeresults
-      | eval $customPOC$ = if($AutobahnLane$ == "Custom POC", , "Problem")
-      | eval Status=if(like(_raw, "%connected%"), 1, 0)
-      $autobahnPOC$ $customPOC$
-    </query>
-  </search> 
-  -->
   <search id="deleteSearch" depends="$delete_key_tok$">
     <query>
       | inputlookup setup_lookup | eval key=_key | WHERE NOT key="$delete_key_tok$" | outputlookup setup_lookup
@@ -78,13 +69,13 @@
     <panel>
       <html>
                 <!-- Set the $show_docs$ token when the link is clicked -->
-                <a href="#" class="btn-pill" data-set-token="show_docs" data-value="show">
+                <a href="#" class="btn btn-pill" data-set-token="show_docs" data-value="show">
                     Show Resource Links
                 </a>
                 <!-- Unset the $show_docs$ token when the link is clicked -->
-                <a href="#" class="btn-pill" data-token-json="{&quot;show_docs&quot;: null}">Hide All</a>
+                <a href="#" class="btn btn-pill" data-token-json="{&quot;show_docs&quot;: null}">Hide All</a>
                 <!-- Unset all tokens -->
-                <a href="#" class="btn-pill" data-token-json="{&quot;show_st_charts&quot;: null, &quot;show_size_charts&quot;: null, &quot;show_hosts_charts&quot;: null, &quot;show_events_charts&quot;: null, &quot;show_index_charts&quot;: null, &quot;show_fwd_charts&quot;: null, &quot;show_docs&quot;: null}">Reset Dashboard</a>
+                <a href="#" class="btn btn-pill" data-token-json="{&quot;showKVtable&quot;: null, &quot;CustomerName&quot;: null, &quot;show_docs&quot;: null}">Reset Dashboard</a>
       </html>
       <html rejects="$show_docs$">
             <p>Click on one of the links above to select which visualization to show.</p>
@@ -166,6 +157,11 @@
           </li>
                     <li>
             <a href="https://lantern.splunk.com/hc/en-us/categories/360003668094-Use-Case-Library">Splunk Use Case Library</a>
+          </li>
+          <li>
+            <a href="#" data-set-token="showKVtable" data-value="show">
+            Show KV Store setup_lookup values
+              </a>
           </li>
           <p/>
           </ul>
@@ -336,26 +332,8 @@
     </panel>
   </row>
   <row>
-    <panel>
-      <title>Show $AutobahnLane$ token $customPOC$ $autobahnPOC$ $UseCases$</title>
-      <table>
-        <title>Show AutobahnLane token value</title>
-        <search>
-          <query>| makeresults
-| eval AutobahnLane = $AutobahnLane$
-| eval customPOC = $customPOC$
-| table AutobahnLane, customPOC, autobahnPOC</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
-        </search>
-        <option name="drilldown">none</option>
-        <option name="refresh.display">progressbar</option>
-      </table>
-    </panel>
-  </row>
-  <row>
-    <panel>
-      <title>Table showing tokens</title>
+    <panel depends="$hide_panel$">
+      <title>Summary of Values Entered</title>
       <table>
         <search>
           <query>| makeresults
@@ -380,9 +358,9 @@
     </panel>
   </row>
   <row>
-    <panel id="inputCollectionPanel">
+    <panel id="inputCollectionPanel" depends="$showKVtable$">
+      <title>KV Store for setup_lookup</title>
       <table id="inputCollectionTable">
-        <title>KV Store for setup_lookup</title>
         <search id="inputCollectionSearch">
           <query>| inputlookup setup_lookup
 | eval Delete="Delete" 
@@ -390,10 +368,13 @@
           <earliest>0</earliest>
           <latest></latest>
           <sampleRatio>1</sampleRatio>
+          <refresh>30s</refresh>
+          <refreshType>delay</refreshType>
         </search>
         <option name="count">10</option>
         <option name="dataOverlayMode">none</option>
         <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
         <option name="rowNumbers">true</option>
         <option name="wrap">true</option>
       </table>
