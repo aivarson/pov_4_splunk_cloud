@@ -951,5 +951,21 @@
         <option name="rowNumbers">true</option>
       </table>
     </panel>
+    <panel depends="$showDataQualityPanels$">
+      <title>Forwarder and Sourcetype lag (24h)</title>
+      <table>
+        <search>
+          <query>index=* 
+| eval lagSecs = _indextime - _time 
+| stats min(lagSecs) avg(lagSecs) max(lagSecs) by index, host, sourcetype, date_zone
+| sort - avg(lagSecs)</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="dataOverlayMode">heatmap</option>
+        <option name="drilldown">none</option>
+        <option name="rowNumbers">true</option>
+      </table>
+    </panel>
   </row>
 </dashboard>
