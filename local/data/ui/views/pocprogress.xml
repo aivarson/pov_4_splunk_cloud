@@ -97,9 +97,12 @@
             <a href="https://splunkbase.splunk.com/">Splunkbase - Jumpstart your progress with free apps that provide out of the box dashboards, reports, alerts and searches.</a>
           </li>
           <li>
-            <a href="https://community.splunk.com/">Splunk Community - Interact with other Splunkers and find answers to your Splunk questions.</a>
+            <a href="https://community.splunk.com/">Splunk Community - Interact with other Splunkers and find answers to your Splunk questions!</a>
           </li>
-                    <li>
+          <li>
+            <a href="https://www.splunk.com/en_us/training/free-courses/splunk-fundamentals-1.html">Splunk Fundamentals 1 - Free Splunk Training!</a>
+          </li>          
+          <li>
             <a href="https://gosplunk.com/">Go Splunk - Searches built by other Splunkers (GoSplunk is not affiliated with Splunk).</a>
           </li>
           <p/>
@@ -132,9 +135,9 @@
         </tr>
         <tr>
             <td>
-              <b># of Indexes created</b>
+              <b># of Apps installed</b>
             </td>
-			      <td> The number of indexes created in Splunk Cloud. This tracks if the POV is following best practices to not send data to the default indexes. 1 or more are needed to get this KPI to turn green.</td>
+			      <td> The number of apps installed in Splunk Cloud. This tracks if the POV has pre-built content to help deliver the use cases selected. 1 or more are needed to get this KPI to turn green.</td>
 		    </tr>
         <tr>
             <td>
@@ -184,6 +187,28 @@
     </panel>
   </row>
   <row>
+    <panel>
+      <title># of Apps Installed</title>
+      <single>
+        <search>
+          <query>index=summary source="splunk-apps-manifest"
+| dedup app node_type sortby - _time 
+| eval "Node Type"=case(node_type="idx", "Indexer", node_type="indexer", "Indexer", node_type="sh", "Search Head", node_type="search_head", "Search Head", node_type="shc", "Search Head", node_type="idm", "Inputs Data Manager", node_type="inputs_data_manager", "Inputs Data Manager", node_type="c0m", "Cluster Master") 
+| mvcombine delim=", " "Node Type" 
+| rename app as App, customer_current_app_version as "Current Installed App Version"
+| table App "Node Type" "Current Installed App Version"
+| sort App 
+| stats count(App) as "Number of Apps installed"</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="rangeColors">["0xf8be34","0x53a051"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="useColors">1</option>
+      </single>
+    </panel>
     <panel>
       <title># of Indexes Created</title>
       <single>
@@ -383,95 +408,6 @@
         <option name="unitPosition">after</option>
         <option name="useColors">1</option>
         <option name="useThousandSeparators">1</option>
-      </single>
-    </panel>
-    <panel>
-      <title>Hosts (30d)</title>
-      <single>
-        <search>
-          <query>| metadata type=hosts
-| where NOT match(host,"(.splunkcloud*.com|idm-i.*|sh-i-.*|idx-i-.*|c0m1-i-.*)")
-| stats dc(host) as hosts</query>
-          <earliest>-30d@d</earliest>
-          <latest>now</latest>
-          <sampleRatio>1</sampleRatio>
-        </search>
-        <drilldown>
-          <!-- For the sourcetype field clicked: -->
-          <!-- Set token to display a chart -->
-          <set token="show_hosts_charts"></set>
-          <unset token="show_size_charts"></unset>
-          <unset token="show_st_charts"></unset>
-          <unset token="show_fwd_charts"></unset>
-          <unset token="show_index_charts"></unset>
-          <unset token="show_events_charts"></unset>
-        </drilldown>
-        <option name="colorBy">value</option>
-        <option name="colorMode">block</option>
-        <option name="numberPrecision">0</option>
-        <option name="rangeColors">["0x006d9c","0xf1813f","0xf8be34","0x53a051"]</option>
-        <option name="rangeValues">[0,2,4]</option>
-        <option name="showSparkline">1</option>
-        <option name="showTrendIndicator">1</option>
-        <option name="trellis.enabled">0</option>
-        <option name="trellis.scales.shared">1</option>
-        <option name="trellis.size">medium</option>
-        <option name="trendColorInterpretation">standard</option>
-        <option name="trendDisplayMode">absolute</option>
-        <option name="unitPosition">after</option>
-        <option name="useColors">1</option>
-        <option name="useThousandSeparators">1</option>
-      </single>
-    </panel>
-  </row>
-  <row>
-    <panel>
-      <title>HEC Tokens in Use (30d)</title>
-      <single>
-        <search>
-          <query>index=_introspection sourcetype=http_event_collector_metrics data.token_name=* 
-| rename data.* as * 
-| chart sparkline count by token_name 
-| search token_name=* 
-| rename token_name as "HEC Tokens", sparkline as Trend, count as Count
-| stats dc("HEC Tokens") as "HEC Tokens in use"</query>
-          <earliest>-30d@d</earliest>
-          <latest>now</latest>
-          <sampleRatio>1</sampleRatio>
-        </search>
-        <option name="colorBy">value</option>
-        <option name="colorMode">block</option>
-        <option name="drilldown">none</option>
-        <option name="numberPrecision">0</option>
-        <option name="rangeColors">["0x006d9c","0x53a051"]</option>
-        <option name="rangeValues">[0]</option>
-        <option name="showSparkline">1</option>
-        <option name="showTrendIndicator">1</option>
-        <option name="trellis.enabled">0</option>
-        <option name="trellis.scales.shared">1</option>
-        <option name="trellis.size">medium</option>
-        <option name="trendColorInterpretation">standard</option>
-        <option name="trendDisplayMode">absolute</option>
-        <option name="unitPosition">after</option>
-        <option name="useColors">1</option>
-        <option name="useThousandSeparators">1</option>
-      </single>
-    </panel>
-    <panel>
-      <title>IDM inputs (30d)</title>
-      <single>
-        <search>
-          <query>index=_* host="idm*.splunkcloud*.com" sourcetype=*:log 
-| stats dc(sourcetype) as "Number of Inputs on IDM"</query>
-          <earliest>-30d@d</earliest>
-          <latest>now</latest>
-        </search>
-        <option name="colorMode">block</option>
-        <option name="drilldown">none</option>
-        <option name="rangeColors">["0x006d9c","0x53a051"]</option>
-        <option name="rangeValues">[0]</option>
-        <option name="refresh.display">progressbar</option>
-        <option name="useColors">1</option>
       </single>
     </panel>
   </row>
