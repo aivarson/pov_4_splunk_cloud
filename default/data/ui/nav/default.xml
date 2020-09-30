@@ -1,6 +1,7 @@
 <nav search_view="search">
   <view name="setup" default='true'/>
   <view name="gdi"/>
+  <view name="pocprogress"/>
   <view name="search" />
   <view name="reports" />
   <view name="alerts" />
