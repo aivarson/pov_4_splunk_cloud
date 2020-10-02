@@ -1,8 +1,26 @@
 <dashboard theme="light" script="tokenlinks.js">
   <label>POC Progress</label>
   <!-- Show/Hide Description Text -->
-  <!--creates a hidden HTML row and panel in order to create an inline style sheet-->
-  <!-- Welcome Message to POC Progress Dashboard -->
+
+  <search id="loadKVtoTokens">
+    <query>
+      | inputlookup setup_lookup 
+      | mvexpand DataSources
+      | makemv DataSources delim="," allowempty=t
+      | eval DataSource1 = mvindex(DataSources, 0)
+      | eval DataSource2 = mvindex(DataSources, 1)
+      | eval DataSource3 = mvindex(DataSources, 2)
+      | eval DataSource4 = mvindex(DataSources, 3)
+      | eval DataSource5 = mvindex(DataSources, 4)
+      | mvexpand UseCases
+      | makemv UseCases delim="," allowempty=t
+      | eval UseCase1 = mvindex(UseCases, 0)
+      | eval UseCase2 = mvindex(UseCases, 1)
+      | eval UseCase3 = mvindex(UseCases, 2)
+    </query>
+  </search>
+  
+   <!-- Welcome Message to POC Progress Dashboard --> 
   <row>
     <panel>
       <html>
@@ -39,6 +57,7 @@
         </html>
     </panel>
   </row>
+   <!--creates a hidden HTML row and panel in order to create an inline style sheet-->
   <row depends="$hide$">
     <panel>
       <html>
@@ -139,6 +158,37 @@
 		    <tr>
             <td>
               <b># of Pageviews</b>
+            </td>
+			      <td> The total number of pageviews in Splunk Cloud. This is a measure of how often the team is interacting with Splunk. 15 or more pageviews are needed to get this KPI to turn green.</td>
+		    </tr>
+        </table>
+      </html>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Use Cases</title>
+      <html>
+        <table id="usecase_table">
+          <tr>
+            <th>Use Cases Selected</th>
+            <th>Use Cases Delivery - Links to dashboards, reports or alerts showing the desired use cases</th>
+        </tr>
+        <tr>
+            <td>
+              <b>"$UseCase1$"</b>
+            </td>
+			      <td> The number of apps installed in Splunk Cloud. This tracks if the POV has pre-built content to help deliver the use cases selected. 1 or more are needed to get this KPI to turn green.</td>
+		    </tr>
+        <tr>
+            <td>
+              <b>$UseCase2$</b>
+            </td>
+			      <td> The total number of user logins to Splunk Cloud. A user login to Splunk Cloud shows that work is being actively done. 3 or more user logins are needed to get this KPI to turn green.</td>
+		    </tr>
+		    <tr>
+            <td>
+              <b>$UseCase3$</b>
             </td>
 			      <td> The total number of pageviews in Splunk Cloud. This is a measure of how often the team is interacting with Splunk. 15 or more pageviews are needed to get this KPI to turn green.</td>
 		    </tr>
