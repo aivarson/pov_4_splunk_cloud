@@ -170,7 +170,7 @@
           <latest>now</latest>
         </search>
         <option name="colorMode">block</option>
-        <option name="drilldown">none</option>
+        <option name="drilldown">all</option>
         <option name="rangeColors">["0xf8be34","0x53a051"]</option>
         <option name="rangeValues">[0]</option>
         <option name="useColors">1</option>
@@ -187,22 +187,23 @@
       <title># of User Logins (7d)</title>
       <single>
         <search>
-          <query>index=_audit sourcetype=audittrail (host=sh*.*splunk*.* OR host=idm*.*splunk*.* OR host=si*.*splunk*.*) (user!="splunk-system-user" AND user!=cmon_user AND user!=internal_monitoring) action=success 
-| stats distinct_count(user) as "User Login Count"</query>
+          <query>
+          index=_audit sourcetype=audittrail (host=sh*.*splunk*.* OR host=idm*.*splunk*.* OR host=si*.*splunk*.*) (user!="splunk-system-user" AND user!=cmon_user AND user!=admin AND user!=internal_monitoring) action=success OR (action="*login*" info=succeeded) | stats distinct_count(user) as "User Login Count"| stats distinct_count(user) as "User Login Count"</query>
           <earliest>-7d@h</earliest>
           <latest>now</latest>
         </search>
         <option name="colorMode">block</option>
-        <option name="drilldown">none</option>
+        <option name="drilldown">all</option>
         <option name="rangeColors">["0xdc4e41","0xf8be34","0x53a051"]</option>
         <option name="rangeValues">[1,2]</option>
+        <option name="refresh.display">progressbar</option>
         <option name="useColors">1</option>
         <drilldown>
           <!-- For the sourcetype field clicked: -->
           <!-- Set token to display a chart -->
           <set token="show_user_charts"></set>
           <unset token="show_pageviews_charts"></unset>
-          <unset token="show_user_charts"></unset>
+          <unset token="show_app_charts"></unset>
         </drilldown>
       </single>
     </panel>
@@ -219,7 +220,7 @@
           <latest>now</latest>
         </search>
         <option name="colorMode">block</option>
-        <option name="drilldown">none</option>
+        <option name="drilldown">all</option>
         <option name="rangeColors">["0xdc4e41","0xf8be34","0xf1813f","0x53a051"]</option>
         <option name="rangeValues">[5,10,15]</option>
         <option name="useColors">1</option>
@@ -257,7 +258,7 @@
       <title>App Access Over Time (24h)</title>
       <chart>
         <search>
-          <query>(file!="*.*" user!=cmon_user index=_internal method=GET sourcetype=splunk_web_access status=200 uri_path="/*/app/*" (host=sh*.*splunk*.* OR host=si*.*splunk*.*)) 
+          <query>(file!="*.*" user!=cmon_user user!=internal_monitoring user!=admin index=_internal method=GET sourcetype=splunk_web_access status=200 uri_path="/*/app/*" (host=sh*.*splunk*.* OR host=si*.*splunk*.*)) 
 | rex field=uri_path "\/app\/(?&lt;App&gt;[^\/]+).*" 
 | timechart count as "Pageviews" by "App"</query>
           <earliest>-24h@h</earliest>
@@ -269,20 +270,22 @@
       </chart>
     </panel>
     <panel depends="$show_pageviews_charts$">
-      <title>Top App Access (7d)</title>
+      <title>Top 10 Apps Accessed (7d)</title>
       <chart>
         <search>
-          <query>(file!="*.*" user!=cmon_user index=_internal method=GET sourcetype=splunk_web_access status=200 uri_path="/*/app/*" (host=sh*.*splunk*.* OR host=si*.*splunk*.*)) 
+          <query>(file!="*.*" user!=cmon_user user!=internal_monitoring user!=admin index=_internal method=GET sourcetype=splunk_web_access status=200 uri_path="/*/app/*" (host=sh*.*splunk*.* OR host=si*.*splunk*.*)) 
 | rex field=uri_path "\/app\/(?&lt;App&gt;[^\/]+).*" 
 | rename file as Page, user as User 
 | stats count as Pageviews by User App Page 
 | stats sum(Pageviews) as "Pageviews" by "App" 
+| head 10
 | sort - "Pageviews"</query>
           <earliest>-7d@h</earliest>
           <latest>now</latest>
         </search>
         <option name="charting.chart">bar</option>
         <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
       </chart>
     </panel>
   </row>
@@ -291,7 +294,7 @@
       <title>Pageviews by App, User (7d)</title>
       <table>
         <search>
-          <query>(file!="*.*" user!=cmon_user index=_internal method=GET sourcetype=splunk_web_access status=200 uri_path="/*/app/*" (host=sh*.*splunk*.* OR host=si*.*splunk*.*)) 
+          <query>(file!="*.*" user!=cmon_user user!=internal_monitoring user!=admin index=_internal method=GET sourcetype=splunk_web_access status=200 uri_path="/*/app/*" (host=sh*.*splunk*.* OR host=si*.*splunk*.*)) 
 | rex field=uri_path "\/app\/(?&lt;App&gt;[^\/]+).*" 
 | rename file as Page, user as User 
 | stats count as Pageviews by User App Page 
@@ -310,7 +313,7 @@
       <title>Apps Accessed by User (7d)</title>
       <table>
         <search>
-          <query>index=_internal sourcetype="splunk_web_access" method="GET" status="200" user!=- 
+          <query>index=_internal sourcetype="splunk_web_access" method="GET" status="200" user!=- user!=admin user!=internal_monitoring
 | rex field=uri ".*\/app\/(?&lt;app&gt;[^\/]*)\/" 
 | stats count by app, user 
 | stats list(app) as "application" by user</query>
@@ -318,6 +321,7 @@
           <latest>now</latest>
         </search>
         <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
         <option name="rowNumbers">true</option>
       </table>
     </panel>
@@ -327,7 +331,7 @@
       <title>User Access Over Time (24h)</title>
       <chart>
         <search>
-          <query>(file!="*.*" user!=cmon_user index=_internal method=GET sourcetype=splunk_web_access status=200 uri_path="/*/app/*" (host=sh*.*splunk*.* OR host=si*.*splunk*.*)) 
+          <query>(file!="*.*" user!=cmon_user user!=internal_monitoring user!=admin index=_internal method=GET sourcetype=splunk_web_access status=200 uri_path="/*/app/*" (host=sh*.*splunk*.* OR host=si*.*splunk*.*)) 
 | rename user as User 
 | timechart count as "Pageviews" by "User"</query>
           <earliest>-24h@h</earliest>
@@ -335,13 +339,14 @@
         </search>
         <option name="charting.chart">column</option>
         <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
       </chart>
     </panel>
     <panel depends="$show_user_charts$">
       <title>Last 10 User Logins (7d)</title>
       <table>
         <search>
-          <query>index=_audit sourcetype=audittrail (host=sh*.*splunk*.* OR host=idm*.*splunk*.* OR host=si*.*splunk*.*) (user!="splunk-system-user" AND user!=admin AND user!=cmon_user AND user!=internal_monitoring) action=success 
+          <query>index=_audit sourcetype=audittrail (host=sh*.*splunk*.* OR host=idm*.*splunk*.* OR host=si*.*splunk*.*) (user!="splunk-system-user" AND user!=admin AND user!=cmon_user AND user!=internal_monitoring) action=success OR action="*login*"
 | table _time, user
 | head 10
 | sort - _time</query>
@@ -349,6 +354,7 @@
           <latest>now</latest>
         </search>
         <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
       </table>
     </panel>
   </row>
