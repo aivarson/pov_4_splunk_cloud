@@ -318,7 +318,7 @@
       <title>Pageviews for Apps (7d)</title>
       <single>
         <search>
-          <query>(file!="*.*" user!=cmon_user index=_internal method=GET sourcetype=splunk_web_access status=200 uri_path="/*/app/*" (host=sh*.*splunk*.* OR host=si*.*splunk*.*)) 
+          <query>(file!="*.*" user!=cmon_user user!=internal_monitoring index=_internal method=GET sourcetype=splunk_web_access status=200 uri_path="/*/app/*" (host=sh*.*splunk*.* OR host=si*.*splunk*.*)) 
 | rex field=uri_path "\/app\/(?&lt;App&gt;[^\/]+).*" 
 | rename file as Page, user as User 
 | stats count as Pageviews
@@ -330,6 +330,7 @@
         <option name="drilldown">all</option>
         <option name="rangeColors">["0xdc4e41","0xf8be34","0xf1813f","0x53a051"]</option>
         <option name="rangeValues">[5,10,15]</option>
+        <option name="refresh.display">progressbar</option>
         <option name="useColors">1</option>
         <drilldown>
           <!-- For the sourcetype field clicked: -->
