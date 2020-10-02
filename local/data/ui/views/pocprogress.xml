@@ -1,26 +1,9 @@
 <dashboard theme="light" script="tokenlinks.js">
   <label>POC Progress</label>
   <!-- Show/Hide Description Text -->
-
-  <search id="loadKVtoTokens">
-    <query>
-      | inputlookup setup_lookup 
-      | mvexpand DataSources
-      | makemv DataSources delim="," allowempty=t
-      | eval DataSource1 = mvindex(DataSources, 0)
-      | eval DataSource2 = mvindex(DataSources, 1)
-      | eval DataSource3 = mvindex(DataSources, 2)
-      | eval DataSource4 = mvindex(DataSources, 3)
-      | eval DataSource5 = mvindex(DataSources, 4)
-      | mvexpand UseCases
-      | makemv UseCases delim="," allowempty=t
-      | eval UseCase1 = mvindex(UseCases, 0)
-      | eval UseCase2 = mvindex(UseCases, 1)
-      | eval UseCase3 = mvindex(UseCases, 2)
-    </query>
-  </search>
-  
-   <!-- Welcome Message to POC Progress Dashboard --> 
+  <!-- Welcome Message to POC Progress Dashboard -->
+  <!-- set token in hidden panel for use in HTML panel -->
+  <!--creates a hidden HTML row and panel in order to create an inline style sheet-->
   <row>
     <panel>
       <html>
@@ -50,14 +33,58 @@
                 <!-- Unset both the $show_docs$ and $show_kpis$ token when the link is clicked -->
                 <a href="#" class="btn-pill" data-token-json="{&quot;show_kpis&quot;: null, &quot;show_docs&quot;: null}">Hide All</a>
                 <!-- Unset all tokens -->
-                <a href="#" class="btn-pill" data-token-json="{&quot;show_app_charts&quot;: null, &quot;show_pageviews_charts&quot;: null, &quot;show_user_charts&quot;: null, &quot;show_events_charts&quot;: null, &quot;show_index_charts&quot;: null, &quot;show_fwd_charts&quot;: null, &quot;show_kpis&quot;: null, &quot;show_docs&quot;: null}">Reset Dashboard</a>
+                <a href="#" class="btn-pill" data-token-json="{&quot;show_app_charts&quot;: null, &quot;show_pageviews_charts&quot;: null, &quot;show_user_charts&quot;: null, &quot;show_user_creation_charts&quot;: null, &quot;show_index_charts&quot;: null, &quot;show_fwd_charts&quot;: null, &quot;show_kpis&quot;: null, &quot;show_docs&quot;: null}">Reset Dashboard</a>
       </html>
       <html rejects="$show_docs$, $show_kpis$">
             <p>Click on one of the links above to select which visualization to show.</p>
         </html>
     </panel>
   </row>
-   <!--creates a hidden HTML row and panel in order to create an inline style sheet-->
+  <row>
+    <panel depends="$hide$">
+      <table>
+        <search id="loadKVtoTokens">
+          <query>
+      | inputlookup setup_lookup 
+      | mvexpand DataSources
+      | makemv DataSources delim="," allowempty=t
+      | eval DataSource1 = mvindex(DataSources, 0)
+      | eval DataSource2 = mvindex(DataSources, 1)
+      | eval DataSource3 = mvindex(DataSources, 2)
+      | eval DataSource4 = mvindex(DataSources, 3)
+      | eval DataSource5 = mvindex(DataSources, 4)
+      | mvexpand UseCases
+      | makemv UseCases delim="," allowempty=t
+      | eval UseCase1 = mvindex(UseCases, 0)
+      | eval UseCase2 = mvindex(UseCases, 1)
+      | eval UseCase3 = mvindex(UseCases, 2)
+        </query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+          <finalized>
+            <condition match=" 'job.resultCount' != 0">
+              <set token="DataSource1">$result.DataSource1$</set>
+              <set token="DataSource2">$result.DataSource2$</set>
+              <set token="DataSource3">$result.DataSource3$</set>
+              <set token="DataSource4">$result.DataSource4$</set>
+              <set token="DataSource5">$result.DataSource5$</set>
+              <set token="UseCase1">$result.UseCase1$</set>
+              <set token="UseCase2">$result.UseCase2$</set>
+              <set token="UseCase3">$result.UseCase3$</set>
+            </condition>
+            <condition>
+              <set token="tok_kvstore_empty">No result found</set>
+            </condition>
+          </finalized>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="drilldown">cell</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
   <row depends="$hide$">
     <panel>
       <html>
@@ -84,6 +111,28 @@
             text-align: left;
             background-color: #4CAF50;
             color: white;}
+            
+            #use_case_table {
+              border-collapse: collapse;
+              width: 100%;
+              table-layout: auto;
+            }
+            
+            #use_case_table td, #use_case_table th {
+              border: 1px solid #ddd;
+              padding: 12px;
+            }
+            
+            #use_case_table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;}
+            
+            #use_case_table tr:nth-child(even){background-color: #f2f2f2;}
+          
+            #use_case_table tr:hover {background-color: #ddd;}
             
             #splk_banner {
               opacity: 1 !important;
@@ -161,6 +210,12 @@
             </td>
 			      <td> The total number of pageviews in Splunk Cloud. This is a measure of how often the team is interacting with Splunk. 15 or more pageviews are needed to get this KPI to turn green.</td>
 		    </tr>
+		    <tr>
+            <td>
+              <b># of New Users Created</b>
+            </td>
+			      <td> The total number new users created in Splunk Cloud. This is a measure of onboarding new users to Splunk. 3 or more user creations are needed to get this KPI to turn green.</td>
+		    </tr>
         </table>
       </html>
     </panel>
@@ -169,28 +224,28 @@
     <panel>
       <title>Use Cases</title>
       <html>
-        <table id="usecase_table">
+        <table id="use_case_table">
           <tr>
             <th>Use Cases Selected</th>
-            <th>Use Cases Delivery - Links to dashboards, reports or alerts showing the desired use cases</th>
+            <th>Use Case Delivery - Links to dashboards, reports or alerts showing the desired use cases</th>
         </tr>
         <tr>
             <td>
-              <b>"$UseCase1$"</b>
+              <b>$UseCase1$</b>
             </td>
-			      <td> The number of apps installed in Splunk Cloud. This tracks if the POV has pre-built content to help deliver the use cases selected. 1 or more are needed to get this KPI to turn green.</td>
+			      <td> ### Insert link to dashboard, report or alert ### </td>
 		    </tr>
         <tr>
             <td>
               <b>$UseCase2$</b>
             </td>
-			      <td> The total number of user logins to Splunk Cloud. A user login to Splunk Cloud shows that work is being actively done. 3 or more user logins are needed to get this KPI to turn green.</td>
+			      <td> ### Insert link to dashboard, report or alert ### </td>
 		    </tr>
 		    <tr>
             <td>
               <b>$UseCase3$</b>
             </td>
-			      <td> The total number of pageviews in Splunk Cloud. This is a measure of how often the team is interacting with Splunk. 15 or more pageviews are needed to get this KPI to turn green.</td>
+			      <td> ### Insert link to dashboard, report or alert ### </td>
 		    </tr>
         </table>
       </html>
@@ -230,6 +285,7 @@
           <set token="show_app_charts"></set>
           <unset token="show_pageviews_charts"></unset>
           <unset token="show_user_charts"></unset>
+          <unset token="show_user_creation_charts"></unset>
         </drilldown>
       </single>
     </panel>
@@ -254,6 +310,7 @@
           <set token="show_user_charts"></set>
           <unset token="show_pageviews_charts"></unset>
           <unset token="show_app_charts"></unset>
+          <unset token="show_user_creation_charts"></unset>
         </drilldown>
       </single>
     </panel>
@@ -278,6 +335,31 @@
           <!-- For the sourcetype field clicked: -->
           <!-- Set token to display a chart -->
           <set token="show_pageviews_charts"></set>
+          <unset token="show_app_charts"></unset>
+          <unset token="show_user_charts"></unset>
+          <unset token="show_user_creation_charts"></unset>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>New Users Created (7d)</title>
+      <single>
+        <search>
+          <query>index=_audit (create_user info=succeeded) OR (action=create_user  info=succeeded)
+| stats count as "New Users Created"</query>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="rangeColors">["0x006d9c","0x53a051"]</option>
+        <option name="rangeValues">[2]</option>
+        <option name="useColors">1</option>
+        <drilldown>
+          <!-- For the sourcetype field clicked: -->
+          <!-- Set token to display a chart -->
+          <set token="show_user_creation_charts"></set>
+          <unset token="show_pageviews_charts"></unset>
           <unset token="show_app_charts"></unset>
           <unset token="show_user_charts"></unset>
         </drilldown>
@@ -406,6 +488,21 @@
         <option name="drilldown">none</option>
         <option name="refresh.display">progressbar</option>
       </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$show_user_creation_charts$">
+      <title>New Users Created (7d)</title>
+      <chart>
+        <search>
+          <query>index=_audit (create_user info=succeeded) OR (action=create_user  info=succeeded)
+|timechart count by username</query>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.chart">column</option>
+        <option name="charting.drilldown">none</option>
+      </chart>
     </panel>
   </row>
 </dashboard>
