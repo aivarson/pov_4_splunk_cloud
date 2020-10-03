@@ -71,6 +71,7 @@
               <set token="UseCase1">$result.UseCase1$</set>
               <set token="UseCase2">$result.UseCase2$</set>
               <set token="UseCase3">$result.UseCase3$</set>
+              <set token="AutobahnLane">$result.AutobahnLane$</set>
             </condition>
             <condition>
               <set token="tok_kvstore_empty">No result found</set>
@@ -200,9 +201,9 @@
 		    </tr>
         <tr>
             <td>
-              <b># of User Logins</b>
+              <b># of Unique User Logins</b>
             </td>
-			      <td> The total number of user logins to Splunk Cloud. A user login to Splunk Cloud shows that work is being actively done. 3 or more user logins are needed to get this KPI to turn green.</td>
+			      <td> The total number of unique user logins to Splunk Cloud. A unique user login to Splunk Cloud shows that work is being actively done across the team. 3 or more user logins are needed to get this KPI to turn green.</td>
 		    </tr>
 		    <tr>
             <td>
@@ -222,7 +223,7 @@
   </row>
   <row>
     <panel>
-      <title>Use Cases</title>
+      <title>$AutobahnLane$ - Use Cases</title>
       <html>
         <table id="use_case_table">
           <tr>
@@ -233,7 +234,7 @@
             <td>
               <b>$UseCase1$</b>
             </td>
-			      <td> ### Insert link to dashboard, report or alert ### </td>
+			      <td> $UseCaseDelivery1$ </td>
 		    </tr>
         <tr>
             <td>
@@ -290,11 +291,11 @@
       </single>
     </panel>
     <panel>
-      <title># of User Logins (7d)</title>
+      <title># of Unique User Logins (7d)</title>
       <single>
         <search>
-          <query>
-          index=_audit sourcetype=audittrail (host=sh*.*splunk*.* OR host=idm*.*splunk*.* OR host=si*.*splunk*.*) (user!="splunk-system-user" AND user!=cmon_user AND user!=admin AND user!=internal_monitoring) action=success OR (action="*login*" info=succeeded) | stats distinct_count(user) as "User Login Count"| stats distinct_count(user) as "User Login Count"</query>
+          <query>index=_audit sourcetype=audittrail (host=sh*.*splunk*.* OR host=idm*.*splunk*.* OR host=si*.*splunk*.*) (user!="splunk-system-user" AND user!=cmon_user AND user!=admin AND user!=internal_monitoring) action=success OR (action="*login*" info=succeeded) 
+| stats distinct_count(user) as "User Login Count"</query>
           <earliest>-7d@h</earliest>
           <latest>now</latest>
         </search>
