@@ -177,7 +177,7 @@
   </row>
   <row>
     <panel>
-      <title>1. Select POC License Size</title>
+      <title>1. Select POV License Size</title>
       <input type="dropdown" token="LicenseSizeGB" searchWhenChanged="true">
         <label>Splunk Core in GB *</label>
         <fieldForLabel>LicenseSizeGB</fieldForLabel>
@@ -217,71 +217,71 @@
   </row>
   <row>
     <panel>
-      <title>4. POC Type (Autobahn or Custom):</title>
+      <title>4. POV Type (Autobahn or Custom):</title>
       <input type="dropdown" token="AutobahnLane" searchWhenChanged="true">
-        <label>Select POC Type</label>
+        <label>Select POV Type</label>
         <initialValue>$AutobahnLane$</initialValue>
-        <fieldForLabel>AutobahnPOCType</fieldForLabel>
-        <fieldForValue>AutobahnPOCType</fieldForValue>
+        <fieldForLabel>AutobahnPOVType</fieldForLabel>
+        <fieldForValue>AutobahnPOVType</fieldForValue>
         <search>
           <query>| inputlookup autobahn_lanes
-| fields AutobahnPOCType,AutobahnPOCNum
-| dedup AutobahnPOCType
-| sort +AutobahnPOCType</query>
+| fields AutobahnPOVType,AutobahnPOVNum
+| dedup AutobahnPOVType
+| sort +AutobahnPOVType</query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
         </search>
         <change>
-          <condition value="Custom POC">
-            <set token="customPOC">"$AutobahnLane$"</set>
-            <unset token="autobahnPOC"></unset>
+          <condition value="Custom POV">
+            <set token="customPOV">"$AutobahnLane$"</set>
+            <unset token="autobahnPOV"></unset>
           </condition>
           <condition value="Enterprise Security">
-            <set token="autobahnPOC">"$AutobahnLane$"</set>
-            <unset token="customPOC"></unset>
+            <set token="autobahnPOV">"$AutobahnLane$"</set>
+            <unset token="customPOV"></unset>
           </condition>
           <condition value="Security Essentials">
-            <set token="autobahnPOC">"$AutobahnLane$"</set>
-            <unset token="customPOC"></unset>
+            <set token="autobahnPOV">"$AutobahnLane$"</set>
+            <unset token="customPOV"></unset>
           </condition>
           <condition value="Remote Work Insignts">
-            <set token="autobahnPOC">"$AutobahnLane$"</set>
-            <unset token="customPOC"></unset>
+            <set token="autobahnPOV">"$AutobahnLane$"</set>
+            <unset token="customPOV"></unset>
           </condition>
           <condition value="IT Operations">
-            <set token="autobahnPOC">"$AutobahnLane$"</set>
-            <unset token="customPOC"></unset>
+            <set token="autobahnPOV">"$AutobahnLane$"</set>
+            <unset token="customPOV"></unset>
           </condition>
           <condition value="Website Operations">
-            <set token="autobahnPOC">"$AutobahnLane$"</set>
-            <unset token="customPOC"></unset>
+            <set token="autobahnPOV">"$AutobahnLane$"</set>
+            <unset token="customPOV"></unset>
           </condition>
           <condition value="IT Operations Management">
-            <set token="autobahnPOC">"$AutobahnLane$"</set>
-            <unset token="customPOC"></unset>
+            <set token="autobahnPOV">"$AutobahnLane$"</set>
+            <unset token="customPOV"></unset>
           </condition>
           <condition value="Business Service Intelligence">
-            <set token="autobahnPOC">"$AutobahnLane$"</set>
-            <unset token="customPOC"></unset>
+            <set token="autobahnPOV">"$AutobahnLane$"</set>
+            <unset token="customPOV"></unset>
           </condition>
           <condition value="Medical Devices SaaS Analytics">
-            <set token="autobahnPOC">"$AutobahnLane$"</set>
-            <unset token="customPOC"></unset>
+            <set token="autobahnPOV">"$AutobahnLane$"</set>
+            <unset token="customPOV"></unset>
           </condition>
           <condition value="AWS Monitoring">
-            <set token="autobahnPOC">"$AutobahnLane$"</set>
-            <unset token="customPOC"></unset>
+            <set token="autobahnPOV">"$AutobahnLane$"</set>
+            <unset token="customPOV"></unset>
           </condition>
         </change>
       </input>
     </panel>
-    <panel depends="$customPOC$">
+    <panel depends="$customPOV$">
       <title>5. Use Case Info:</title>
       <input type="text" token="UseCases" searchWhenChanged="true">
         <label>Enter Up to 3 Use Case(s) (Use commas to separate data sources):</label>
       </input>
     </panel>
-    <panel depends="$autobahnPOC$">
+    <panel depends="$autobahnPOV$">
       <title>5. Use Case Info:</title>
       <input type="multiselect" token="UseCases" searchWhenChanged="true">
         <label>Select Up to 3 Use Case(s):</label>
@@ -291,7 +291,7 @@
         <fieldForValue>UseCases</fieldForValue>
         <search>
           <query>| inputlookup autobahn_lanes
-| search AutobahnPOCType="$AutobahnLane$"
+| search AutobahnPOVType="$AutobahnLane$"
 | fields UseCases
 | sort +UseCases</query>
           <earliest>-24h@h</earliest>
@@ -299,14 +299,14 @@
         </search>
       </input>
     </panel>
-    <panel depends="$customPOC$">
+    <panel depends="$customPOV$">
       <title>6. Data Source Info:</title>
       <input type="text" token="DataSources" searchWhenChanged="true">
         <label>Enter Up to 5 Data Source(s) (Use commas to separate data sources):</label>
         <initialValue>$DataSources$</initialValue>
       </input>
     </panel>
-    <panel depends="$autobahnPOC$">
+    <panel depends="$autobahnPOV$">
       <title>6. Data Source Info:</title>
       <input type="multiselect" token="DataSources" searchWhenChanged="true">
         <label>Select Up to 5 Data Source(s):</label>
@@ -338,8 +338,8 @@
         <search>
           <query>| makeresults
 | eval CustomerName="$CustomerName$"
-| eval CustomerPOCEmail="$CustomerPOCEmail$"
-| eval CustomerPOCName="$CustomerPOCName$"
+| eval CustomerPOVEmail="$CustomerPOVEmail$"
+| eval CustomerPOVName="$CustomerPOVName$"
 | eval LicenseSizeGB="$LicenseSizeGB$"
 | eval SalesEngineerEmail="$SalesEngineerEmail$"
 | eval SalesEngineerName="$SalesEngineerName$"
@@ -348,7 +348,7 @@
 | eval UseCases="$UseCases$"
 | eval CreatedTime=now() 
 | convert ctime(CreatedTime) 
-| table CreatedTime, CustomerName, LicenseSizeGB, AutobahnLane, UseCases, DataSources, SalesEngineerName, SalesEngineerEmail, CustomerPOCName, CustomerPOCEmail</query>
+| table CreatedTime, CustomerName, LicenseSizeGB, AutobahnLane, UseCases, DataSources, SalesEngineerName, SalesEngineerEmail, CustomerPOVName, CustomerPOVEmail</query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
         </search>

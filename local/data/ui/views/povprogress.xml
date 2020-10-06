@@ -1,5 +1,5 @@
 <dashboard theme="light" script="tokenlinks.js">
-  <label>POC Progress</label>
+  <label>POV Progress</label>
   <!-- Show/Hide Description Text -->
   <!-- Welcome Message to POC Progress Dashboard -->
   <!-- set token in hidden panel for use in HTML panel -->
@@ -8,7 +8,7 @@
     <panel>
       <html>
         <h2>
-          <b>Welcome to the POC Progress Dashboard...</b>
+          <b>Welcome to the POV Progress Dashboard...</b>
         </h2>
 <div class="panel conf-macro output-block" data-hasbody="true" data-macro-name="panel">
 <div class="panelContent">
@@ -255,7 +255,7 @@
   <row>
     <panel>
       <html>
-    <h1 id="splk_banner">POC PROGRESS</h1>
+    <h1 id="splk_banner">POV PROGRESS</h1>
 </html>
     </panel>
   </row>
