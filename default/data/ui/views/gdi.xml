@@ -77,6 +77,11 @@
               padding: 1px;              
               height: 120px;
               }
+              
+            .panel-title{
+            color:#65A637 !important;
+            font-weight: bold !important;
+            }
             
         </style>
       </html>

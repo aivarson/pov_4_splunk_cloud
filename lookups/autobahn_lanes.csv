@@ -1,4 +1,4 @@
-﻿AutobahnPOCType,UseCases
+﻿AutobahnPOVType,UseCases
 Enterprise Security,Access anomalies
 Enterprise Security,Access tracker
 Enterprise Security,Advanced threat detection
@@ -112,4 +112,4 @@ AWS Monitoring,Security
 AWS Monitoring,Billing
 AWS Monitoring,Topology
 AWS Monitoring,Timeline
-Custom POC,Custom Use Case
+Custom POV,Custom Use Case
