@@ -1,0 +1,519 @@
+<dashboard theme="light" script="tokenlinks.js">
+  <label>POV Progress</label>
+  <!-- Show/Hide Description Text -->
+  <!-- Welcome Message to POC Progress Dashboard -->
+  <!-- set token in hidden panel for use in HTML panel -->
+  <!--creates a hidden HTML row and panel in order to create an inline style sheet-->
+  <row>
+    <panel>
+      <html>
+        <h2>
+          <b>Welcome to the POV Progress Dashboard...</b>
+        </h2>
+<div class="panel conf-macro output-block" data-hasbody="true" data-macro-name="panel">
+<div class="panelContent">
+<p>Welcome <b>$env:user_realname$</b> ! This dashboard is meant to provide you guidance and feedback on the progress of your Proof of Value experience. You should review this dashboard regularly to see how things are progressing.</p>
+<p>
+              <em>Alan Ivarson, Cloud Architect</em>
+            </p>
+</div>
+</div>
+        </html>
+    </panel>
+    <panel>
+      <html>
+                <!-- Set the $show_docs$ token when the link is clicked, also unset the $show_kpis$ token -->
+                <a href="#" class="btn-pill" data-set-token="show_docs" data-value="show" data-unset-token="show_kpis">
+                    Show Docs and Reference Links
+                </a>
+                <!-- Set the $show_kpis$ token when the link is clicked, also unset the $show_docs$ token -->
+                <a href="#" class="btn-pill" data-set-token="show_kpis" data-value="show" data-unset-token="show_docs">
+                    Show KPIs
+                </a>
+                <!-- Unset both the $show_docs$ and $show_kpis$ token when the link is clicked -->
+                <a href="#" class="btn-pill" data-token-json="{&quot;show_kpis&quot;: null, &quot;show_docs&quot;: null}">Hide All</a>
+                <!-- Unset all tokens -->
+                <a href="#" class="btn-pill" data-token-json="{&quot;show_app_charts&quot;: null, &quot;show_pageviews_charts&quot;: null, &quot;show_user_charts&quot;: null, &quot;show_user_creation_charts&quot;: null, &quot;show_index_charts&quot;: null, &quot;show_fwd_charts&quot;: null, &quot;show_kpis&quot;: null, &quot;show_docs&quot;: null}">Reset Dashboard</a>
+      </html>
+      <html rejects="$show_docs$, $show_kpis$">
+            <p>Click on one of the links above to select which visualization to show.</p>
+        </html>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$hide$">
+      <table>
+        <search id="loadKVtoTokens">
+          <query>
+      | inputlookup setup_lookup 
+      | mvexpand DataSources
+      | makemv DataSources delim="," allowempty=t
+      | eval DataSource1 = mvindex(DataSources, 0)
+      | eval DataSource2 = mvindex(DataSources, 1)
+      | eval DataSource3 = mvindex(DataSources, 2)
+      | eval DataSource4 = mvindex(DataSources, 3)
+      | eval DataSource5 = mvindex(DataSources, 4)
+      | mvexpand UseCases
+      | makemv UseCases delim="," allowempty=t
+      | eval UseCase1 = mvindex(UseCases, 0)
+      | eval UseCase2 = mvindex(UseCases, 1)
+      | eval UseCase3 = mvindex(UseCases, 2)
+      | lookup autobahn_lanes AutobahnPOVType as AutobahnLane, UseCases as UseCase1 OUTPUT FriendlyName as FriendlyName1, URL as UseCaseURL1 
+      | lookup autobahn_lanes AutobahnPOVType as AutobahnLane, UseCases as UseCase2 OUTPUT FriendlyName as FriendlyName2, URL as UseCaseURL2
+      | lookup autobahn_lanes AutobahnPOVType as AutobahnLane, UseCases as UseCase3 OUTPUT FriendlyName as FriendlyName3, URL as UseCaseURL3
+        </query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+          <finalized>
+            <condition match=" 'job.resultCount' != 0">
+              <set token="DataSource1">$result.DataSource1$</set>
+              <set token="DataSource2">$result.DataSource2$</set>
+              <set token="DataSource3">$result.DataSource3$</set>
+              <set token="DataSource4">$result.DataSource4$</set>
+              <set token="DataSource5">$result.DataSource5$</set>
+              <set token="UseCase1">$result.UseCase1$</set>
+              <set token="UseCase2">$result.UseCase2$</set>
+              <set token="UseCase3">$result.UseCase3$</set>
+              <set token="AutobahnLane">$result.AutobahnLane$</set>
+              <set token="UseCaseDelivery1">$result.UseCaseURL1$</set>
+              <set token="UseCaseFriendlyName1">$result.FriendlyName1$</set>
+              <set token="UseCaseDelivery2">$result.UseCaseURL2$</set>
+              <set token="UseCaseFriendlyName2">$result.FriendlyName2$</set>
+              <set token="UseCaseDelivery3">$result.UseCaseURL3$</set>
+              <set token="UseCaseFriendlyName3">$result.FriendlyName3$</set>
+            </condition>
+            <condition>
+              <set token="tok_kvstore_empty">No result found</set>
+            </condition>
+          </finalized>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="drilldown">cell</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+  <row depends="$hide$">
+    <panel>
+      <html>
+        <style>
+          <!-- Table Layout and colors-->
+          #kpi_table {
+          border-collapse: collapse;
+          width: 100%;
+          table-layout: auto;
+          }
+          
+          #kpi_table td, #kpi_table th {
+            border: 1px solid #ddd;
+            padding: 8px;
+          }
+          
+          #kpi_table tr:nth-child(even){background-color: #f2f2f2;}
+          
+          #kpi_table tr:hover {background-color: #ddd;}
+          
+          #kpi_table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;}
+            
+            #use_case_table {
+              border-collapse: collapse;
+              width: 100%;
+              table-layout: auto;
+            }
+            
+            #use_case_table td, #use_case_table th {
+              border: 1px solid #ddd;
+              padding: 12px;
+            }
+            
+            #use_case_table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;}
+            
+            #use_case_table tr:nth-child(even){background-color: #f2f2f2;}
+          
+            #use_case_table tr:hover {background-color: #ddd;}
+            
+            #splk_banner {
+              opacity: 1 !important;
+              background: linear-gradient(80deg, #E90080 14%, #de0275 14% 22%, #e72B56 22% 25%, #de0275 50%, #f14d42 90%, #f05939 90% 93%,  #F4891a 93.1%);
+              color: white !important;              
+              text-align: center;              
+              line-height: 120px;              
+              font-size: 80px;              
+              padding: 1px;              
+              height: 120px;
+              }
+              
+            .panel-title{
+            color:#65A637 !important;
+            font-weight: bold !important;
+            }
+            
+        </style>
+      </html>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$show_docs$">
+      <html>
+        <p>
+          <b> Resources:</b>
+        </p>
+        <ul>
+        <li>
+            <a href="https://splunkbase.splunk.com/">Splunkbase - Jumpstart your progress with free apps that provide out of the box dashboards, reports, alerts and searches.</a>
+          </li>
+          <li>
+            <a href="https://community.splunk.com/">Splunk Community - Interact with other Splunkers and find answers to your Splunk questions!</a>
+          </li>
+          <li>
+            <a href="https://www.splunk.com/en_us/training/free-courses/splunk-fundamentals-1.html">Splunk Fundamentals 1 - Free Splunk Training!</a>
+          </li>
+          <li>
+            <a href="https://www.splunk.com/pdfs/getting-started/splunk-resources-for-your-success.pdf">Splunk Resources for your Success!</a>
+          </li>
+          <li>
+            <a href="https://gosplunk.com/">Go Splunk - Searches built by other Splunkers (GoSplunk is not affiliated with Splunk).</a>
+          </li>
+          <p/>
+          </ul>
+     </html>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$show_kpis$">
+      <html>
+        <table id="kpi_table">
+          <tr>
+            <th>KPI</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <b>Here is a listing of the KPIs that are measured on this dashboard and why they are important.</b>
+        </tr>
+        <tr>
+            <td>
+              <b># of Apps installed</b>
+            </td>
+			      <td> The number of apps installed in Splunk Cloud. This tracks if the POV has pre-built content to help deliver the use cases selected. 1 or more are needed to get this KPI to turn green.</td>
+		    </tr>
+        <tr>
+            <td>
+              <b># of Unique User Logins</b>
+            </td>
+			      <td> The total number of unique user logins to Splunk Cloud. A unique user login to Splunk Cloud shows that work is being actively done across the team. 3 or more user logins are needed to get this KPI to turn green.</td>
+		    </tr>
+		    <tr>
+            <td>
+              <b># of Pageviews</b>
+            </td>
+			      <td> The total number of pageviews in Splunk Cloud. This is a measure of how often the team is interacting with Splunk. 15 or more pageviews are needed to get this KPI to turn green.</td>
+		    </tr>
+		    <tr>
+            <td>
+              <b># of New Users Created</b>
+            </td>
+			      <td> The total number new users created in Splunk Cloud. This is a measure of onboarding new users to Splunk. 3 or more user creations are needed to get this KPI to turn green.</td>
+		    </tr>
+        </table>
+      </html>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>$AutobahnLane$ - Use Cases</title>
+      <html>
+        <table id="use_case_table">
+          <tr>
+            <th>Use Cases Selected</th>
+            <th>Use Case Delivery - Links to dashboards, reports or alerts showing the desired use cases</th>
+        </tr>
+        <tr>
+            <td>
+              <b>$UseCase1$</b>
+            </td>
+			      <td> <a href="$UseCaseDelivery1$">$UseCaseFriendlyName1$</a> </td>
+		    </tr>
+        <tr>
+            <td>
+              <b>$UseCase2$</b>
+            </td>
+			      <td> <a href="$UseCaseDelivery2$">$UseCaseFriendlyName2$</a> </td>
+		    </tr>
+		    <tr>
+            <td>
+              <b>$UseCase3$</b>
+            </td>
+			      <td> <a href="$UseCaseDelivery3$">$UseCaseFriendlyName3$</a> </td>
+		    </tr>
+        </table>
+      </html>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <html>
+    <h1 id="splk_banner">POV PROGRESS</h1>
+</html>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title># of Apps Installed</title>
+      <single>
+        <search>
+          <query>index=summary source="splunk-apps-manifest"
+| dedup app node_type sortby - _time 
+| eval "Node Type"=case(node_type="idx", "Indexer", node_type="indexer", "Indexer", node_type="sh", "Search Head", node_type="search_head", "Search Head", node_type="shc", "Search Head", node_type="idm", "Inputs Data Manager", node_type="inputs_data_manager", "Inputs Data Manager", node_type="c0m", "Cluster Master") 
+| mvcombine delim=", " "Node Type" 
+| rename app as App, customer_current_app_version as "Current Installed App Version"
+| table App "Node Type" "Current Installed App Version"
+| sort App 
+| stats count(App) as "Number of Apps installed"</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="rangeColors">["0xf8be34","0x53a051"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="useColors">1</option>
+        <drilldown>
+          <!-- For the sourcetype field clicked: -->
+          <!-- Set token to display a chart -->
+          <set token="show_app_charts"></set>
+          <unset token="show_pageviews_charts"></unset>
+          <unset token="show_user_charts"></unset>
+          <unset token="show_user_creation_charts"></unset>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title># of Unique User Logins (7d)</title>
+      <single>
+        <search>
+          <query>index=_audit sourcetype=audittrail (host=sh*.*splunk*.* OR host=idm*.*splunk*.* OR host=si*.*splunk*.*) (user!="splunk-system-user" AND user!=cmon_user AND user!=admin AND user!=internal_monitoring) action=success OR (action="*login*" info=succeeded) 
+| stats distinct_count(user) as "User Login Count"</query>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="rangeColors">["0xdc4e41","0xf8be34","0x53a051"]</option>
+        <option name="rangeValues">[1,2]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="useColors">1</option>
+        <drilldown>
+          <!-- For the sourcetype field clicked: -->
+          <!-- Set token to display a chart -->
+          <set token="show_user_charts"></set>
+          <unset token="show_pageviews_charts"></unset>
+          <unset token="show_app_charts"></unset>
+          <unset token="show_user_creation_charts"></unset>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Pageviews for Apps (7d)</title>
+      <single>
+        <search>
+          <query>(file!="*.*" user!=cmon_user user!=internal_monitoring index=_internal method=GET sourcetype=splunk_web_access status=200 uri_path="/*/app/*" (host=sh*.*splunk*.* OR host=si*.*splunk*.*)) 
+| rex field=uri_path "\/app\/(?&lt;App&gt;[^\/]+).*" 
+| rename file as Page, user as User 
+| stats count as Pageviews
+| sort - "Pageviews"</query>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="rangeColors">["0xdc4e41","0xf8be34","0xf1813f","0x53a051"]</option>
+        <option name="rangeValues">[5,10,15]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="useColors">1</option>
+        <drilldown>
+          <!-- For the sourcetype field clicked: -->
+          <!-- Set token to display a chart -->
+          <set token="show_pageviews_charts"></set>
+          <unset token="show_app_charts"></unset>
+          <unset token="show_user_charts"></unset>
+          <unset token="show_user_creation_charts"></unset>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>New Users Created (7d)</title>
+      <single>
+        <search>
+          <query>index=_audit (create_user info=succeeded) OR (action=create_user  info=succeeded)
+| stats count as "New Users Created"</query>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="rangeColors">["0x006d9c","0x53a051"]</option>
+        <option name="rangeValues">[2]</option>
+        <option name="useColors">1</option>
+        <drilldown>
+          <!-- For the sourcetype field clicked: -->
+          <!-- Set token to display a chart -->
+          <set token="show_user_creation_charts"></set>
+          <unset token="show_pageviews_charts"></unset>
+          <unset token="show_app_charts"></unset>
+          <unset token="show_user_charts"></unset>
+        </drilldown>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$show_app_charts$">
+      <title>Installed Apps</title>
+      <table>
+        <search>
+          <query>index=summary source="splunk-apps-manifest"
+| dedup app node_type sortby - _time 
+| eval "Node Type"=case(node_type="idx", "Indexer", node_type="indexer", "Indexer", node_type="sh", "Search Head", node_type="search_head", "Search Head", node_type="shc", "Search Head", node_type="idm", "Inputs Data Manager", node_type="inputs_data_manager", "Inputs Data Manager", node_type="c0m", "Cluster Master") 
+| mvcombine delim=", " "Node Type" 
+| rename app as App, customer_current_app_version as "Current Installed App Version"
+| table App "Node Type" "Current Installed App Version"
+| sort App</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$show_pageviews_charts$">
+      <title>App Access Over Time (24h)</title>
+      <chart>
+        <search>
+          <query>(file!="*.*" user!=cmon_user user!=internal_monitoring user!=admin index=_internal method=GET sourcetype=splunk_web_access status=200 uri_path="/*/app/*" (host=sh*.*splunk*.* OR host=si*.*splunk*.*)) 
+| rex field=uri_path "\/app\/(?&lt;App&gt;[^\/]+).*" 
+| timechart count as "Pageviews" by "App"</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.chart">column</option>
+        <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel depends="$show_pageviews_charts$">
+      <title>Top 10 Apps Accessed (7d)</title>
+      <chart>
+        <search>
+          <query>(file!="*.*" user!=cmon_user user!=internal_monitoring user!=admin index=_internal method=GET sourcetype=splunk_web_access status=200 uri_path="/*/app/*" (host=sh*.*splunk*.* OR host=si*.*splunk*.*)) 
+| rex field=uri_path "\/app\/(?&lt;App&gt;[^\/]+).*" 
+| rename file as Page, user as User 
+| stats count as Pageviews by User App Page 
+| stats sum(Pageviews) as "Pageviews" by "App" 
+| head 10
+| sort - "Pageviews"</query>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.chart">bar</option>
+        <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$show_pageviews_charts$">
+      <title>Pageviews by App, User (7d)</title>
+      <table>
+        <search>
+          <query>(file!="*.*" user!=cmon_user user!=internal_monitoring user!=admin index=_internal method=GET sourcetype=splunk_web_access status=200 uri_path="/*/app/*" (host=sh*.*splunk*.* OR host=si*.*splunk*.*)) 
+| rex field=uri_path "\/app\/(?&lt;App&gt;[^\/]+).*" 
+| rename file as Page, user as User 
+| stats count as Pageviews by User App Page 
+| stats sum(Pageviews) as "Pageviews" by App User
+| sort - "Pageviews"</query>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="dataOverlayMode">heatmap</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">true</option>
+      </table>
+    </panel>
+    <panel depends="$show_pageviews_charts$">
+      <title>Apps Accessed by User (7d)</title>
+      <table>
+        <search>
+          <query>index=_internal sourcetype="splunk_web_access" method="GET" status="200" user!=- user!=admin user!=internal_monitoring
+| rex field=uri ".*\/app\/(?&lt;app&gt;[^\/]*)\/" 
+| stats count by app, user 
+| stats list(app) as "application" by user</query>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$show_user_charts$">
+      <title>User Access Over Time (24h)</title>
+      <chart>
+        <search>
+          <query>(file!="*.*" user!=cmon_user user!=internal_monitoring user!=admin index=_internal method=GET sourcetype=splunk_web_access status=200 uri_path="/*/app/*" (host=sh*.*splunk*.* OR host=si*.*splunk*.*)) 
+| rename user as User 
+| timechart count as "Pageviews" by "User"</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.chart">column</option>
+        <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel depends="$show_user_charts$">
+      <title>Last 10 User Logins (7d)</title>
+      <table>
+        <search>
+          <query>index=_audit sourcetype=audittrail (host=sh*.*splunk*.* OR host=idm*.*splunk*.* OR host=si*.*splunk*.*) (user!="splunk-system-user" AND user!=admin AND user!=cmon_user AND user!=internal_monitoring) action=success OR action="*login*"
+| table _time, user
+| head 10
+| sort - _time</query>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$show_user_creation_charts$">
+      <title>New Users Created (7d)</title>
+      <chart>
+        <search>
+          <query>index=_audit (create_user info=succeeded) OR (action=create_user  info=succeeded)
+|timechart count by username</query>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.chart">column</option>
+        <option name="charting.drilldown">none</option>
+      </chart>
+    </panel>
+  </row>
+</dashboard>
