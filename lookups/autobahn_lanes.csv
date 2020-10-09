@@ -12,43 +12,43 @@ Enterprise Security,Host not reporting,,
 Enterprise Security,Malware outbreak,,
 Enterprise Security,Privileged / Non-Privileged User Monitoring,,
 Enterprise Security,Traffic over time by action,,
-Security Essentials,% of hosts by start mode,% of hosts by start mode,/app/Splunk_Security_Essentials/Essential_Host_Security
-Security Essentials,% of hosts by status,% of hosts by status,/app/Splunk_Security_Essentials/Essential_Host_Security
-Security Essentials,All hosts with non-auto start mode,All hosts with non-auto start mode,/app/Splunk_Security_Essentials/Essential_Host_Security
-Security Essentials,Highest entropy file names,Highest entropy file names,/app/Splunk_Security_Essentials/Essential_Host_Security
-Security Essentials,Highest entropy file paths,Highest entropy file paths,/app/Splunk_Security_Essentials/Essential_Host_Security
-Security Essentials,Top system executables launched…,Top system executables launched…,/app/Splunk_Security_Essentials/Essential_Host_Security
-Security Essentials,Malware running on greatest # of hosts,Malware running on greatest # of hosts,/app/Splunk_Security_Essentials/Essential_Host_Security
-Security Essentials,Hosts with the most malware,Hosts with the most malware,/app/Splunk_Security_Essentials/Essential_Host_Security
-Security Essentials,Hosts with apparent scanning activity,Hosts with apparent scanning activity,/app/Splunk_Security_Essentials/Essential_Network_Security
-Security Essentials,Top sources,Top sources,/app/Splunk_Security_Essentials/Essential_Network_Security
-Security Essentials,Top destinations,Top destinations,/app/Splunk_Security_Essentials/Essential_Network_Security
-Security Essentials,Network blocks over time,Network blocks over time,/app/Splunk_Security_Essentials/Essential_Network_Security
-Security Essentials,Top dest port,Top dest port,/app/Splunk_Security_Essentials/Essential_Network_Security
-Security Essentials,Number of file uploads,Number of file uploads,/app/Splunk_Security_Essentials/Essential_Network_Security
-Security Essentials,Top domains browsed to,Top domains browsed to,/app/Splunk_Security_Essentials/Essential_Network_Security
-Security Essentials,Rare domains browsed to,Rare domains browsed to,/app/Splunk_Security_Essentials/Essential_Network_Security
-Security Essentials,# of domains browsed to,# of domains browsed to,/app/Splunk_Security_Essentials/Essential_Network_Security
-Security Essentials,Top cloud sharing apps,Top cloud sharing apps,/app/Splunk_Security_Essentials/Essential_Network_Security
-Security Essentials,Rare cloud sharing apps,Rare cloud sharing apps,/app/Splunk_Security_Essentials/Essential_Network_Security
-Security Essentials,Hosts with greatest # of destinations,Hosts with greatest # of destinations,/app/Splunk_Security_Essentials/Essential_Network_Security
-Security Essentials,DNS traffic over time,DNS traffic over time,/app/Splunk_Security_Essentials/Essential_Network_Security
-Security Essentials,Top high-risk apps,Top high-risk apps,/app/Splunk_Security_Essentials/Essential_Network_Security
-Security Essentials,Number of high-risk connections,Number of high-risk connections,/app/Splunk_Security_Essentials/Essential_Network_Security
-Security Essentials,Number of high-risk apps,Number of high-risk apps,/app/Splunk_Security_Essentials/Essential_Network_Security
-Security Essentials,Top blocked categories,Top blocked categories,/app/Splunk_Security_Essentials/Essential_Network_Security
-Security Essentials,# of blocked connections,# of blocked connections,/app/Splunk_Security_Essentials/Essential_Network_Security
-Security Essentials,Ex-employee accts w/most logins,Ex-employee accts w/most logins,/app/Splunk_Security_Essentials/Essential_Account_Security
-Security Essentials,Auth sources with most usernames,Auth sources with most usernames,/app/Splunk_Security_Essentials/Essential_Account_Security
-Security Essentials,Users uploading the most,Users uploading the most,/app/Splunk_Security_Essentials/Essential_Account_Security
-Security Essentials,Top users failing authentication,Top users failing authentication,/app/Splunk_Security_Essentials/Essential_Account_Security
-Security Essentials,Top sources failing authentication,Top sources failing authentication,/app/Splunk_Security_Essentials/Essential_Account_Security
-Security Essentials,Failed authentications over time,Failed authentications over time,/app/Splunk_Security_Essentials/Essential_Account_Security
-Security Essentials,Users with persistent failed auth,Users with persistent failed auth,/app/Splunk_Security_Essentials/Essential_Account_Security
-Security Essentials,Top users taking privileged actions,Top users taking privileged actions,/app/Splunk_Security_Essentials/Essential_Account_Security
-Security Essentials,Privileged actions over time,Privileged actions over time,/app/Splunk_Security_Essentials/Essential_Account_Security
-Security Essentials,Top users copying files,Top users copying files,/app/Splunk_Security_Essentials/Essential_Account_Security
-Security Essentials,File copies over time,File copies over time,/app/Splunk_Security_Essentials/Essential_Account_Security
+Security Essentials,% of hosts by start mode,Essential Host Security,/app/Splunk_Security_Essentials/Essential_Host_Security
+Security Essentials,% of hosts by status,Essential Host Security,/app/Splunk_Security_Essentials/Essential_Host_Security
+Security Essentials,All hosts with non-auto start mode,Essential Host Security,/app/Splunk_Security_Essentials/Essential_Host_Security
+Security Essentials,Highest entropy file names,Essential Host Security,/app/Splunk_Security_Essentials/Essential_Host_Security
+Security Essentials,Highest entropy file paths,Essential Host Security,/app/Splunk_Security_Essentials/Essential_Host_Security
+Security Essentials,Top system executables launched…,Essential Host Security,/app/Splunk_Security_Essentials/Essential_Host_Security
+Security Essentials,Malware running on greatest # of hosts,Essential Host Security,/app/Splunk_Security_Essentials/Essential_Host_Security
+Security Essentials,Hosts with the most malware,Essential Host Security,/app/Splunk_Security_Essentials/Essential_Host_Security
+Security Essentials,Hosts with apparent scanning activity,Essential Network Security,/app/Splunk_Security_Essentials/Essential_Network_Security
+Security Essentials,Top sources,Essential Network Security,/app/Splunk_Security_Essentials/Essential_Network_Security
+Security Essentials,Top destinations,Essential Network Security,/app/Splunk_Security_Essentials/Essential_Network_Security
+Security Essentials,Network blocks over time,Essential Network Security,/app/Splunk_Security_Essentials/Essential_Network_Security
+Security Essentials,Top dest port,Essential Network Security,/app/Splunk_Security_Essentials/Essential_Network_Security
+Security Essentials,Number of file uploads,Essential Network Security,/app/Splunk_Security_Essentials/Essential_Network_Security
+Security Essentials,Top domains browsed to,Essential Network Security,/app/Splunk_Security_Essentials/Essential_Network_Security
+Security Essentials,Rare domains browsed to,Essential Network Security,/app/Splunk_Security_Essentials/Essential_Network_Security
+Security Essentials,# of domains browsed to,Essential Network Security,/app/Splunk_Security_Essentials/Essential_Network_Security
+Security Essentials,Top cloud sharing apps,Essential Network Security,/app/Splunk_Security_Essentials/Essential_Network_Security
+Security Essentials,Rare cloud sharing apps,Essential Network Security,/app/Splunk_Security_Essentials/Essential_Network_Security
+Security Essentials,Hosts with greatest # of destinations,Essential Network Security,/app/Splunk_Security_Essentials/Essential_Network_Security
+Security Essentials,DNS traffic over time,Essential Network Security,/app/Splunk_Security_Essentials/Essential_Network_Security
+Security Essentials,Top high-risk apps,Essential Network Security,/app/Splunk_Security_Essentials/Essential_Network_Security
+Security Essentials,Number of high-risk connections,Essential Network Security,/app/Splunk_Security_Essentials/Essential_Network_Security
+Security Essentials,Number of high-risk apps,Essential Network Security,/app/Splunk_Security_Essentials/Essential_Network_Security
+Security Essentials,Top blocked categories,Essential Network Security,/app/Splunk_Security_Essentials/Essential_Network_Security
+Security Essentials,# of blocked connections,Essential Network Security,/app/Splunk_Security_Essentials/Essential_Network_Security
+Security Essentials,Ex-employee accts w/most logins,Essential Account Security,/app/Splunk_Security_Essentials/Essential_Account_Security
+Security Essentials,Auth sources with most usernames,Essential Account Security,/app/Splunk_Security_Essentials/Essential_Account_Security
+Security Essentials,Users uploading the most,Essential Account Security,/app/Splunk_Security_Essentials/Essential_Account_Security
+Security Essentials,Top users failing authentication,Essential Account Security,/app/Splunk_Security_Essentials/Essential_Account_Security
+Security Essentials,Top sources failing authentication,Essential Account Security,/app/Splunk_Security_Essentials/Essential_Account_Security
+Security Essentials,Failed authentications over time,Essential Account Security,/app/Splunk_Security_Essentials/Essential_Account_Security
+Security Essentials,Users with persistent failed auth,Essential Account Security,/app/Splunk_Security_Essentials/Essential_Account_Security
+Security Essentials,Top users taking privileged actions,Essential Account Security,/app/Splunk_Security_Essentials/Essential_Account_Security
+Security Essentials,Privileged actions over time,Essential Account Security,/app/Splunk_Security_Essentials/Essential_Account_Security
+Security Essentials,Top users copying files,Essential Account Security,/app/Splunk_Security_Essentials/Essential_Account_Security
+Security Essentials,File copies over time,Essential Account Security,/app/Splunk_Security_Essentials/Essential_Account_Security
 Remote Work Insignts,Remote Access VPN Security Posture,,
 Remote Work Insignts,Security Monitoring and Response for Authentication Logs,,
 Remote Work Insignts,Remote Access:  Security Posture Monitoring for MS 365 Environments,,

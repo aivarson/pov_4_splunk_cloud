@@ -238,24 +238,28 @@
           <tr>
             <th>Use Cases Selected</th>
             <th>Use Case Delivery - Links to dashboards, reports or alerts showing the desired use cases</th>
+            <th>Status</th>
         </tr>
         <tr>
             <td>
               <b>$UseCase1$</b>
             </td>
 			      <td> <a href="$UseCaseDelivery1$">$UseCaseFriendlyName1$</a> </td>
+			      <td> In Progress </td>
 		    </tr>
         <tr>
             <td>
               <b>$UseCase2$</b>
             </td>
 			      <td> <a href="$UseCaseDelivery2$">$UseCaseFriendlyName2$</a> </td>
+			      <td> Completed </td>
 		    </tr>
 		    <tr>
             <td>
               <b>$UseCase3$</b>
             </td>
 			      <td> <a href="$UseCaseDelivery3$">$UseCaseFriendlyName3$</a> </td>
+			      <td> Not Started </td>
 		    </tr>
         </table>
       </html>
