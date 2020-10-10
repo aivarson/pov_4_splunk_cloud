@@ -238,6 +238,13 @@
   </row>
   <row>
     <panel>
+      <html>
+    <h1 id="splk_banner">POV PROGRESS</h1>
+</html>
+    </panel>
+  </row>
+  <row>
+    <panel>
       <title>$AutobahnLane$ - Use Cases</title>
       <html>
         <table id="use_case_table">
@@ -269,13 +276,6 @@
 		    </tr>
         </table>
       </html>
-    </panel>
-  </row>
-  <row>
-    <panel>
-      <html>
-    <h1 id="splk_banner">POV PROGRESS</h1>
-</html>
     </panel>
   </row>
   <row>
