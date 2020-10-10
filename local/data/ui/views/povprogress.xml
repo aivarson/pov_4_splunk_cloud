@@ -527,7 +527,7 @@
       <title>User Access Over Time (24h)</title>
       <chart>
         <search>
-          <query>(file!="*.*" user!=cmon_user user!=internal_monitoring user!=admin index=_internal method=GET sourcetype=splunk_web_access status=200 uri_path="/*/app/*" (host=sh*.*splunk*.* OR host=si*.*splunk*.*)) 
+          <query>(file!="*.*" user!=cmon_user user!=int*_* user!=admin index=_internal method=GET sourcetype=splunk_web_access status=200 uri_path="/*/app/*" (host=sh*.*splunk*.* OR host=si*.*splunk*.*)) 
 | rename user as User 
 | timechart count as "Pageviews" by "User"</query>
           <earliest>-24h@h</earliest>
@@ -542,7 +542,7 @@
       <title>Last 10 User Logins (7d)</title>
       <table>
         <search>
-          <query>index=_audit sourcetype=audittrail (host=sh*.*splunk*.* OR host=idm*.*splunk*.* OR host=si*.*splunk*.*) (user!="splunk-system-user" AND user!=admin AND user!=cmon_user AND user!=internal_monitoring) action=success OR action="*login*"
+          <query>index=_audit sourcetype=audittrail (host=sh*.*splunk*.* OR host=idm*.*splunk*.* OR host=si*.*splunk*.*) (user!="splunk-system-user" AND user!=admin AND user!=cmon_user AND user!=int*_*) action=success OR action="*login*"
 | table _time, user
 | head 10
 | sort - _time</query>

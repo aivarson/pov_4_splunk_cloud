@@ -1,5 +1,5 @@
 <dashboard script="countdown_timer.js" stylesheet="countdown_timer.css">
-  <label>Timer testing</label>
+  <label>Timer and timeline testing</label>
   <row>
     <panel>
       <table>
@@ -19,6 +19,8 @@
         <option name="refresh.display">progressbar</option>
       </table>
     </panel>
+  </row>
+  <row>
     <panel>
       <title>HTML Countdown Timer $end_date$</title>
       <html>

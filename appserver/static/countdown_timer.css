@@ -2,13 +2,12 @@
 
 /* general styling */
 
-
-/* {
+/*
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
-
 */
 
 /* html, body {
@@ -16,7 +15,6 @@
   margin: 0;
 }
 */
-
 
 body {
    align-items: center;
