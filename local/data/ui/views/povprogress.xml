@@ -81,6 +81,7 @@
               <set token="UseCaseFriendlyName2">$result.FriendlyName2$</set>
               <set token="UseCaseDelivery3">$result.UseCaseURL3$</set>
               <set token="UseCaseFriendlyName3">$result.FriendlyName3$</set>
+              <set token="CustomerName">$result.CustomerName$</set>
             </condition>
             <condition>
               <set token="tok_kvstore_empty">No result found</set>
@@ -239,13 +240,13 @@
   <row>
     <panel>
       <html>
-    <h1 id="splk_banner">POV PROGRESS</h1>
+    <h1 id="splk_banner">POV PROGRESS for $CustomerName$</h1>
 </html>
     </panel>
   </row>
   <row>
     <panel>
-      <title>$AutobahnLane$ - Use Cases</title>
+      <title>$AutobahnLane$ - Use Cases for $CustomerName$</title>
       <html>
         <table id="use_case_table">
           <tr>
