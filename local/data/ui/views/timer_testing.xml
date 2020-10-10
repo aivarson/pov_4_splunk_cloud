@@ -2,20 +2,22 @@
   <label>Timer testing</label>
   <row>
     <panel>
-      <single>
-        <title>Countdown Timer</title>
-        <search>
-          <query>index="_internal" 
-| head 1
-| stats count 
-| eval clock = strftime(time(), "%H:%M:%S") 
-| table clock</query>
-          <earliest>-15m</earliest>
+      <table>
+        <search id="tokens">
+          <query>| makeresults
+| eval end_date="Oct 10, 2020 00:00:00"
+| table end_date</query>
+          <earliest>-24h@h</earliest>
           <latest>now</latest>
+          <finalized>
+            <condition match=" 'job.resultCount' != 0">
+              <set token="end_date">$result.end_date$</set>
+            </condition>
+          </finalized>
         </search>
         <option name="drilldown">none</option>
         <option name="refresh.display">progressbar</option>
-      </single>
+      </table>
     </panel>
     <panel>
       <title>HTML Countdown Timer $end_date$</title>
@@ -43,26 +45,6 @@
   </div>
 </div>
       </html>
-    </panel>
-  </row>
-  <row>
-    <panel>
-      <table>
-        <search id="tokens">
-          <query>| makeresults
-| eval end_date="Oct 10, 2020 00:00:00"
-| table end_date</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
-                    <finalized>
-            <condition match=" 'job.resultCount' != 0">
-              <set token="end_date">$result.end_date$</set>
-            </condition>
-          </finalized>
-        </search>
-        <option name="drilldown">none</option>
-        <option name="refresh.display">progressbar</option>
-      </table>
     </panel>
   </row>
 </dashboard>
