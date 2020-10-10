@@ -1,0 +1,68 @@
+<dashboard script="countdown_timer.js" stylesheet="countdown_timer.css">
+  <label>Timer testing</label>
+  <row>
+    <panel>
+      <single>
+        <title>Countdown Timer</title>
+        <search>
+          <query>index="_internal" 
+| head 1
+| stats count 
+| eval clock = strftime(time(), "%H:%M:%S") 
+| table clock</query>
+          <earliest>-15m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <title>HTML Countdown Timer $end_date$</title>
+      <html>
+     <div class="container">
+  <h1 id="headline">Countdown to POV Completion:</h1>
+  <div id="countdown">
+    <ul>
+      <li>
+                <span id="days"/>days</li>
+      <li>
+                <span id="hours"/>Hours</li>
+      <li>
+                <span id="minutes"/>Minutes</li>
+      <li>
+                <span id="seconds"/>Seconds</li>
+    </ul>
+  </div>
+  <div class="message">
+    <div id="content">
+      <span class="emoji">🥳</span>
+      <span class="emoji">🎉</span>
+      <span class="emoji">🎂</span>
+    </div>
+  </div>
+</div>
+      </html>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <search id="tokens">
+          <query>| makeresults
+| eval end_date="Oct 10, 2020 00:00:00"
+| table end_date</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+                    <finalized>
+            <condition match=" 'job.resultCount' != 0">
+              <set token="end_date">$result.end_date$</set>
+            </condition>
+          </finalized>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+</dashboard>

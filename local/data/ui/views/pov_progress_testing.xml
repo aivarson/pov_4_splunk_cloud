@@ -1,5 +1,5 @@
 <dashboard theme="light" script="tokenlinks.js">
-  <label>POV Progress</label>
+  <label>POV Progress Testing</label>
   <!-- Show/Hide Description Text -->
   <!-- Welcome Message to POC Progress Dashboard -->
   <!-- set token in hidden panel for use in HTML panel -->
@@ -33,7 +33,7 @@
                 <!-- Unset both the $show_docs$ and $show_kpis$ token when the link is clicked -->
                 <a href="#" class="btn-pill" data-token-json="{&quot;show_kpis&quot;: null, &quot;show_docs&quot;: null}">Hide All</a>
                 <!-- Unset all tokens -->
-                <a href="#" class="btn-pill" data-token-json="{&quot;show_app_charts&quot;: null, &quot;show_pageviews_charts&quot;: null, &quot;show_user_charts&quot;: null, &quot;show_user_creation_charts&quot;: null, &quot;show_search_charts&quot;: null, &quot;show_kpis&quot;: null, &quot;show_docs&quot;: null}">Reset Dashboard</a>
+                <a href="#" class="btn-pill" data-token-json="{&quot;show_app_charts&quot;: null, &quot;show_pageviews_charts&quot;: null, &quot;show_user_charts&quot;: null, &quot;show_user_creation_charts&quot;: null, &quot;show_index_charts&quot;: null, &quot;show_fwd_charts&quot;: null, &quot;show_kpis&quot;: null, &quot;show_docs&quot;: null}">Reset Dashboard</a>
       </html>
       <html rejects="$show_docs$, $show_kpis$">
             <p>Click on one of the links above to select which visualization to show.</p>
@@ -222,18 +222,19 @@
 		    </tr>
 		    <tr>
             <td>
-              <b># of Ad-hoc Searches</b>
-            </td>
-			      <td> The total number of ad-hoc searches in Splunk Cloud. This is a measure of how much the team is searching inside Splunk. 25 or more searches are needed to get this KPI to turn green.</td>
-		    </tr>
-		    <tr>
-            <td>
               <b># of New Users Created</b>
             </td>
 			      <td> The total number new users created in Splunk Cloud. This is a measure of onboarding new users to Splunk. 3 or more user creations are needed to get this KPI to turn green.</td>
 		    </tr>
         </table>
       </html>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <html>
+    <h1 id="splk_banner">POV PROGRESS</h1>
+</html>
     </panel>
   </row>
   <row>
@@ -273,9 +274,44 @@
   </row>
   <row>
     <panel>
+      <title>$AutobahnLane$ - Data Sources</title>
       <html>
-    <h1 id="splk_banner">POV PROGRESS</h1>
-</html>
+        <table id="data_source_table">
+          <tr>
+            <th>Data Sources Selected</th>
+            <th>Data Source Onboarding</th>
+            <th>Status</th>
+        </tr>
+        <tr>
+            <td>
+              <b>$DataSources$</b>
+            </td>
+			      <td> <a href="$UseCaseDelivery1$">$UseCaseFriendlyName1$</a> </td>
+			      <td> In Progress </td>
+		    </tr>
+        <tr>
+            <td>
+              <b>$DataSource2$</b>
+            </td>
+			      <td> <a href="$UseCaseDelivery2$">$UseCaseFriendlyName2$</a> </td>
+			      <td> Completed </td>
+		    </tr>
+		    <tr>
+            <td>
+              <b>$DataSource3$</b>
+            </td>
+			      <td> <a href="$UseCaseDelivery3$">$UseCaseFriendlyName3$</a> </td>
+			      <td> Not Started </td>
+		    </tr>
+		    <tr>
+            <td>
+              <b>$DataSources$</b>
+            </td>
+			      <td> <a href="$UseCaseDelivery3$">$UseCaseFriendlyName3$</a> </td>
+			      <td> Not Started </td>
+		    </tr>
+        </table>
+      </html>
     </panel>
   </row>
   <row>
@@ -306,7 +342,6 @@
           <unset token="show_pageviews_charts"></unset>
           <unset token="show_user_charts"></unset>
           <unset token="show_user_creation_charts"></unset>
-          <unset token="show_search_charts"></unset>
         </drilldown>
       </single>
     </panel>
@@ -332,7 +367,6 @@
           <unset token="show_pageviews_charts"></unset>
           <unset token="show_app_charts"></unset>
           <unset token="show_user_creation_charts"></unset>
-          <unset token="show_search_charts"></unset>
         </drilldown>
       </single>
     </panel>
@@ -361,45 +395,6 @@
           <unset token="show_app_charts"></unset>
           <unset token="show_user_charts"></unset>
           <unset token="show_user_creation_charts"></unset>
-          <unset token="show_search_charts"></unset>
-        </drilldown>
-      </single>
-    </panel>
-    <panel>
-      <title>Ad-hoc Searches (24h)</title>
-      <single>
-        <search>
-          <query>(host=sh*.*splunk*.* OR host=si*.*splunk*.*) NOT user=cmon_user NOT user=internal_monitoring NOT user=ops_admin index=_audit action=search sourcetype=audittrail search_id!="rsa_*" 
-| eval user = if(user="n/a", null(), user) 
-| eval search_type = case( match(search_id, "^SummaryDirector_"), "summarization", match(savedsearch_name, "^_ACCELERATE_"), "acceleration", match(search_id, "^((rt_)?scheduler_|alertsmanager_)"), "scheduled", match(search_id, "\d{10}\.\d+(_[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12})?$"), "ad hoc", true(), "other") 
-| eval search=if(isnull(savedsearch_name) OR savedsearch_name=="", search, savedsearch_name) 
-| stats min(_time) as _time, values(user) as user, values(_time) as time, values(info) as info, max(total_run_time) as total_run_time, first(search) as search, first(search_type) as search_type, first(apiStartTime) as apiStartTime, first(apiEndTime) as apiEndTime by search_id, host 
-| where isnotnull(search) AND search_type="ad hoc" 
-| search host=* (host=sh*.*splunk*.* OR host=si*.*splunk*.*) 
-| mvexpand info 
-| search info=completed OR info=failed 
-| bin span=10m _time 
-| fields _time user host search_type 
-| fillnull value=N/A _time 
-| search _time!= N/A 
-| stats count</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
-        </search>
-        <option name="colorMode">block</option>
-        <option name="drilldown">all</option>
-        <option name="rangeColors">["0xdc4e41","0xf1813f","0xf8be34","0x53a051"]</option>
-        <option name="rangeValues">[0,9,24]</option>
-        <option name="refresh.display">progressbar</option>
-        <option name="useColors">1</option>
-        <drilldown>
-          <!-- For the sourcetype field clicked: -->
-          <!-- Set token to display a chart -->
-          <set token="show_search_charts"></set>
-          <unset token="show_pageviews_charts"></unset>
-          <unset token="show_app_charts"></unset>
-          <unset token="show_user_charts"></unset>
-          <unset token="show_user_creation_charts"></unset>
         </drilldown>
       </single>
     </panel>
@@ -424,7 +419,6 @@
           <unset token="show_pageviews_charts"></unset>
           <unset token="show_app_charts"></unset>
           <unset token="show_user_charts"></unset>
-          <unset token="show_search_charts"></unset>
         </drilldown>
       </single>
     </panel>
@@ -566,52 +560,6 @@
         <option name="charting.chart">column</option>
         <option name="charting.drilldown">none</option>
       </chart>
-    </panel>
-  </row>
-  <row>
-    <panel depends="$show_search_charts$">
-      <title>Ad-hoc Searches by User (24h)</title>
-      <chart>
-        <search>
-          <query>(search_id!="rsa_*" action=search host=* index=_audit sourcetype=audittrail NOT user=cmon_user NOT user=internal_monitoring NOT user=ops_admin (host=sh*.*splunk*.* OR host=si*.*splunk*.*) (host=sh*.*splunk*.* OR host=si*.*splunk*.*)) 
-| eval user=if((user == "n/a"),null(),user), search_type=case(match(search_id,"^SummaryDirector_"),"summarization",match(savedsearch_name,"^_ACCELERATE_"),"acceleration",match(search_id,"^((rt_)?scheduler_|alertsmanager_)"),"scheduled",match(search_id,"\\d{10}\\.\\d+(_[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12})?$"),"ad hoc",true(),"other"), search=if((isnull(savedsearch_name) OR (savedsearch_name == "")),search,savedsearch_name) 
-| stats min(_time) as _time, values(user) as user, values(_time) as time, values(info) as info, max(total_run_time) as total_run_time, first(search) as search, first(search_type) as search_type, first(apiStartTime) as apiStartTime, first(apiEndTime) as apiEndTime by search_id, host 
-| search (host=* (host=sh*.*splunk*.* OR host=si*.*splunk*.*)) 
-| where ((search_type == "ad hoc") AND isnotnull(search)) 
-| mvexpand info 
-| search (info=completed OR info=failed) 
-| bin span=10m _time 
-| fields + _time, user 
-| fillnull value=N/A _time 
-| search _time!=N/A 
-| chart count over _time by user useother=false</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
-        </search>
-        <option name="charting.chart">column</option>
-        <option name="charting.chart.stackMode">stacked</option>
-        <option name="charting.drilldown">none</option>
-      </chart>
-    </panel>
-    <panel depends="$show_search_charts$">
-      <title>Ad-hoc Searches Stats by User (24h)</title>
-      <table>
-        <search>
-          <query>(search_id!="rsa_*" action=search host=* index=_audit sourcetype=audittrail NOT user=cmon_user NOT user=internal_monitoring NOT user=ops_admin (host=sh*.*splunk*.* OR host=si*.*splunk*.*) (host=sh*.*splunk*.* OR host=si*.*splunk*.*)) 
-| eval user=if((user == "n/a"),null(),user), search_type=case(match(search_id,"^SummaryDirector_"),"summarization",match(savedsearch_name,"^_ACCELERATE_"),"acceleration",match(search_id,"^((rt_)?scheduler_|alertsmanager_)"),"scheduled",match(search_id,"\\d{10}\\.\\d+(_[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12})?$"),"ad hoc",true(),"other"), search=if((isnull(savedsearch_name) OR (savedsearch_name == "")),search,savedsearch_name) 
-| stats min(_time) as _time, values(user) as user, values(_time) as time, values(info) as info, max(total_run_time) as total_run_time, first(search) as search, first(search_type) as search_type, first(apiStartTime) as apiStartTime, first(apiEndTime) as apiEndTime by search_id, host 
-| search (host=* (host=sh*.*splunk*.* OR host=si*.*splunk*.*)) 
-| where ((search_type == "ad hoc") AND isnotnull(search)) 
-| stats dc(user) as count_user, dc(host) as count_host, median(total_run_time) as median_runtime, sum(total_run_time) as cum_runtime, count(search) as count, max(_time) as last_use by user 
-| eval median_runtime=if(isnotnull(median_runtime),median_runtime,"-"), cum_runtime=if(isnotnull(cum_runtime),cum_runtime,"-"), last_use=strftime(last_use,"%m/%d/%Y %H:%M:%S %z") 
-| fields + user, count, median_runtime, search_type, cum_runtime, last_use 
-| sort - count 
-| rename count as "Search Count", count_host as "Search Head Count", count_user as "User Count", cum_runtime as "Cumulative Runtime", host as Host, last_use as "Last Search", median_runtime as "Median Runtime", user as User</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
-        </search>
-        <option name="drilldown">none</option>
-      </table>
     </panel>
   </row>
 </dashboard>
