@@ -19,19 +19,18 @@ This app is a self service installable Splunk Cloud app. Follow the instructions
 
 ## Dashboards References
 
-Below is a screenshot of the setup dashboard. This dashboard is used to gather information about the POV to measure the progress through the various stages of the POV.
+Below is a screenshot of the Setup Dashboard. [POV App 4 Splunk Cloud - Setup Dashboard (setup.xml)](default/data/ui/views/setup.xml)
 
 ![pov_4_splunk_cloud](media/setup_screenshot.png)
 
-**Dashboard Reference**: [POV App 4 Splunk Cloud - Setup Dashboard (setup.xml)](default/data/ui/views/setup.xml)
 
-Below is a screenshot of the getting data in dashboard.
+
+Below is a screenshot of the Getting Data In Dashboard. [POV App 4 Splunk Cloud - Getting Data In Dashboard (gdi.xml)](default/data/ui/views/gdi.xml)
 
 ![pov_4_splunk_cloud](media/gdi_screenshot.png)
 
-**Dashboard Reference**: [POV App 4 Splunk Cloud - Getting Data In Dashboard (gdi.xml)](default/data/ui/views/gdi.xml)
 
 ** Tips ** 
-Take screenshots to capture the progress of your POV over time. These can be use during the wrap up presentation, in addition to the dashboards that will show the current state.
+Take screenshots during the weekly check-ins to capture the progress of your POV over time. These can be use during the wrap up presentation, in addition to the dashboards that will show the current state.
 
 
