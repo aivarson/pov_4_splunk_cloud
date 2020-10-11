@@ -30,7 +30,7 @@ Sample view of the Getting Data In Dashboard. [POV App 4 Splunk Cloud - Getting 
 ![pov_4_splunk_cloud](media/gdi_screenshot.png)
 
 
-** Tips ** 
+**Tip** 
 Take screenshots during the weekly check-ins to capture the progress of your POV over time. These can be use during the wrap up presentation, in addition to the dashboards that will show the current state.
 
 
