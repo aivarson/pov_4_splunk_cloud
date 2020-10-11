@@ -19,13 +19,13 @@ This app is a self service installable Splunk Cloud app. Follow the instructions
 
 ## Dashboards References
 
-Below is a screenshot of the Setup Dashboard. [POV App 4 Splunk Cloud - Setup Dashboard (setup.xml)](default/data/ui/views/setup.xml)
+Sample view of the Setup Dashboard. [POV App 4 Splunk Cloud - Setup Dashboard (setup.xml)](default/data/ui/views/setup.xml)
 
 ![pov_4_splunk_cloud](media/setup_screenshot.png)
 
 
 
-Below is a screenshot of the Getting Data In Dashboard. [POV App 4 Splunk Cloud - Getting Data In Dashboard (gdi.xml)](default/data/ui/views/gdi.xml)
+Sample view of the Getting Data In Dashboard. [POV App 4 Splunk Cloud - Getting Data In Dashboard (gdi.xml)](default/data/ui/views/gdi.xml)
 
 ![pov_4_splunk_cloud](media/gdi_screenshot.png)
 
