@@ -23,7 +23,6 @@ require([
 // Retrieve the value of a token $end_date$
 var tokenValue = tokens.get('end_date');
 
- console.log("end_date",tokenValue);
 
 // manually set token value
 // var tokens = mvc.Components.get("submitted");
@@ -52,7 +51,6 @@ tokens.on("change:end_date", function(newEndDate, end_date) {
         
 */        
         
-console.log("tokenValue after change",tokenValue);
 
  // let end_date = "Oct 30, 2020 00:00:00",
      let countDown = new Date(tokenValue).getTime(),

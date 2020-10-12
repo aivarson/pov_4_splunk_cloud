@@ -275,8 +275,8 @@
         <option name="colorMode">block</option>
         <option name="drilldown">all</option>
         <option name="numberPrecision">0</option>
-        <option name="rangeColors">["0xdc4e41","0x53a051"]</option>
-        <option name="rangeValues">[0]</option>
+        <option name="rangeColors">["0xdc4e41","0xf1813f","0xf8be34","0x53a051"]</option>
+        <option name="rangeValues">[100000,500000,999999]</option>
         <option name="refresh.display">progressbar</option>
         <option name="showSparkline">1</option>
         <option name="showTrendIndicator">1</option>
