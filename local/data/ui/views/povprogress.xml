@@ -315,7 +315,7 @@
       <title># of Unique User Logins (7d)</title>
       <single>
         <search>
-          <query>index=_audit sourcetype=audittrail (host=sh*.*splunk*.* OR host=idm*.*splunk*.* OR host=si*.*splunk*.*) (user!="splunk-system-user" AND user!=cmon_user AND user!=admin AND user!=internal_monitoring) action=success OR (action="*login*" info=succeeded) 
+          <query>index=_audit sourcetype=audittrail (host=sh*.*splunk*.* OR host=idm*.*splunk*.* OR host=si*.*splunk*.*) (user!="splunk-system-user" AND user!=cmon_user AND user!=admin AND user!=internal_*) action=success OR (action="*login*" info=succeeded) 
 | stats distinct_count(user) as "User Login Count"</query>
           <earliest>-7d@h</earliest>
           <latest>now</latest>
