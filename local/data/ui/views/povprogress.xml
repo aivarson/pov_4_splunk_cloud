@@ -33,7 +33,7 @@
                 <!-- Unset both the $show_docs$ and $show_kpis$ token when the link is clicked -->
                 <a href="#" class="btn-pill" data-token-json="{&quot;show_kpis&quot;: null, &quot;show_docs&quot;: null}">Hide All</a>
                 <!-- Unset all tokens -->
-                <a href="#" class="btn-pill" data-token-json="{&quot;show_app_charts&quot;: null, &quot;show_pageviews_charts&quot;: null, &quot;show_user_charts&quot;: null, &quot;show_user_creation_charts&quot;: null, &quot;show_search_charts&quot;: null, &quot;show_kpis&quot;: null, &quot;show_docs&quot;: null}">Reset Dashboard</a>
+                <a href="#" class="btn-pill" data-token-json="{&quot;show_app_charts&quot;: null, &quot;show_pageviews_charts&quot;: null, &quot;show_user_charts&quot;: null, &quot;show_user_creation_charts&quot;: null, &quot;show_search_charts&quot;: null, &quot;show_alert_charts&quot;: null, &quot;show_kpis&quot;: null, &quot;show_docs&quot;: null}">Reset Dashboard</a>
       </html>
       <html rejects="$show_docs$, $show_kpis$">
             <p>Click on one of the links above to select which visualization to show.</p>
@@ -233,6 +233,12 @@
             </td>
 			      <td> The total number new users created in Splunk Cloud. This is a measure of onboarding new users to Splunk. 3 or more user creations are needed to get this KPI to turn green.</td>
 		    </tr>
+		    	<tr>
+            <td>
+              <b># of POV Alerts</b>
+            </td>
+			      <td> The total number alerts triggered for this POV. This is a measure of progress for the POV. More alerts indicate that the POV is at risk of not being successful. 1 or less alerts are needed to get this KPI to turn green.</td>
+		    </tr>
         </table>
       </html>
     </panel>
@@ -308,11 +314,12 @@
           <unset token="show_user_charts"></unset>
           <unset token="show_user_creation_charts"></unset>
           <unset token="show_search_charts"></unset>
+          <unset token="show_alert_charts"></unset>
         </drilldown>
       </single>
     </panel>
     <panel>
-      <title># of Unique User Logins (7d)</title>
+      <title>Unique User Logins (7d)</title>
       <single>
         <search>
           <query>index=_audit sourcetype=audittrail (host=sh*.*splunk*.* OR host=idm*.*splunk*.* OR host=si*.*splunk*.*) (user!="splunk-system-user" AND user!=cmon_user AND user!=admin AND user!=internal_*) action=success OR (action="*login*" info=succeeded) 
@@ -334,6 +341,7 @@
           <unset token="show_app_charts"></unset>
           <unset token="show_user_creation_charts"></unset>
           <unset token="show_search_charts"></unset>
+          <unset token="show_alert_charts"></unset>
         </drilldown>
       </single>
     </panel>
@@ -363,6 +371,7 @@
           <unset token="show_user_charts"></unset>
           <unset token="show_user_creation_charts"></unset>
           <unset token="show_search_charts"></unset>
+          <unset token="show_alert_charts"></unset>
         </drilldown>
       </single>
     </panel>
@@ -401,6 +410,7 @@
           <unset token="show_app_charts"></unset>
           <unset token="show_user_charts"></unset>
           <unset token="show_user_creation_charts"></unset>
+          <unset token="show_alert_charts"></unset>
         </drilldown>
       </single>
     </panel>
@@ -426,6 +436,33 @@
           <unset token="show_app_charts"></unset>
           <unset token="show_user_charts"></unset>
           <unset token="show_search_charts"></unset>
+          <unset token="show_alert_charts"></unset>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title># of POV Alerts (30d)</title>
+      <single>
+        <search>
+          <query>index=main sourcetype=pov_alert
+| stats count as "POV alerts"</query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="rangeColors">["0x53a051","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="rangeValues">[1,2,3]</option>
+        <option name="useColors">1</option>
+        <drilldown>
+          <!-- For the sourcetype field clicked: -->
+          <!-- Set token to display a chart -->
+          <set token="show_alert_charts"></set>
+          <unset token="show_pageviews_charts"></unset>
+          <unset token="show_app_charts"></unset>
+          <unset token="show_user_charts"></unset>
+          <unset token="show_search_charts"></unset>
+          <unset token="show_user_creation_charts"></unset>
         </drilldown>
       </single>
     </panel>
@@ -609,6 +646,35 @@
 | sort - count 
 | rename count as "Search Count", count_host as "Search Head Count", count_user as "User Count", cum_runtime as "Cumulative Runtime", host as Host, last_use as "Last Search", median_runtime as "Median Runtime", user as User</query>
           <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$show_alert_charts$">
+      <chart>
+        <search>
+          <query>index=main sourcetype=pov_alert
+| timechart count span=1d</query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.chart">column</option>
+        <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel depends="$show_alert_charts$">
+      <table>
+        <title>POV Alerts (30d)</title>
+        <search>
+          <query>index=main sourcetype=pov_alert
+| table _time, sourcetype, _raw
+| sort - _time
+| rename _raw as message</query>
+          <earliest>-30d@d</earliest>
           <latest>now</latest>
         </search>
         <option name="drilldown">none</option>
