@@ -1,25 +1,33 @@
-<dashboard script="countdown_timer.js" stylesheet="countdown_timer.css">
+<form script="countdown_timer.js" stylesheet="countdown_timer.css">
   <label>Timer and timeline testing</label>
-  <row>
+  <!--  <row>
     <panel>
       <table>
-        <search id="tokens">
+        <search id="splunkSearch">
           <query>| makeresults
-| eval end_date="Oct 10, 2020 00:00:00"
+| eval end_date="Oct 12, 2020 00:00:00"
 | table end_date</query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
-          <finalized>
+                    <finalized>
             <condition match=" 'job.resultCount' != 0">
               <set token="end_date">$result.end_date$</set>
             </condition>
           </finalized>
+
         </search>
         <option name="drilldown">none</option>
         <option name="refresh.display">progressbar</option>
       </table>
     </panel>
   </row>
+  !-->
+  <fieldset submitButton="true">
+    <input id="splunkInput" type="text" token="end_date" searchWhenChanged="false">
+      <label>Set End Date</label>
+      <default>Dec 31, 2020 00:00:00</default>
+    </input>
+  </fieldset>
   <row>
     <panel>
       <title>HTML Countdown Timer $end_date$</title>
@@ -49,4 +57,4 @@
       </html>
     </panel>
   </row>
-</dashboard>
+</form>

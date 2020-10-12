@@ -220,9 +220,12 @@
       <single>
         <search>
           <query>index=_internal sourcetype=splunkd group=tcpin_connections (connectionType=cooked OR connectionType=cookedSSL) NOT eventType=* hostname!=*.splunkcloud*.com
-| eval forwarder = guid 
-| timechart span=1h dc(forwarder) as count_forwarder 
-| fields count_forwarder</query>
+| eval forwarder = guid
+| timechart span=1h dc(forwarder) as count_forwarder
+| fields count_forwarder
+| appendpipe
+    [ stats count as count_forwarder
+    | where count_forwarder==0]</query>
           <earliest>-1h</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>

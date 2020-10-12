@@ -5,6 +5,7 @@ require([
     'splunkjs/mvc/simplexml/ready!'
 ], function(_, $, mvc) {
 
+
 var tokens = mvc.Components.get('submitted');
 
 /* --- Search Reference --- */

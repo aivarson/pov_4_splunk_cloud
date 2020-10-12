@@ -1,20 +1,61 @@
 require([
+    'underscore',
+    'jquery',
     'splunkjs/mvc',
     'splunkjs/mvc/simplexml/ready!'
-], function (mvc) {
-  const second = 1000,
+], function(_, $, mvc) {
+
+ const second = 1000,
         minute = second * 60,
         hour = minute * 60,
         day = hour * 24;
-        
-  // Access the "default" token model
- //   var tokens = mvc.Components.get("default");      
-        
-  // Retrieve the value of a token $end_date$
- //   var tokenValue = tokens.get("end_date");
+      
 
-  let end_date = "Oct 30, 2020 00:00:00",
-      countDown = new Date(end_date).getTime(),
+// Access the "default" token model
+   var tokens = mvc.Components.get("default");
+
+// Change the value of a token $mytoken$
+// tokens.set("mytoken", "this is the new value");
+
+//  Set token $end_date$ to current date (ie POV done)
+//  tokens.set("end_date", new Date());   
+        
+// Retrieve the value of a token $end_date$
+var tokenValue = tokens.get('end_date');
+
+ console.log("end_date",tokenValue);
+
+// manually set token value
+// var tokens = mvc.Components.get("submitted");
+//   tokens.set("tokenValue","tokens");
+    
+// Listen for a change to the token value and set new value
+tokens.on("change:end_date", function(newEndDate, end_date) {
+ //   tokens.set(mvc.Components.get("submitted"));
+   var tokens = mvc.Components.get('submitted');
+   var tokenValue = tokens.get('end_date');
+});
+
+/*
+  // When the $indexName$ token changes, form the search query
+        var defaultTokenModel = mvc.Components.get("default");
+        defaultTokenModel.on("change:indexName", function(newIndexName, indexName, options) {
+            var newQuery = " | stats count by sourcetype, index";
+            if (indexName == "all") {
+                newQuery = "index=_internal OR index=_audit OR index=main" + newQuery;
+            } else {
+                newQuery = "index=" + indexName + newQuery;
+            }
+            // Update the $searchQuery$ token value
+            defaultTokenModel.set("searchQuery", newQuery);
+        });
+        
+*/        
+        
+console.log("tokenValue after change",tokenValue);
+
+ // let end_date = "Oct 30, 2020 00:00:00",
+     let countDown = new Date(tokenValue).getTime(),
       x = setInterval(function() {    
 
         let now = new Date().getTime(),
@@ -33,10 +74,11 @@ require([
 
           headline.innerText = "POV is out of time!";
           countdown.style.display = "none";
+          
           content.style.display = "block";
 
           clearInterval(x);
         }
         //seconds
-      }, 0)
-  }());
+      }, 0) 
+  });
