@@ -15,6 +15,7 @@ The purpose of the **POV App for Splunk Cloud** is to provide insights about you
 
 This app is a self service installable Splunk Cloud app. Follow the instructions in our documentation to install the app in your Splunk Cloud instance. [Splunk Cloud private app install documentation](https://docs.splunk.com/Documentation/SplunkCloud/latest/DevApp/Deployingtheapp#Upload_the_private_app_to_Splunk_Cloud)
 
+(optional) - Configure alerts in app to send to email. Alerts are included in the KPIs for the POV Progress Dashboard. However, if you want them to come to your email you can configure this like you would any other alert.
 
 
 ## Dashboards References
@@ -28,6 +29,11 @@ Sample view of the Setup Dashboard. [POV App 4 Splunk Cloud - Setup Dashboard (s
 Sample view of the Getting Data In Dashboard. [POV App 4 Splunk Cloud - Getting Data In Dashboard (gdi.xml)](default/data/ui/views/gdi.xml)
 
 ![pov_4_splunk_cloud](media/gdi_screenshot.png)
+
+
+Sample view of the POV Progress Dashboard. [POV App 4 Splunk Cloud - POV Progress Dashboard (povprogress.xml)](default/data/ui/views/povprogress.xml)
+
+![pov_4_splunk_cloud](media/pov_progress_screenshot.png)
 
 
 **Tip** 
