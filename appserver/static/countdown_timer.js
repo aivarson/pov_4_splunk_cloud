@@ -13,6 +13,9 @@ require([
 
 // Access the "default" token model
    var tokens = mvc.Components.get("default");
+   
+   // Retrieve the value of a token $end_date$
+    var tokenValue = tokens.get('end_date');
 
 // Change the value of a token $mytoken$
 // tokens.set("mytoken", "this is the new value");
@@ -20,20 +23,26 @@ require([
 //  Set token $end_date$ to current date (ie POV done)
 //  tokens.set("end_date", new Date());   
         
-// Retrieve the value of a token $end_date$
-var tokenValue = tokens.get('end_date');
-
-
 // manually set token value
 // var tokens = mvc.Components.get("submitted");
 //   tokens.set("tokenValue","tokens");
-    
+/*    
 // Listen for a change to the token value and set new value
-tokens.on("change:end_date", function(newEndDate, end_date) {
+      tokens.on("change:end_date", function(newEndDate, end_date) {
  //   tokens.set(mvc.Components.get("submitted"));
-   var tokens = mvc.Components.get('submitted');
-   var tokenValue = tokens.get('end_date');
+ 
+      tokens.set("end_date", end_date);
+      tokenValue = tokens.get("end_date");
+    
 });
+*/
+    tokens.on("change:end_date", function(e) {
+        var tokens = mvc.Components.get("submitted");
+        tokens.set("end_date", end_date);
+        tokenValue = tokens.get('end_date');
+    });
+
+
 
 /*
   // When the $indexName$ token changes, form the search query

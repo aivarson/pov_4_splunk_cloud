@@ -116,7 +116,7 @@
             <a href="/manager/search/data/indexes">Create an Index in your Cloud Stack</a>
           </li>
           <li>
-            <a href="app/splunkclouduf/setupuf">Universal Forwarder App for your Cloud Stack</a>
+            <a href="/app/splunkclouduf/setupuf">Universal Forwarder App for your Cloud Stack</a>
           </li>
 
 </ul>
@@ -315,7 +315,7 @@
 | fields index raw_size_gb event_count buckets 
 | stats sum(raw_size_gb) as total_gb
 | eval total_gb = total_gb/7</query>
-          <earliest>-30d@d</earliest>
+          <earliest>-7d@h</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
         </search>
